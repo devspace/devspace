@@ -3,6 +3,7 @@ body {
     padding: 0;
     background: #444448;
     font-family: Helvetica, Arial, Verdana, sans-serif;
+    height: 100%;
 }
 
 .columns {
@@ -19,7 +20,7 @@ body {
     font-size: 1rem;
     height: 100%;
     margin: 0 6px 0 0;
-    overflow: hidden;
+    overflow-x: hidden;
     white-space: normal;
     width: 310px;
 }
@@ -43,18 +44,17 @@ body {
 }
 
 .column-content {
-    height: 100vh;
+    height: calc(100vh - 57px);
 }
 
 .card {
     background: transparent;
     border-radius: 3px;
-    color: white;
+    color: rgb(221, 221, 221);
     padding: .8em 1em;
     width: 100%;
     display: flex;
     align-items: flex-start;
-    margin-bottom: 1em;
     border-bottom: 3px solid #303236;
 }
 
@@ -74,4 +74,19 @@ body {
 
 .card-body p {
     margin: 0;
+}
+
+.card-body a {
+    text-decoration: none;
+    color: #8BD;
+}
+
+.card-body a:hover {
+    text-decoration: underline;
+}
+
+.card-footer {
+    color: #999;
+    font-size: 12px;
+    margin-top: 3px;
 }
