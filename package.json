@@ -1,5 +1,5 @@
 {
   "name"    : "gitdeck",
   "version" : "0.1.0",
-  "main"    : "scripts/main.js"
+  "main"    : "index.js"
 }
