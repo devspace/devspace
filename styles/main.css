@@ -12,6 +12,7 @@ body {
     height: 100vh;
     float: left;
     position: relative;
+    margin-right: 5px;
 }
 
 .nav ul {
