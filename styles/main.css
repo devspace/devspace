@@ -45,3 +45,33 @@ body {
 .column-content {
     height: 100vh;
 }
+
+.card {
+    background: transparent;
+    border-radius: 3px;
+    color: white;
+    padding: .8em 1em;
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1em;
+    border-bottom: 3px solid #303236;
+}
+
+.card-image {
+    display: block;
+    width: 40px;
+    height: auto;
+    margin-top: .2em;
+    margin-right: 1em;
+    border-radius: 3px;
+}
+
+.card-body {
+    flex: 1;
+    font-size: 14px;
+}
+
+.card-body p {
+    margin: 0;
+}
