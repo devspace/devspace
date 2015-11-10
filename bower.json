@@ -1,0 +1,6 @@
+{
+  "name": "gitdeck",
+  "dependencies": {
+    "octicons": "~3.2.0"
+  }
+}

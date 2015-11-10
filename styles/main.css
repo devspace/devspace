@@ -52,10 +52,10 @@ body {
     border-radius: 3px;
     color: rgb(221, 221, 221);
     padding: .8em 1em;
-    width: 100%;
     display: flex;
     align-items: flex-start;
     border-bottom: 3px solid #303236;
+    position: relative;
 }
 
 .card-image {
@@ -89,4 +89,12 @@ body {
     color: #999;
     font-size: 12px;
     margin-top: 3px;
+}
+
+.card-body .octicon {
+    color: #444448;
+    position: absolute;
+    font-size: 24px;
+    right: 8px;
+    bottom: 8px;
 }
