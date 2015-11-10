@@ -8,14 +8,14 @@ firebase.authWithOAuthPopup('github', function(error, authData) {
 		console.error('Login Failed!', error);
 	}
 	else {
-		events(authData.github.accessToken);
+		events(authData.github);
 	}
 }, {
 	scope: 'notifications'
 });
 
-function events(accessToken) {
-	fetch('https://api.github.com/users/zenorocha/received_events?access_token=' + accessToken)
+function events(auth) {
+	fetch('https://api.github.com/users/' + auth.username + '/received_events?access_token=' + auth.accessToken)
 		.then(function(response) {
 			return response.json();
 		})
@@ -24,8 +24,6 @@ function events(accessToken) {
 				events[i].detail = eventDetails(events[i]);
 				events[i].time = moment(events[i].created_at).fromNow();
 			}
-
-			console.log(events);
 
 			var compiled = Handlebars.compile(cardTemplate.innerHTML);
 			var rendered = compiled({ events: events });
