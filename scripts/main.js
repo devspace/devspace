@@ -1,4 +1,4 @@
-var columnContent = document.querySelector('#column-content');
+var columnContent = document.querySelectorAll('.column-content');
 var cardTemplate = document.querySelector('#card-template');
 
 var firebase = new Firebase('https://devspace-io.firebaseio.com');
@@ -8,14 +8,17 @@ firebase.authWithOAuthPopup('github', function(error, authData) {
 		console.error('Login Failed!', error);
 	}
 	else {
-		events(authData.github);
+		loadEvents(authData.github.accessToken, columnContent[0], '/users/' + authData.github.username + '/received_events');
+		loadEvents(authData.github.accessToken, columnContent[1], '/users/' + authData.github.username + '/events');
+		loadEvents(authData.github.accessToken, columnContent[2], '/repos/twbs/bootstrap/events');
+		loadEvents(authData.github.accessToken, columnContent[3], '/orgs/braziljs/events');
 	}
 }, {
 	scope: 'notifications'
 });
 
-function events(auth) {
-	fetch('https://api.github.com/users/' + auth.username + '/received_events?access_token=' + auth.accessToken)
+function loadEvents(accessToken, container, url) {
+	fetch('https://api.github.com' + url + '?access_token=' + accessToken)
 		.then(function(response) {
 			return response.json();
 		})
@@ -28,7 +31,7 @@ function events(auth) {
 			var compiled = Handlebars.compile(cardTemplate.innerHTML);
 			var rendered = compiled({ events: events });
 
-			columnContent.innerHTML = rendered;
+			container.innerHTML = rendered;
 		});
 }
 
@@ -43,7 +46,6 @@ function eventDetails(event) {
         	}
             break;
         case 'CreateEvent':
-        	console.log(event.payload);
             txt = {
             	icon: 'repo',
             	message: 'created ' + event.payload.ref_type + (event.payload.ref ? (' ' + event.payload.ref) : '') + ' at'
