@@ -1,0 +1,47 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: #444448;
+    font-family: Helvetica, Arial, Verdana, sans-serif;
+}
+
+.columns {
+    font-size: 0;
+    height: 100%;
+    overflow: visible;
+    padding: 6px 0 6px 6px;
+    white-space: nowrap;
+}
+
+.column {
+    background: #222426;
+    display: inline-block;
+    font-size: 1rem;
+    height: 100%;
+    margin: 0 6px 0 0;
+    overflow: hidden;
+    white-space: normal;
+    width: 310px;
+}
+
+.column-header {
+    background: #303236;
+    padding: 12px 12px 10px;
+}
+
+.column-header-title {
+    color: rgb(221, 221, 221);
+    font-size: 20px;
+    font-weight: normal;
+    margin: 0;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: bottom;
+    white-space: nowrap;
+    word-wrap: normal;
+}
+
+.column-content {
+    height: 100vh;
+}
