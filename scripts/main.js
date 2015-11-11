@@ -18,30 +18,35 @@ firebase.authWithOAuthPopup('github', function(error, authData) {
 	scope: 'notifications'
 });
 
-function loadEvents(accessToken, order, url) {
-	fetch('https://api.github.com' + url + '?access_token=' + accessToken)
-		.then(function(response) {
-			return response.json();
-		})
-		.then(function(response) {
-            if (response.message) {
-                placeholder[order].innerHTML = response.message + ' :(';
-            }
-            else {
-    			for (var i = 0; i < response.length; i++) {
-    				response[i].detail = eventDetails(response[i]);
-    				response[i].time = moment(response[i].created_at).fromNow();
-    			}
+function loadEvents(accessToken, order, endpoint) {
+	fetch('https://api.github.com' + endpoint, {
+        headers: {
+            'Authorization': 'token ' + accessToken,
+            'User-Agent': 'DevSpace'
+        }
+    })
+	.then(function(response) {
+		return response.json();
+	})
+	.then(function(response) {
+        if (response.message) {
+            placeholder[order].innerHTML = response.message + ' :(';
+        }
+        else {
+			for (var i = 0; i < response.length; i++) {
+				response[i].detail = eventDetails(response[i]);
+				response[i].time = moment(response[i].created_at).fromNow();
+			}
 
-    			var compiled = Handlebars.compile(cardTemplate.innerHTML);
-    			var rendered = compiled({ events: response });
+			var compiled = Handlebars.compile(cardTemplate.innerHTML);
+			var rendered = compiled({ events: response });
 
-    			columnContent[order].innerHTML = rendered;
-            }
-		})
-        .catch(function(e) {
-            placeholder[order].innerHTML = 'Network failure. Try again later.';
-        });
+			columnContent[order].innerHTML = rendered;
+        }
+	})
+    .catch(function(e) {
+        placeholder[order].innerHTML = 'Network failure. Try again later.';
+    });
 }
 
 function eventDetails(event) {
