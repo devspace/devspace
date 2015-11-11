@@ -128,7 +128,7 @@ body {
 .card-image {
     border-radius: 3px;
     display: block;
-    height: auto;
+    height: 40px;
     margin-right: 1em;
     margin-top: .2em;
     width: 40px;

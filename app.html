@@ -79,7 +79,7 @@
     {{#each events}}
         <div class="card">
             <a href="https://github.com/{{ actor.login }}" target="_blank">
-                <img class="card-image" src="{{ actor.avatar_url }}" alt="{{ actor.login }}">
+                <img class="card-image" src="{{ actor.avatar_url }}s=80" alt="{{ actor.login }}" width="40" height="40">
             </a>
             <div class="card-body">
                 <p><a href="https://github.com/{{ actor.login }}" target="_blank">{{ actor.login }}</a> {{ detail.message }} <a href="https://github.com/{{ repo.name }}" target="_blank">{{ repo.name }}</a></p>
