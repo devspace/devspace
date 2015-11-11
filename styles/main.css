@@ -39,6 +39,10 @@ body {
     width: 100%;
 }
 
+.nav .nav-selected {
+    box-shadow: inset 4px 0 #7C84FF;
+}
+
 .nav .nav-selected .octicon {
     color: white;
 }
@@ -50,10 +54,11 @@ body {
 }
 
 .nav .octicon {
-    color: rgb(170, 170, 170);
+    color: #999;
     font-size: 24px;
     position: relative;
     top: 10px;
+    transition: color 0.3s ease-in-out;
 }
 
 .nav .octicon:hover {
@@ -136,19 +141,20 @@ body {
 
 .card-body p {
     margin: 0;
+    line-height: 18px;
 }
 
 .card-body a {
-    color: #8BD;
+    color: #AFB4FF;
     text-decoration: none;
 }
 
 .card-body a:hover {
-    text-decoration: underline;
+    border-bottom: 1px solid #AFB4FF;
 }
 
 .card-footer {
-    color: #999;
+    color: #a0a0a0;
     font-size: 12px;
     margin-top: 3px;
 }
