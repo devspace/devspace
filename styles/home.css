@@ -1,0 +1,110 @@
+@import url(https://fonts.googleapis.com/css?family=Patua+One|Roboto:400,700,300);
+
+html {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: Helvetica, Arial, Verdana, sans-serif;
+    height: 100%;
+    margin: 0;
+    overflow: auto;
+    padding: 0;
+}
+
+canvas {
+  display: block;
+  vertical-align: bottom;
+}
+
+#particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: -webkit-linear-gradient(top,#5f2c82,#5d64d0);
+    background-image: linear-gradient(to bottom,#5f2c82,#5d64d0);
+    background-color: #5d64d0;
+    /*background-color: #58488a;
+    background: -webkit-linear-gradient(top, #58488a, #5d64d0),#58488a fixed;
+    background: linear-gradient(to bottom, #58488a, #5d64d0),#58488a fixed;*/
+    min-height: 100%;
+}
+
+/* ==========================================================================
+   Main
+   ========================================================================== */
+
+main {
+    display: block;
+    height: 560px;
+    left: 50%;
+    margin: -300px 0 0 -320px;
+    position: absolute;
+    top: 50%;
+    width: 530px;
+}
+
+/* Headings
+   ========================================================================== */
+
+h1, h2 {
+    margin: 0;
+    text-align: center;
+    z-index: 1;
+    position: relative;
+}
+
+h1 {
+    color: #fff;
+    font-size: 72px;
+    font-weight: 100;
+    font-family: 'Patua One', cursive;
+    /*text-transform: uppercase;*/
+}
+
+h2 {
+    color: #B8AEFF;
+    font-size: 2em;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+}
+
+img {
+    display: block;
+    margin: 0 auto 20px;
+}
+
+.btn {
+    color: #fff;
+    background: none;
+    box-shadow: none;
+    display: block;
+    padding: 6px 12px;
+    font-size: 22px;
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: .75em 1.15em;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    text-decoration: none;
+    margin: 36px auto;
+    width: 240px;
+    transition: background 0.3s ease-in-out;
+}
+
+.btn .octicon {
+    color: #fff;
+    font-size: 32px;
+    margin-right: 5px;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn:hover {
+    background: #fff;
+    color: #5856d6;
+}
+
+.btn:hover .octicon {
+    color: #5856d6;
+}
