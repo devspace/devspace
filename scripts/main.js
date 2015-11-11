@@ -1,5 +1,6 @@
 var columnContent = document.querySelectorAll('.column-content');
 var cardTemplate = document.querySelector('#card-template');
+var placeholder = document.querySelectorAll('.placeholder');
 
 var firebase = new Firebase('https://devspace-io.firebaseio.com');
 
@@ -8,31 +9,39 @@ firebase.authWithOAuthPopup('github', function(error, authData) {
 		console.error('Login Failed!', error);
 	}
 	else {
-		loadEvents(authData.github.accessToken, columnContent[0], '/users/' + authData.github.username + '/received_events');
-		loadEvents(authData.github.accessToken, columnContent[1], '/users/' + authData.github.username + '/events');
-		loadEvents(authData.github.accessToken, columnContent[2], '/repos/twbs/bootstrap/events');
-		loadEvents(authData.github.accessToken, columnContent[3], '/orgs/braziljs/events');
+		loadEvents(authData.github.accessToken, 0, '/users/' + authData.github.username + '/received_events');
+		loadEvents(authData.github.accessToken, 1, '/users/' + authData.github.username + '/events');
+		loadEvents(authData.github.accessToken, 2, '/repos/twbs/bootstrap/events');
+		loadEvents(authData.github.accessToken, 3, '/orgs/braziljs/events');
 	}
 }, {
 	scope: 'notifications'
 });
 
-function loadEvents(accessToken, container, url) {
+function loadEvents(accessToken, order, url) {
 	fetch('https://api.github.com' + url + '?access_token=' + accessToken)
 		.then(function(response) {
 			return response.json();
 		})
-		.then(function(events) {
-			for (var i = 0; i < events.length; i++) {
-				events[i].detail = eventDetails(events[i]);
-				events[i].time = moment(events[i].created_at).fromNow();
-			}
+		.then(function(response) {
+            if (response.message) {
+                placeholder[order].innerHTML = response.message + ' :(';
+            }
+            else {
+    			for (var i = 0; i < response.length; i++) {
+    				response[i].detail = eventDetails(response[i]);
+    				response[i].time = moment(response[i].created_at).fromNow();
+    			}
 
-			var compiled = Handlebars.compile(cardTemplate.innerHTML);
-			var rendered = compiled({ events: events });
+    			var compiled = Handlebars.compile(cardTemplate.innerHTML);
+    			var rendered = compiled({ events: response });
 
-			container.innerHTML = rendered;
-		});
+    			columnContent[order].innerHTML = rendered;
+            }
+		})
+        .catch(function(e) {
+            placeholder[order].innerHTML = 'Network failure. Try again later.';
+        });
 }
 
 function eventDetails(event) {

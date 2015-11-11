@@ -167,7 +167,7 @@ body {
     right: 8px;
 }
 
-.loading {
+.placeholder {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -176,7 +176,7 @@ body {
 }
 
 .loading:after {
-  content: ' .';
+  content: '.';
   animation: dots 1s steps(5, end) infinite;
 }
 
