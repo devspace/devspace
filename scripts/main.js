@@ -1,36 +1,6 @@
-// Column ----------------------------------------------------------------------
-
 var columns = document.querySelector('.columns');
 var columnTemplate = document.querySelector('#column-template');
-
-new Column('person', 'All events');
-new Column('person', 'Your events');
-new Column('repo', 'twbs/bootstrap');
-new Column('organization', 'braziljs');
-
-function Column(icon, title) {
-    var compiled = Handlebars.compile(columnTemplate.innerHTML);
-    var rendered = compiled({
-        icon: icon,
-        title: title
-    });
-
-    columns.innerHTML+= rendered;
-}
-
-// Scrollbar -------------------------------------------------------------------
-
-var columnContent = document.querySelectorAll('.column-content');
-
-Ps.initialize(columns, {
-    suppressScrollY: true
-});
-
-for (var i = 0; i < columnContent.length; i++) {
-    Ps.initialize(columnContent[i], {
-        suppressScrollX: true
-    });
-}
+var cardTemplate = document.querySelector('#card-template');
 
 // Auth ------------------------------------------------------------------------
 
@@ -41,24 +11,38 @@ firebase.authWithOAuthPopup('github', function(error, authData) {
 		console.error('Login Failed!', error);
 	}
 	else {
-		loadEvents(authData.github.accessToken, 0, '/users/' + authData.github.username + '/received_events');
-		loadEvents(authData.github.accessToken, 1, '/users/' + authData.github.username + '/events');
-		loadEvents(authData.github.accessToken, 2, '/repos/twbs/bootstrap/events');
-		loadEvents(authData.github.accessToken, 3, '/orgs/braziljs/events');
+        window.accessToken = authData.github.accessToken;
+
+        new Column('a', 'person', 'All events', '/users/' + authData.github.username + '/received_events');
+        new Column('b', 'person', 'Your events', '/users/' + authData.github.username + '/events');
+        new Column('c', 'repo', 'twbs/bootstrap', '/repos/twbs/bootstrap/events');
+        new Column('d', 'organization', 'braziljs', '/orgs/braziljs/events');
 	}
 }, {
 	scope: 'notifications'
 });
 
+// Column ----------------------------------------------------------------------
+
+function Column(id, icon, title, endpoint) {
+    var compiled = Handlebars.compile(columnTemplate.innerHTML);
+    var rendered = compiled({
+        id: id,
+        icon: icon,
+        title: title
+    });
+
+    columns.innerHTML += rendered;
+
+    loadEvents(id, endpoint);
+}
+
 // Card ------------------------------------------------------------------------
 
-function loadEvents(accessToken, order, endpoint) {
-    var cardTemplate = document.querySelector('#card-template');
-    var placeholder = document.querySelectorAll('.placeholder');
-
-	fetch('https://api.github.com' + endpoint, {
+function loadEvents(id, endpoint) {
+    fetch('https://api.github.com' + endpoint, {
         headers: {
-            'Authorization': 'token ' + accessToken,
+            'Authorization': 'token ' + window.accessToken,
             'User-Agent': 'DevSpace'
         }
     })
@@ -66,8 +50,11 @@ function loadEvents(accessToken, order, endpoint) {
 		return response.json();
 	})
 	.then(function(response) {
+        var placeholder = document.querySelector('#' + id + ' .placeholder');
+        var columnContent = document.querySelector('#' + id + ' .column-content');
+
         if (response.message) {
-            placeholder[order].innerHTML = response.message + ' :(';
+            placeholder.innerHTML = response.message + ' :(';
         }
         else {
 			for (var i = 0; i < response.length; i++) {
@@ -78,11 +65,16 @@ function loadEvents(accessToken, order, endpoint) {
 			var compiled = Handlebars.compile(cardTemplate.innerHTML);
 			var rendered = compiled({ events: response });
 
-			columnContent[order].innerHTML = rendered;
+			columnContent.innerHTML = rendered;
+
+            Ps.initialize(columnContent, {
+                suppressScrollX: true
+            });
         }
 	})
     .catch(function(e) {
-        placeholder[order].innerHTML = 'Network failure. Try again later.';
+        var placeholder = document.querySelector('#' + id + ' .placeholder');
+        placeholder.innerHTML = 'Network failure. Try again later.';
     });
 }
 
@@ -190,3 +182,9 @@ function eventDetails(event) {
 
     return txt;
 }
+
+// Scrollbar -------------------------------------------------------------------
+
+Ps.initialize(columns, {
+    suppressScrollY: true
+});
