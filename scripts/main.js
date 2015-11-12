@@ -1,7 +1,26 @@
+// Column ----------------------------------------------------------------------
+
 var columns = document.querySelector('.columns');
+var columnTemplate = document.querySelector('#column-template');
+
+new Column('person', 'All events');
+new Column('person', 'Your events');
+new Column('repo', 'twbs/bootstrap');
+new Column('organization', 'braziljs');
+
+function Column(icon, title) {
+    var compiled = Handlebars.compile(columnTemplate.innerHTML);
+    var rendered = compiled({
+        icon: icon,
+        title: title
+    });
+
+    columns.innerHTML+= rendered;
+}
+
+// Scrollbar -------------------------------------------------------------------
+
 var columnContent = document.querySelectorAll('.column-content');
-var cardTemplate = document.querySelector('#card-template');
-var placeholder = document.querySelectorAll('.placeholder');
 
 Ps.initialize(columns, {
     suppressScrollY: true
@@ -12,6 +31,8 @@ for (var i = 0; i < columnContent.length; i++) {
         suppressScrollX: true
     });
 }
+
+// Auth ------------------------------------------------------------------------
 
 var firebase = new Firebase('https://devspace-io.firebaseio.com');
 
@@ -29,7 +50,12 @@ firebase.authWithOAuthPopup('github', function(error, authData) {
 	scope: 'notifications'
 });
 
+// Card ------------------------------------------------------------------------
+
 function loadEvents(accessToken, order, endpoint) {
+    var cardTemplate = document.querySelector('#card-template');
+    var placeholder = document.querySelectorAll('.placeholder');
+
 	fetch('https://api.github.com' + endpoint, {
         headers: {
             'Authorization': 'token ' + accessToken,

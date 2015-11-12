@@ -10,81 +10,42 @@
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 </head>
 <body>
-<div class="container">
-    <aside class="nav">
-        <ul>
-            <li><a class="nav-selected" href="/" title="Home"><span class="octicon octicon-home"></span></a></li>
-            <li><a href="#" title="Add column"><span class="octicon octicon-plus"></span></a></li>
-            <li><a href="#" title="Settings"><span class="octicon octicon-gear"></span></a></li>
-        </ul>
-        <div class="footer">
+    <div class="container">
+        <aside class="nav">
             <ul>
-                <li><a href="#" title="Announcements"><span class="octicon octicon-megaphone"></span></a></li>
-                <li><a href="mailto:support@devspace.io" title="Ask a question"><span class="octicon octicon-question"></span></a></li>
-                <li><a href="https://github.com/devspace/bugs" title="Report a bug"><span class="octicon octicon-bug"></span></a></li>
-                <li><a href="#" title="Sign Out"><span class="octicon octicon-sign-out"></span></a></li>
+                <li><a class="nav-selected" href="/" title="Home"><span class="octicon octicon-home"></span></a></li>
+                <li><a href="#" title="Add column"><span class="octicon octicon-plus"></span></a></li>
+                <li><a href="#" title="Settings"><span class="octicon octicon-gear"></span></a></li>
             </ul>
+            <div class="footer">
+                <ul>
+                    <li><a href="#" title="Announcements"><span class="octicon octicon-megaphone"></span></a></li>
+                    <li><a href="mailto:support@devspace.io" title="Ask a question"><span class="octicon octicon-question"></span></a></li>
+                    <li><a href="https://github.com/devspace/bugs" title="Report a bug"><span class="octicon octicon-bug"></span></a></li>
+                    <li><a href="#" title="Sign Out"><span class="octicon octicon-sign-out"></span></a></li>
+                </ul>
+            </div>
+        </aside>
+        <div class="columns">
         </div>
-    </aside>
-    <div class="columns">
-        <section class="column">
-            <div class="column-panel">
-                <header class="column-header">
-                    <h1 class="column-header-title">
-                        <span class="octicon octicon-person"></span> All events
-                    </h1>
-                </header>
-                <div class="column-content">
-                    <div class="placeholder">
-                        <p class="loading">Loading</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="column">
-            <div class="column-panel">
-                <header class="column-header">
-                    <h1 class="column-header-title">
-                        <span class="octicon octicon-person"></span> Your events
-                    </h1>
-                </header>
-                <div class="column-content">
-                    <div class="placeholder">
-                        <p class="loading">Loading</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="column">
-            <div class="column-panel">
-                <header class="column-header">
-                    <h1 class="column-header-title">
-                        <span class="octicon octicon-repo"></span> twbs/bootstrap
-                    </h1>
-                </header>
-                <div class="column-content">
-                    <div class="placeholder">
-                        <p class="loading">Loading</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="column">
-            <div class="column-panel">
-                <header class="column-header">
-                    <h1 class="column-header-title">
-                        <span class="octicon octicon-organization"></span> braziljs
-                    </h1>
-                </header>
-                <div class="column-content">
-                    <div class="placeholder">
-                        <p class="loading">Loading</p>
-                    </div>
-                </div>
-            </div>
-        </section>
     </div>
-</div>
+
+    <script id="column-template" type="text/x-handlebars-template">
+        <section class="column">
+            <div class="column-panel">
+                <header class="column-header">
+                    <h1 class="column-header-title">
+                        <span class="octicon octicon-{{ icon }}"></span> {{ title }}
+                    </h1>
+                </header>
+                <div class="column-content">
+                    <div class="placeholder">
+                        <p class="loading">Loading</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </script>
 
     <script id="card-template" type="text/x-handlebars-template">
     {{#each events}}
