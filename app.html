@@ -6,9 +6,11 @@
 
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="bower_components/octicons/octicons/octicons.css">
+    <link rel="stylesheet" href="bower_components/perfect-scrollbar/css/perfect-scrollbar.min.css">
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 </head>
 <body>
+<div class="container">
     <aside class="nav">
         <ul>
             <li><a class="nav-selected" href="/" title="Home"><span class="octicon octicon-home"></span></a></li>
@@ -26,54 +28,63 @@
     </aside>
     <div class="columns">
         <section class="column">
-            <header class="column-header">
-                <h1 class="column-header-title">
-                    <span class="octicon octicon-person"></span> All events
-                </h1>
-            </header>
-            <div class="column-content">
-                <div class="placeholder">
-                    <p class="loading">Loading</p>
+            <div class="column-panel">
+                <header class="column-header">
+                    <h1 class="column-header-title">
+                        <span class="octicon octicon-person"></span> All events
+                    </h1>
+                </header>
+                <div class="column-content">
+                    <div class="placeholder">
+                        <p class="loading">Loading</p>
+                    </div>
                 </div>
             </div>
         </section>
         <section class="column">
-            <header class="column-header">
-                <h1 class="column-header-title">
-                    <span class="octicon octicon-person"></span> Your events
-                </h1>
-            </header>
-            <div class="column-content">
-                <div class="placeholder">
-                    <p class="loading">Loading</p>
+            <div class="column-panel">
+                <header class="column-header">
+                    <h1 class="column-header-title">
+                        <span class="octicon octicon-person"></span> Your events
+                    </h1>
+                </header>
+                <div class="column-content">
+                    <div class="placeholder">
+                        <p class="loading">Loading</p>
+                    </div>
                 </div>
             </div>
         </section>
         <section class="column">
-            <header class="column-header">
-                <h1 class="column-header-title">
-                    <span class="octicon octicon-repo"></span> twbs/bootstrap
-                </h1>
-            </header>
-            <div class="column-content">
-                <div class="placeholder">
-                    <p class="loading">Loading</p>
+            <div class="column-panel">
+                <header class="column-header">
+                    <h1 class="column-header-title">
+                        <span class="octicon octicon-repo"></span> twbs/bootstrap
+                    </h1>
+                </header>
+                <div class="column-content">
+                    <div class="placeholder">
+                        <p class="loading">Loading</p>
+                    </div>
                 </div>
             </div>
         </section>
         <section class="column">
-            <header class="column-header">
-                <h1 class="column-header-title">
-                    <span class="octicon octicon-organization"></span> braziljs
-                </h1>
-            </header>
-            <div class="column-content">
-                <div class="placeholder">
-                    <p class="loading">Loading</p>
+            <div class="column-panel">
+                <header class="column-header">
+                    <h1 class="column-header-title">
+                        <span class="octicon octicon-organization"></span> braziljs
+                    </h1>
+                </header>
+                <div class="column-content">
+                    <div class="placeholder">
+                        <p class="loading">Loading</p>
+                    </div>
                 </div>
             </div>
         </section>
     </div>
+</div>
 
     <script id="card-template" type="text/x-handlebars-template">
     {{#each events}}
@@ -95,6 +106,7 @@
     <script src="bower_components/handlebars/handlebars.min.js"></script>
     <script src="bower_components/firebase/firebase.js"></script>
     <script src="bower_components/moment/min/moment.min.js"></script>
+    <script src="bower_components/perfect-scrollbar/js/perfect-scrollbar.js"></script>
     <script src="scripts/main.js"></script>
 </body>
 </html>

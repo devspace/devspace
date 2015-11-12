@@ -1,6 +1,17 @@
+var columns = document.querySelector('.columns');
 var columnContent = document.querySelectorAll('.column-content');
 var cardTemplate = document.querySelector('#card-template');
 var placeholder = document.querySelectorAll('.placeholder');
+
+Ps.initialize(columns, {
+    suppressScrollY: true
+});
+
+for (var i = 0; i < columnContent.length; i++) {
+    Ps.initialize(columnContent[i], {
+        suppressScrollX: true
+    });
+}
 
 var firebase = new Firebase('https://devspace-io.firebaseio.com');
 
