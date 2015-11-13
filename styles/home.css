@@ -22,12 +22,9 @@ canvas {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-image: -webkit-linear-gradient(top,#5f2c82,#5d64d0);
-    background-image: linear-gradient(to bottom,#5f2c82,#5d64d0);
-    background-color: #5d64d0;
-    /*background-color: #58488a;
-    background: -webkit-linear-gradient(top, #58488a, #5d64d0),#58488a fixed;
-    background: linear-gradient(to bottom, #58488a, #5d64d0),#58488a fixed;*/
+    background-image: -webkit-linear-gradient(top, #13131E, #36354F);
+    background-image: linear-gradient(to bottom, #13131E, #36354F);
+    background-color: #36354F;
     min-height: 100%;
 }
 
@@ -60,11 +57,10 @@ h1 {
     font-size: 72px;
     font-weight: 100;
     font-family: 'Patua One', cursive;
-    /*text-transform: uppercase;*/
 }
 
 h2 {
-    color: #B8AEFF;
+    color: #AFB4FF;
     font-size: 2em;
     font-family: 'Roboto', sans-serif;
     font-weight: 300;
@@ -89,8 +85,9 @@ img {
     font-weight: 400;
     text-decoration: none;
     margin: 36px auto;
-    width: 240px;
-    transition: background 0.3s ease-in-out;
+    width: 220px;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
 }
 
 .btn .octicon {
@@ -102,9 +99,9 @@ img {
 
 .btn:hover {
     background: #fff;
-    color: #5856d6;
+    color: #735CDC;
 }
 
 .btn:hover .octicon {
-    color: #5856d6;
+    color: #735CDC;
 }
