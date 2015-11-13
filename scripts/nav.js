@@ -1,8 +1,8 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-var Nav = React.createClass({
-	render: function() {
+class Nav extends React.Component {
+	render() {
 		return (
 			<div className="nav">
 				<ul>
@@ -21,6 +21,6 @@ var Nav = React.createClass({
 			</div>
 		)
 	}
-});
+}
 
-ReactDOM.render(<Nav/>, document.querySelector('.container'));
+export default Nav;

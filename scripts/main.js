@@ -1,2 +1,1 @@
-require('./nav');
-require('./column');
+require('./app');

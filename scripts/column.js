@@ -1,18 +1,14 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-var Column = React.createClass({
-	render: function() {
-		var id = 1;
-		var icon = 'person';
-		var title = 'All events';
-
+class Column extends React.Component {
+	render() {
 		return (
-			<section id="{id}" className="column">
+			<section id="1" className="column">
 				<div className="column-panel">
 					<header className="column-header">
 						<h1 className="column-header-title">
-							<span className="octicon octicon-{icon}"></span> {title}
+							<span className="octicon octicon-person"></span> All events
 						</h1>
 					</header>
 					<div className="column-content">
@@ -24,6 +20,6 @@ var Column = React.createClass({
 			</section>
 		)
 	}
-});
+}
 
-ReactDOM.render(<Column/>, document.querySelector('.columns'));
+export default Column;
