@@ -6,32 +6,14 @@
 
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/nav.css">
+    <link rel="stylesheet" href="styles/column.css">
     <link rel="stylesheet" href="bower_components/octicons/octicons/octicons.css">
     <link rel="stylesheet" href="bower_components/perfect-scrollbar/css/perfect-scrollbar.min.css">
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 </head>
 <body>
-    <div class="container">
-        <div class="columns">
-        </div>
-    </div>
-
-    <script id="column-template" type="text/x-handlebars-template">
-        <section id="{{ id }}" class="column">
-            <div class="column-panel">
-                <header class="column-header">
-                    <h1 class="column-header-title">
-                        <span class="octicon octicon-{{ icon }}"></span> {{ title }}
-                    </h1>
-                </header>
-                <div class="column-content">
-                    <div class="placeholder">
-                        <p class="loading">Loading</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </script>
+    <div class="container"></div>
+    <div class="columns"></div>
 
     <script id="card-template" type="text/x-handlebars-template">
     {{#each events}}
