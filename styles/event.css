@@ -1,0 +1,58 @@
+/* ==========================================================================
+   Card
+   ========================================================================== */
+
+.card {
+    align-items: flex-start;
+    background: transparent;
+    border-bottom: 3px solid #303236;
+    border-radius: 3px;
+    color: rgb(221, 221, 221);
+    display: flex;
+    padding: .8em 1.4em 1.4em 1em;
+    position: relative;
+}
+
+.card-image {
+    border-radius: 3px;
+    display: block;
+    height: 40px;
+    margin-right: 1em;
+    margin-top: .2em;
+    width: 40px;
+}
+
+.card-body {
+    flex: 1;
+    font-size: 14px;
+}
+
+.card-body p {
+    margin: 0;
+    line-height: 18px;
+}
+
+.card-body a {
+    color: #AFB4FF;
+    text-decoration: none;
+}
+
+.card-body a:hover {
+    border-bottom: 1px solid #AFB4FF;
+}
+
+.card-footer {
+    color: #a0a0a0;
+    font-size: 12px;
+    margin-top: 3px;
+}
+
+.card-body .octicon {
+    bottom: 8px;
+    color: #444448;
+    font-size: 24px;
+    position: absolute;
+    right: 16px;
+    width: 24px;
+    text-align: center;
+}

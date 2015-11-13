@@ -1,4 +1,5 @@
 import React from 'react';
+import Event from './event';
 
 class Column extends React.Component {
 	render() {
@@ -12,9 +13,7 @@ class Column extends React.Component {
 						</h1>
 					</header>
 					<div className="column-content">
-						<div className="placeholder">
-							<p className="loading">Loading</p>
-						</div>
+						<Event login="zenorocha" avatar="https://avatars.githubusercontent.com/u/398893" repo="zenorocha/clipboard.js" time="6 hours ago" icon="comment-discussion" message=" commented on issue #130 at " />
 					</div>
 				</div>
 			</section>
