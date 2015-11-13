@@ -13,10 +13,10 @@ firebase.authWithOAuthPopup('github', function(error, authData) {
 	else {
         window.accessToken = authData.github.accessToken;
 
-        new Column('a', 'person', 'All events', '/users/' + authData.github.username + '/received_events');
-        new Column('b', 'person', 'Your events', '/users/' + authData.github.username + '/events');
-        new Column('c', 'repo', 'twbs/bootstrap', '/repos/twbs/bootstrap/events');
-        new Column('d', 'organization', 'braziljs', '/orgs/braziljs/events');
+        new Column('a', 'person', 'All events', '/users/' + authData.github.username + '/received_events', 1);
+        new Column('b', 'person', 'Your events', '/users/' + authData.github.username + '/events', 1);
+        new Column('c', 'repo', 'twbs/bootstrap', '/repos/twbs/bootstrap/events', 1);
+        new Column('d', 'organization', 'braziljs', '/orgs/braziljs/events', 1);
 	}
 }, {
 	scope: 'notifications'
@@ -24,7 +24,7 @@ firebase.authWithOAuthPopup('github', function(error, authData) {
 
 // Column ----------------------------------------------------------------------
 
-function Column(id, icon, title, endpoint) {
+function Column(id, icon, title, endpoint, page) {
     var compiled = Handlebars.compile(columnTemplate.innerHTML);
     var rendered = compiled({
         id: id,
@@ -34,48 +34,88 @@ function Column(id, icon, title, endpoint) {
 
     columns.innerHTML += rendered;
 
-    loadEvents(id, endpoint);
+    loadEvents(id, endpoint, page);
 }
 
 // Card ------------------------------------------------------------------------
 
-function loadEvents(id, endpoint) {
-    fetch('https://api.github.com' + endpoint, {
+function loadEvents(id, endpoint, page) {
+    fetch('https://api.github.com' + endpoint + '?page=' + page, {
         headers: {
             'Authorization': 'token ' + window.accessToken,
             'User-Agent': 'DevSpace'
         }
     })
-	.then(function(response) {
-		return response.json();
-	})
-	.then(function(response) {
-        var placeholder = document.querySelector('#' + id + ' .placeholder');
-        var columnContent = document.querySelector('#' + id + ' .column-content');
+    .then(function(response) {
+        var hasNext = response.headers.get('Link').indexOf('rel="next"') > 0;
 
-        if (response.message) {
-            placeholder.innerHTML = response.message + ' :(';
-        }
-        else {
-			for (var i = 0; i < response.length; i++) {
-				response[i].detail = eventDetails(response[i]);
-				response[i].time = moment(response[i].created_at).fromNow();
-			}
+        response.json().then(function(body) {
+            var placeholder = document.querySelector('#' + id + ' .placeholder');
+            var columnContent = document.querySelector('#' + id + ' .column-content');
 
-			var compiled = Handlebars.compile(cardTemplate.innerHTML);
-			var rendered = compiled({ events: response });
+            if (body.message) {
+                placeholder.innerHTML = body.message + ' :(';
+            }
+            else {
+                for (var i = 0; i < body.length; i++) {
+                    body[i].detail = eventDetails(body[i]);
+                    body[i].time = moment(body[i].created_at).fromNow();
+                }
 
-			columnContent.innerHTML = rendered;
+                var compiled = Handlebars.compile(cardTemplate.innerHTML);
+                var rendered = compiled({ events: body });
 
-            Ps.initialize(columnContent, {
-                suppressScrollX: true
-            });
-        }
-	})
+                columnContent.innerHTML = rendered;
+
+                Ps.initialize(columnContent, {
+                    suppressScrollX: true
+                });
+
+                var reachedEnd = true;
+
+                columnContent.addEventListener('ps-y-reach-end', function (e) {
+                    if (reachedEnd) {
+                        loadNext(id, endpoint, 2);
+                        reachedEnd = false;
+                    }
+                });
+            }
+        });
+    })
     .catch(function(e) {
         var placeholder = document.querySelector('#' + id + ' .placeholder');
         placeholder.innerHTML = 'Network failure. Try again later.';
     });
+}
+
+function loadNext(id, endpoint, page) {
+    fetch('https://api.github.com' + endpoint + '?page=' + page, {
+        headers: {
+            'Authorization': 'token ' + window.accessToken,
+            'User-Agent': 'DevSpace'
+        }
+    })
+    .then(function(response) {
+        var hasNext = response.headers.get('Link').indexOf('rel="next"') > 0;
+
+        response.json().then(function(body) {
+            var placeholder = document.querySelector('#' + id + ' .placeholder');
+            var columnContent = document.querySelector('#' + id + ' .column-content');
+
+            for (var i = 0; i < body.length; i++) {
+                body[i].detail = eventDetails(body[i]);
+                body[i].time = moment(body[i].created_at).fromNow();
+            }
+
+            var compiled = Handlebars.compile(cardTemplate.innerHTML);
+            var rendered = compiled({ events: body });
+
+            columnContent.innerHTML += rendered;
+            Ps.update(columnContent);
+        });
+
+    });
+    console.log(id, endpoint, page);
 }
 
 function eventDetails(event) {
