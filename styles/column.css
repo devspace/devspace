@@ -10,7 +10,7 @@
     position: relative;
 }
 
-.column-panel {
+.column-container {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -37,7 +37,7 @@
     word-wrap: normal;
 }
 
-.column-header .octicon {
+.column-header-title .octicon {
     font-size: 20px;
     margin-right: 3px;
     position: relative;
@@ -52,7 +52,7 @@
     top: 0;
 }
 
-.placeholder {
+.column-placeholder {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -60,7 +60,7 @@
     height: calc(100vh - 57px);
 }
 
-.loading:after {
+.column-loading:after {
   content: '.';
   animation: dots 1s steps(5, end) infinite;
 }
@@ -80,17 +80,4 @@
     80%, 100% {
         text-shadow: .25em 0 0 white, .5em 0 0 white;
     }
-}
-
-/* ==========================================================================
-   Scrollbar
-   ========================================================================== */
-
-.ps-scrollbar-y-rail {
-    margin-right: -3px;
-}
-
-.ps-scrollbar-x-rail {
-    left: 50px !important;
-    right: 6px;
 }

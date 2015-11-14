@@ -4,8 +4,8 @@ import Event from './event';
 class Column extends React.Component {
 	render() {
 		return (
-			<section id={this.props.id} className="column">
-				<div className="column-panel">
+			<section className="column" id={this.props.id}>
+				<div className="column-container">
 					<header className="column-header">
 						<h1 className="column-header-title">
 							<span className={"octicon octicon-" + this.props.icon}></span>
