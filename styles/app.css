@@ -1,7 +1,8 @@
 .app {
+    background: #444448;
     display: flex;
     flex: 1;
-    background: #444448;
+    font-family: Helvetica, Arial, Verdana, sans-serif;
 }
 
 .app-columns {

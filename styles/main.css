@@ -6,7 +6,6 @@ html {
 }
 
 body {
-    font-family: Helvetica, Arial, Verdana, sans-serif;
     height: 100%;
     margin: 0;
     overflow: auto;
@@ -14,7 +13,6 @@ body {
 }
 
 #wrapper {
-    font-family: Helvetica, Arial, Verdana, sans-serif;
     height: 100%;
     margin: 0;
     overflow: auto;
