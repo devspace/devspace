@@ -19,9 +19,5 @@
     "react-dom": "0.14.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
-  },
-  "devDependencies": {
-    "history": "^1.13.0",
-    "react-router": "^1.0.0"
   }
 }
