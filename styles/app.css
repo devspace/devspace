@@ -1,5 +1,14 @@
-.container {
+.app {
     display: flex;
     flex: 1;
     background: #444448;
+}
+
+.app-columns {
+    font-size: 0;
+    height: calc(100vh - 12px);
+    overflow: visible;
+    padding: 6px 0 6px 6px;
+    white-space: nowrap;
+    flex: 1;
 }
