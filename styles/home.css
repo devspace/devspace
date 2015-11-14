@@ -1,24 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Patua+One|Roboto:400,700,300);
-
-html {
-    height: 100%;
-    overflow: hidden;
-}
-
-body {
-    font-family: Helvetica, Arial, Verdana, sans-serif;
-    height: 100%;
-    margin: 0;
-    overflow: auto;
-    padding: 0;
-}
-
-canvas {
-  display: block;
-  vertical-align: bottom;
-}
-
-#particles {
+.home {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -28,11 +8,7 @@ canvas {
     min-height: 100%;
 }
 
-/* ==========================================================================
-   Main
-   ========================================================================== */
-
-main {
+.home-container {
     display: block;
     height: 560px;
     left: 50%;
@@ -42,36 +18,43 @@ main {
     width: 530px;
 }
 
+/* Logo
+   ========================================================================== */
+
+.home-logo {
+    display: block;
+    margin: 0 auto 20px;
+}
+
 /* Headings
    ========================================================================== */
 
-h1, h2 {
+.home-title,
+.home-subtitle {
     margin: 0;
     text-align: center;
     z-index: 1;
     position: relative;
 }
 
-h1 {
+.home-title {
     color: #fff;
     font-size: 72px;
     font-weight: 100;
     font-family: 'Patua One', cursive;
 }
 
-h2 {
+.home-subtitle {
     color: #AFB4FF;
     font-size: 2em;
     font-family: 'Roboto', sans-serif;
     font-weight: 300;
 }
 
-img {
-    display: block;
-    margin: 0 auto 20px;
-}
+/* Button
+   ========================================================================== */
 
-.btn {
+.home-btn {
     color: #fff;
     background: none;
     box-shadow: none;
@@ -90,18 +73,20 @@ img {
     transition: all 0.3s ease-in-out;
 }
 
-.btn .octicon {
+.home-btn .octicon {
     color: #fff;
     font-size: 32px;
     margin-right: 5px;
     transition: all 0.3s ease-in-out;
 }
 
-.btn:hover {
+.home-btn:hover,
+.home-btn:focus {
     background: #fff;
     color: #735CDC;
 }
 
-.btn:hover .octicon {
+.home-btn:hover .octicon,
+.home-btn:focus .octicon {
     color: #735CDC;
 }

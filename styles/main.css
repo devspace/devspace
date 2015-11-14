@@ -1,10 +1,19 @@
+/*@import url(https://fonts.googleapis.com/css?family=Patua+One|Roboto:400,700,300);*/
+
 html {
     height: 100%;
     overflow: hidden;
 }
 
 body {
-    background: #444448;
+    font-family: Helvetica, Arial, Verdana, sans-serif;
+    height: 100%;
+    margin: 0;
+    overflow: auto;
+    padding: 0;
+}
+
+#wrapper {
     font-family: Helvetica, Arial, Verdana, sans-serif;
     height: 100%;
     margin: 0;
