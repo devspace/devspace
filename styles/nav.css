@@ -8,7 +8,21 @@
     flex: 0 0 50px;
 }
 
-.nav ul {
+.nav-header,
+.nav-footer {
+    position: absolute;
+    width: 100%;
+}
+
+.nav-header {
+    top: 0;
+}
+
+.nav-footer {
+    bottom: 0;
+}
+
+.nav-list {
     list-style: none;
     margin: 10px 0 0;
     padding: 0;
@@ -16,31 +30,17 @@
     width: 100%;
 }
 
-.nav li {
+.nav-item {
     margin: 0 0 15px;
 }
 
-.nav li a {
+.nav-link {
     display: block;
     height: 40px;
     width: 100%;
 }
 
-.nav .nav-selected {
-    box-shadow: inset 4px 0 #7C84FF;
-}
-
-.nav .nav-selected .octicon {
-    color: white;
-}
-
-.nav .footer {
-    bottom: 0;
-    position: absolute;
-    width: 100%;
-}
-
-.nav .octicon {
+.nav .nav-icon {
     color: #999;
     font-size: 24px;
     position: relative;
@@ -48,6 +48,14 @@
     transition: color 0.3s ease-in-out;
 }
 
-.nav .octicon:hover {
+.nav .nav-icon:hover {
+    color: white;
+}
+
+.nav-selected {
+    box-shadow: inset 4px 0 #7C84FF;
+}
+
+.nav .nav-selected .nav-icon {
     color: white;
 }
