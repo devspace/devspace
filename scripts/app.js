@@ -2,8 +2,7 @@ import React from 'react';
 
 import Column from './column';
 import Nav from './nav';
-
-import data from '../data/app';
+import appData from '../data/app';
 
 class App extends React.Component {
 	render() {
@@ -11,7 +10,7 @@ class App extends React.Component {
 			<div className="app">
 				<Nav/>
 				<div className="app-columns">
-					{data.columns.map(function(column){
+					{appData.columns.map(function(column){
 						return <Column key={column.id} icon={column.icon} title={column.title} />;
 					})}
 				</div>
