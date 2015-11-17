@@ -6,7 +6,7 @@ var babelify = require('babelify');
 var watchify = require('watchify');
 var notify = require('gulp-notify');
 
-var stylus = require('gulp-stylus');
+var less = require('gulp-less');
 var autoprefixer = require('gulp-autoprefixer');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
@@ -20,14 +20,18 @@ var buffer = require('vinyl-buffer');
 gulp.task('styles',function() {
   // move over fonts
 
-  gulp.src('css/fonts/**.*')
-    .pipe(gulp.dest('build/css/fonts'))
+  gulp.src([
+      'node_modules/octicons/octicons/octicons.eot',
+      'node_modules/octicons/octicons/octicons.ttf',
+      'node_modules/octicons/octicons/octicons.woff'
+    ])
+    .pipe(gulp.dest('build/styles/'))
 
   // Compiles CSS
-  gulp.src('css/style.styl')
-    .pipe(stylus())
+  gulp.src('styles/main.less')
+    .pipe(less())
     .pipe(autoprefixer())
-    .pipe(gulp.dest('./build/css/'))
+    .pipe(gulp.dest('build/styles/'))
 });
 
 /*
