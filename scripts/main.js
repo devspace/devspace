@@ -10,10 +10,10 @@ import NotFound from './notFound';
 
 var routes = (
 	<Router history={createHistory()}>
-		<Route name="home" path="/" component={Home}/>
-		<Route name="app" path="/app" component={App}/>
-		<Route name="add" path="/add" component={Add}/>
-		<Route name="notFound" path="*" component={NotFound}/>
+		<Route path="/" component={Home}/>
+		<Route path="/app" component={App}/>
+		<Route path="/add" component={Add}/>
+		<Route path="*" component={NotFound}/>
 	</Router>
 )
 

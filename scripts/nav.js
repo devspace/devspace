@@ -4,24 +4,22 @@ import { Link, History } from 'react-router';
 
 class Nav extends React.Component {
 	render() {
-		let className = 'nav-link';
-
 		return (
 			<nav className="nav">
 				<header className="nav-top">
 					<ul className="nav-list">
 						<li className="nav-item">
-							<Link to={'app'} className={className} title='Home'>
+							<Link to={'app'} className="nav-link" activeClassName="nav-selected" title='Home'>
 								<span className="nav-icon octicon octicon-home"></span>
 							</Link>
 						</li>
 						<li className="nav-item">
-							<Link to={'add'} className={className} title='Add column'>
+							<Link to={'add'} className="nav-link" title='Add column'>
 								<span className="nav-icon octicon octicon-plus"></span>
 							</Link>
 						</li>
 						<li className="nav-item">
-							<Link to={'settings'} className={className} title='Settings'>
+							<Link to={'settings'} className="nav-link" title='Settings'>
 								<span className="nav-icon octicon octicon-gear"></span>
 							</Link>
 						</li>
@@ -45,7 +43,7 @@ class Nav extends React.Component {
 							</a>
 						</li>
 						<li className="nav-item">
-							<Link to={'logout'} className={className} title='Logout'>
+							<Link to={'logout'} className="nav-link" title='Logout'>
 								<span className="nav-icon octicon octicon-sign-out"></span>
 							</Link>
 						</li>
