@@ -12,8 +12,8 @@ class App extends React.Component {
 				<Nav/>
 				<div className="app-columns">
 					{data.columns.map(function(column){
-				        return <Column key={column.id} icon={column.icon} title={column.title} />;
-				    })}
+						return <Column key={column.id} icon={column.icon} title={column.title} />;
+					})}
 				</div>
 			</div>
 		)

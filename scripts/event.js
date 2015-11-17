@@ -5,7 +5,7 @@ class Event extends React.Component {
 		return (
 			<div className="event">
 				<a href={"https://github.com/" + this.props.login} target="_blank">
-					<img className="event-image" src={this.props.avatar + "s=80"} alt={this.props.login} width="40" height="40" />
+					<img className="event-image" src={this.props.avatar + "?s=80"} alt={this.props.login} width="40" height="40" />
 				</a>
 				<div className="event-body">
 					<p className="event-text">
