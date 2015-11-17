@@ -1,6 +1,8 @@
 import React from 'react';
 import Event from './event';
 
+import data from '../data/app';
+
 class Column extends React.Component {
 	render() {
 		return (
@@ -13,7 +15,9 @@ class Column extends React.Component {
 						</h1>
 					</header>
 					<div className="column-content">
-						<Event login="zenorocha" avatar="https://avatars.githubusercontent.com/u/398893" repo="zenorocha/clipboard.js" time="6 hours ago" icon="comment-discussion" message=" commented on issue #130 at " />
+						{data.columns[0].events.map(function(event){
+							return <Event key={event.id} login={event.login} avatar={event.avatar} repo={event.repo} time={event.time} icon={event.icon} message={event.message} />;
+						})}
 					</div>
 				</div>
 			</section>
