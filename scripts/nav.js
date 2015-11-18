@@ -2,24 +2,7 @@ import React from 'react';
 import reactMixin from 'react-mixin';
 import { Link, History } from 'react-router';
 
-import Add from './add';
-import { Modal, ModalBody, ModalFooter, ModalHeader } from 'elemental/lib/Elemental';
-
 class Nav extends React.Component {
-	constructor() {
-		super();
-
-		this.state = {
-			modalIsOpen: false
-		}
-	}
-
-	toggleModal(visible) {
-		this.setState({
-			modalIsOpen: visible
-		});
-	}
-
 	render() {
 		return (
 			<div className="nav-container">
@@ -32,7 +15,7 @@ class Nav extends React.Component {
 								</Link>
 							</li>
 							<li className="nav-item">
-								<a className="nav-link" onClick={this.toggleModal.bind(this, true)} title="Add column">
+								<a className="nav-link" onClick={this.props.openAddModal} title="Add column">
 									<span className="nav-icon octicon octicon-plus"></span>
 								</a>
 							</li>
@@ -68,10 +51,6 @@ class Nav extends React.Component {
 						</ul>
 					</footer>
 				</nav>
-				<Modal isOpen={this.state.modalIsOpen} onCancel={this.toggleModal.bind(this, false)} backdropClosesModal>
-					<ModalHeader text="Add column" onClose={this.toggleModal.bind(this, false)} showCloseButton />
-					<ModalBody><Add/></ModalBody>
-				</Modal>
 			</div>
 		)
 	}

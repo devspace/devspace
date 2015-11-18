@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Add from './add';
 import Column from './column';
 import Nav from './nav';
 
@@ -8,7 +9,8 @@ class App extends React.Component {
 		super();
 
 		this.state = {
-			columns: {}
+			columns: {},
+			isAddModalOpen: false
 		};
 	}
 
@@ -18,13 +20,26 @@ class App extends React.Component {
 		});
 	}
 
+	openAddModal() {
+		this.setState({
+			isAddModalOpen: true
+		});
+	}
+
+	closeAddModal() {
+		this.setState({
+			isAddModalOpen: false
+		});
+	}
+
 	render() {
 		return (
 			<div className="app">
-				<Nav/>
+				<Nav openAddModal={this.openAddModal.bind(this)} />
 				<div className="app-columns">
 					{Object.keys(this.state.columns).map(this.renderColumn.bind(this))}
 				</div>
+				<Add closeAddModal={this.closeAddModal.bind(this)} isAddModalOpen={this.state.isAddModalOpen} />
 			</div>
 		)
 	}

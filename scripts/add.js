@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Row, Col, Card } from 'elemental/lib/Elemental';
+import { Modal, ModalBody, ModalFooter, ModalHeader, Row, Col, Card } from 'elemental/lib/Elemental';
 
 class Add extends React.Component {
 	constructor() {
@@ -11,9 +11,10 @@ class Add extends React.Component {
 
 	render() {
 		return (
-			<div className="add">
-				{Object.keys(this.rows).map(this.renderRow.bind(this))}
-			</div>
+			<Modal isOpen={this.props.isAddModalOpen} onCancel={this.props.closeAddModal} backdropClosesModal>
+				<ModalHeader text="Add column" onClose={this.props.closeAddModal} showCloseButton />
+				<ModalBody>{Object.keys(this.rows).map(this.renderRow.bind(this))}</ModalBody>
+			</Modal>
 		)
 	}
 
