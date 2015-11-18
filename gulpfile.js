@@ -90,6 +90,6 @@ gulp.task('scripts', function() {
 
 // run 'scripts' task first, then watch for future changes
 gulp.task('default', ['images','styles','scripts'], function() {
-  gulp.watch('css/**/*', ['styles']); // gulp watch for stylus changes
+  gulp.watch('styles/**/*', ['styles']); // gulp watch for stylus changes
   return buildScript('main.js', true); // browserify watch for JS changes
 });
