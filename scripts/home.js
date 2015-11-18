@@ -1,10 +1,11 @@
 import React from 'react';
-import reactMixin from 'react-mixin';
-import { History } from 'react-router';
+import ReactDOM from 'react-dom';
+
+import App from './app';
 
 class Home extends React.Component {
 	authenticate() {
-		this.history.pushState(null, '/app');
+		ReactDOM.render(<App/>, document.querySelector('#wrapper'));
 	}
 
 	render() {
@@ -22,7 +23,5 @@ class Home extends React.Component {
 		)
 	}
 }
-
-reactMixin.onClass(Home, History);
 
 export default Home;
