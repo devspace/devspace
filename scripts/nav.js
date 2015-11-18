@@ -2,6 +2,7 @@ import React from 'react';
 import reactMixin from 'react-mixin';
 import { Link, History } from 'react-router';
 
+import Add from './add';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'elemental/lib/Elemental';
 
 class Nav extends React.Component {
@@ -69,7 +70,7 @@ class Nav extends React.Component {
 				</nav>
 				<Modal isOpen={this.state.modalIsOpen} onCancel={this.toggleModal.bind(this, false)} backdropClosesModal>
 					<ModalHeader text="Add column" onClose={this.toggleModal.bind(this, false)} showCloseButton />
-					<ModalBody>qwe</ModalBody>
+					<ModalBody><Add/></ModalBody>
 				</Modal>
 			</div>
 		)
