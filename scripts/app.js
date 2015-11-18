@@ -2,20 +2,35 @@ import React from 'react';
 
 import Column from './column';
 import Nav from './nav';
-import appData from '../data/app';
 
 class App extends React.Component {
+	constructor() {
+		super();
+
+		this.state = {
+			columns: {}
+		};
+	}
+
+	componentDidMount() {
+		this.setState({
+			columns : require('../data/app-columns')
+		});
+	}
+
 	render() {
 		return (
 			<div className="app">
 				<Nav/>
 				<div className="app-columns">
-					{appData.columns.map(function(column){
-						return <Column key={column.id} icon={column.icon} title={column.title} />;
-					})}
+					{Object.keys(this.state.columns).map(this.renderColumn.bind(this))}
 				</div>
 			</div>
 		)
+	}
+
+	renderColumn(key) {
+		return <Column key={key} details={this.state.columns[key]} />;
 	}
 }
 
