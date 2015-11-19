@@ -14,10 +14,15 @@ class AddForm extends React.Component {
 	handleSubmit(event) {
 		event.preventDefault();
 
-		this.setState({ loading: true });
+		this.setState({
+			loading: true
+		});
 
 		setTimeout(() => {
-			this.setState({ loading: false });
+			this.setState({
+				loading: false
+			});
+
 			this.props.toggleAddModal();
 		}, 1000);
 	}
@@ -25,11 +30,17 @@ class AddForm extends React.Component {
 	render() {
 		return (
 			<form id="addForm" onSubmit={this.handleSubmit.bind(this)}>
-				<ModalHeader text="Add repository column" onClose={this.props.toggleAddModal} showCloseButton />
+				<ModalHeader>
+					<button className="Modal__header__close" onClick={this.props.toggleAddModal} type="button"></button>
+					<h4 className="Modal__header__text">
+						<span className={"octicon octicon-" + this.props.selectedOption.icon}></span>
+						{this.props.selectedOption.title}
+					</h4>
+				</ModalHeader>
 				<ModalBody>
-					<FormField label="Type a repository" htmlFor="input-repo">
+					<FormField label={"Type a " + this.props.selectedOption.form.label} htmlFor="input-repo">
 						<FormIconField iconPosition="right" iconKey="search" iconColor="default" iconIsLoading={this.state.loading}>
-							<FormInput type="text" placeholder="user/repo" name="input-repo" autofocus />
+							<FormInput type="text" placeholder={this.props.selectedOption.form.placeholder} name="input-repo" autoFocus />
 						</FormIconField>
 					</FormField>
 				</ModalBody>
