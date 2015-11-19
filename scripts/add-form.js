@@ -7,26 +7,29 @@ class AddForm extends React.Component {
 		super();
 
 		this.state = {
-			searching: false
+			loading: false
 		};
 	}
 
-	handleSearch() {
-		this.setState({ searching: true });
+	handleSubmit(event) {
+		event.preventDefault();
+
+		this.setState({ loading: true });
 
 		setTimeout(() => {
-			this.setState({ searching: false });
+			this.setState({ loading: false });
+			this.props.toggleAddModal();
 		}, 1000);
 	}
 
 	render() {
 		return (
-			<div id="addOptions">
+			<form id="addForm" onSubmit={this.handleSubmit.bind(this)}>
 				<ModalHeader text="Add repository column" onClose={this.props.toggleAddModal} showCloseButton />
 				<ModalBody>
 					<FormField label="Type a repository" htmlFor="input-repo">
-						<FormIconField iconPosition="right" iconKey="search" iconColor="default" iconIsLoading={this.state.searching}>
-							<FormInput onChange={this.handleSearch.bind(this)} type="text" placeholder="user/repo" name="input-repo" autofocus />
+						<FormIconField iconPosition="right" iconKey="search" iconColor="default" iconIsLoading={this.state.loading}>
+							<FormInput type="text" placeholder="user/repo" name="input-repo" autofocus />
 						</FormIconField>
 					</FormField>
 				</ModalBody>
@@ -34,9 +37,9 @@ class AddForm extends React.Component {
 					<Button className="add-btn-secondary" type="link-text" onClick={this.props.toggleAddInitialContent}>
 						<span className="octicon octicon-chevron-left"></span>Back
 					</Button>
-					<Button className="add-btn-primary" type="hollow-primary">Add Column</Button>
+					<Button className="add-btn-primary" type="hollow-primary" submit={true}>Add Column</Button>
 				</ModalFooter>
-			</div>
+			</form>
 		)
 	}
 }
