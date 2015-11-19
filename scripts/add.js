@@ -1,45 +1,49 @@
 import React from 'react';
 
-import { Modal, ModalBody, ModalFooter, ModalHeader, Row, Col, Card } from 'elemental/lib/Elemental';
+import { Modal } from 'elemental/lib/Elemental';
+
+import AddForm from './add-form';
+import AddOptions from './add-options';
 
 class Add extends React.Component {
 	constructor() {
 		super();
 
-		this.rows = require('../data/add-rows');
+		this.state = {
+			isAddFormOpen: false
+		};
+	}
+
+	openAddForm() {
+		this.setState({
+			isAddFormOpen: true
+		});
+	}
+
+	closeAddForm() {
+		this.setState({
+			isAddFormOpen: false
+		});
+	}
+
+	renderForm() {
+		if (!this.state.isAddFormOpen) return;
+
+		return <AddForm closeAddForm={this.closeAddForm.bind(this)} closeAddModal={this.props.closeAddModal} />
+	}
+
+	renderOptions() {
+		if (this.state.isAddFormOpen) return;
+
+		return <AddOptions openAddForm={this.openAddForm.bind(this)} closeAddModal={this.props.closeAddModal} />
 	}
 
 	render() {
 		return (
-			<Modal isOpen={this.props.isAddModalOpen} onCancel={this.props.closeAddModal} backdropClosesModal>
-				<ModalHeader text="Add column" onClose={this.props.closeAddModal} showCloseButton />
-				<ModalBody>{Object.keys(this.rows).map(this.renderRow.bind(this))}</ModalBody>
+			<Modal id="add-modal" isOpen={this.props.isAddModalOpen} onCancel={this.props.closeAddModal} backdropClosesModal>
+				{this.renderForm()}
+				{this.renderOptions()}
 			</Modal>
-		)
-	}
-
-	renderRow(rowKey) {
-		var row = this.rows[rowKey];
-
-		return (
-			<Row key={rowKey}>
-				{Object.keys(row).map(this.renderCol.bind(this, rowKey))}
-			</Row>
-		)
-	}
-
-	renderCol(rowKey, colKey) {
-		var col = this.rows[rowKey][colKey];
-
-		return (
-			<Col key={colKey} sm="1/4">
-				<button type="button" className="add-button">
-					<Card className="add-card">
-						<span className={"add-icon octicon octicon-" + col.icon}></span>
-						<h1 className="add-title">{col.title}</h1>
-					</Card>
-				</button>
-			</Col>
 		)
 	}
 }
