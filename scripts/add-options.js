@@ -12,7 +12,7 @@ class AddOptions extends React.Component {
 	render() {
 		return (
 			<div id="addOptions">
-				<ModalHeader text="Add column" onClose={this.props.closeAddModal} showCloseButton />
+				<ModalHeader text="Add column" onClose={this.props.toggleAddModal} showCloseButton />
 				<ModalBody>
 					{Object.keys(this.rows).map(this.renderRow.bind(this))}
 				</ModalBody>
@@ -35,7 +35,7 @@ class AddOptions extends React.Component {
 
 		return (
 			<Col key={colKey} sm="1/4">
-				<button type="button" className="add-button" onClick={this.props.openAddForm}>
+				<button type="button" className="add-button" onClick={this.props.toggleAddInitialContent}>
 					<Card className="add-card">
 						<span className={"add-icon octicon octicon-" + col.icon}></span>
 						<h1 className="add-title">{col.title}</h1>

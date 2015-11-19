@@ -8,7 +8,7 @@ class Nav extends React.Component {
 					<header className="nav-top">
 						<ul className="nav-list">
 							<li className="nav-item">
-								<a className="nav-link" onClick={this.props.openAddModal} title="Add column">
+								<a className="nav-link" onClick={this.props.toggleAddModal} title="Add column">
 									<span className="nav-icon octicon octicon-plus"></span>
 								</a>
 							</li>

@@ -22,7 +22,7 @@ class AddForm extends React.Component {
 	render() {
 		return (
 			<div id="addOptions">
-				<ModalHeader text="Add repository column" onClose={this.props.closeAddModal} showCloseButton />
+				<ModalHeader text="Add repository column" onClose={this.props.toggleAddModal} showCloseButton />
 				<ModalBody>
 					<FormField label="Type a repository" htmlFor="input-repo">
 						<FormIconField iconPosition="right" iconKey="search" iconColor="default" iconIsLoading={this.state.searching}>
@@ -31,7 +31,7 @@ class AddForm extends React.Component {
 					</FormField>
 				</ModalBody>
 				<ModalFooter className="add-footer">
-					<Button className="add-btn-secondary" type="link-text" onClick={this.props.closeAddForm}>
+					<Button className="add-btn-secondary" type="link-text" onClick={this.props.toggleAddInitialContent}>
 						<span className="octicon octicon-chevron-left"></span>Back
 					</Button>
 					<Button className="add-btn-primary" type="hollow-primary">Add Column</Button>

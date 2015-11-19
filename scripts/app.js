@@ -10,7 +10,8 @@ class App extends React.Component {
 
 		this.state = {
 			columns: {},
-			isAddModalOpen: false
+			isAddModalOpen: false,
+			isAddInitialContent: true
 		};
 	}
 
@@ -20,26 +21,27 @@ class App extends React.Component {
 		});
 	}
 
-	openAddModal() {
+	toggleAddModal() {
 		this.setState({
-			isAddModalOpen: true
+			isAddModalOpen: !this.state.isAddModalOpen,
+			isAddInitialContent: true
 		});
 	}
 
-	closeAddModal() {
+	toggleAddInitialContent() {
 		this.setState({
-			isAddModalOpen: false
+			isAddInitialContent: !this.state.isAddInitialContent
 		});
 	}
 
 	render() {
 		return (
 			<div className="app">
-				<Nav openAddModal={this.openAddModal.bind(this)} />
+				<Nav toggleAddModal={this.toggleAddModal.bind(this)} />
 				<div className="app-columns">
 					{Object.keys(this.state.columns).map(this.renderColumn.bind(this))}
 				</div>
-				<Add closeAddModal={this.closeAddModal.bind(this)} isAddModalOpen={this.state.isAddModalOpen} />
+				<Add toggleAddModal={this.toggleAddModal.bind(this)} isAddModalOpen={this.state.isAddModalOpen} toggleAddInitialContent={this.toggleAddInitialContent.bind(this)} isAddInitialContent={this.state.isAddInitialContent} />
 			</div>
 		)
 	}
