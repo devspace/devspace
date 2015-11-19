@@ -14,10 +14,7 @@ class AddOptions extends React.Component {
 			<div id="addOptions">
 				<ModalHeader>
 					<button className="Modal__header__close" onClick={this.props.toggleAddModal} type="button"></button>
-					<h4 className="Modal__header__text">
-						<span className="octicon octicon-list-unordered"></span>
-						Add column
-					</h4>
+					<h4 className="Modal__header__text">Add column</h4>
 				</ModalHeader>
 				<ModalBody>
 					{Object.keys(this.rows).map(this.renderRow.bind(this))}

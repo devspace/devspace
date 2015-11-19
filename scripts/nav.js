@@ -1,6 +1,13 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
+
+import Home from './home';
 
 class Nav extends React.Component {
+	logout() {
+		ReactDOM.render(<Home/>, document.querySelector('#wrapper'));
+	}
+
 	render() {
 		return (
 			<div className="nav-container">
@@ -12,32 +19,22 @@ class Nav extends React.Component {
 									<span className="nav-icon octicon octicon-plus"></span>
 								</a>
 							</li>
-							<li className="nav-item">
-								<a className="nav-link" href="#" title="Settings">
-									<span className="nav-icon octicon octicon-gear"></span>
-								</a>
-							</li>
 						</ul>
 					</header>
 					<footer className="nav-footer">
 						<ul className="nav-list">
 							<li className="nav-item">
-								<a className="nav-link" href="#" title="Announcements">
+								<a className="nav-link" href="https://github.com/devspace/devspace/releases" target="_blank" title="Releases">
 									<span className="nav-icon octicon octicon-megaphone"></span>
 								</a>
 							</li>
 							<li className="nav-item">
-								<a href="mailto:support@devspace.io" title="Ask a question">
-									<span className="nav-icon octicon octicon-question"></span>
-								</a>
-							</li>
-							<li className="nav-item">
-								<a href="https://github.com/devspace/bugs" title="Report a bug">
+								<a className="nav-link" href="https://github.com/devspace/devspace/issues/new" target="_blank" title="Report a bug">
 									<span className="nav-icon octicon octicon-bug"></span>
 								</a>
 							</li>
 							<li className="nav-item">
-								<a className="nav-link" href="#" title="Logout">
+								<a className="nav-link" onClick={this.logout.bind(this)} title="Logout">
 									<span className="nav-icon octicon octicon-sign-out"></span>
 								</a>
 							</li>
