@@ -1,7 +1,6 @@
 import React from 'react';
-import Event from './event';
 
-import data from '../data/app-columns';
+import Event from './event';
 
 class Column extends React.Component {
 	constructor() {

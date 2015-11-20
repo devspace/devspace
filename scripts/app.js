@@ -1,8 +1,11 @@
 import React from 'react';
+import Rebase from 're-base';
 
 import Add from './add';
 import Column from './column';
 import Nav from './nav';
+
+var base = Rebase.createClass('https://devspace-io.firebaseio.com/');
 
 class App extends React.Component {
 	constructor() {
@@ -16,8 +19,9 @@ class App extends React.Component {
 	}
 
 	componentDidMount() {
-		this.setState({
-			columns : require('../data/app-columns')
+		base.syncState('columns', {
+			context: this,
+			state: 'columns'
 		});
 	}
 
