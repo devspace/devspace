@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Home from './home';
+import Auth from './auth';
 
-ReactDOM.render(<Home/>, document.querySelector('#wrapper'));
+ReactDOM.render(<Auth/>, document.querySelector('#wrapper'));

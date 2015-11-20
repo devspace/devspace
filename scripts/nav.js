@@ -4,10 +4,6 @@ import ReactDOM from 'react-dom';
 import Home from './home';
 
 class Nav extends React.Component {
-	logout() {
-		ReactDOM.render(<Home/>, document.querySelector('#wrapper'));
-	}
-
 	render() {
 		return (
 			<div className="nav-container">
@@ -34,7 +30,7 @@ class Nav extends React.Component {
 								</a>
 							</li>
 							<li className="nav-item">
-								<a className="nav-link" onClick={this.logout.bind(this)} title="Logout">
+								<a className="nav-link" onClick={this.props.logout} title="Logout">
 									<span className="nav-icon octicon octicon-sign-out"></span>
 								</a>
 							</li>

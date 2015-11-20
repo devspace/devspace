@@ -37,7 +37,7 @@ class App extends React.Component {
 	render() {
 		return (
 			<div className="app">
-				<Nav toggleAddModal={this.toggleAddModal.bind(this)} />
+				<Nav logout={this.props.logout} toggleAddModal={this.toggleAddModal.bind(this)} />
 				<div className="app-columns">
 					{Object.keys(this.state.columns).map(this.renderColumn.bind(this))}
 				</div>
