@@ -38,6 +38,20 @@ class App extends React.Component {
 		});
 	}
 
+	removeColumn(key) {
+		if (confirm('Are you sure you want to remove this column?')) {
+			this.state.columns[key] = null;
+
+			this.setState({
+				columns: this.state.columns
+			});
+		}
+	}
+
+	renderColumn(key) {
+		return <Column key={key} removeColumn={this.removeColumn.bind(this, key)} details={this.state.columns[key]} />;
+	}
+
 	render() {
 		return (
 			<div className="app">
@@ -48,10 +62,6 @@ class App extends React.Component {
 				<Add toggleAddModal={this.toggleAddModal.bind(this)} isAddModalOpen={this.state.isAddModalOpen} toggleAddInitialContent={this.toggleAddInitialContent.bind(this)} isAddInitialContent={this.state.isAddInitialContent} />
 			</div>
 		)
-	}
-
-	renderColumn(key) {
-		return <Column key={key} details={this.state.columns[key]} />;
 	}
 }
 

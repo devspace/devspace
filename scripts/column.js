@@ -17,6 +17,10 @@ class Column extends React.Component {
 		});
 	}
 
+	renderEvent(key) {
+		return <Event key={key} details={this.state.events[key]} />;
+	}
+
 	render() {
 		return (
 			<section className="column">
@@ -25,6 +29,7 @@ class Column extends React.Component {
 						<h1 className="column-header-title">
 							<span className={"octicon octicon-" + this.props.details.icon}></span>
 							{this.props.details.title}
+							<span className="octicon octicon-x" onClick={this.props.removeColumn.bind()}></span>
 						</h1>
 					</header>
 					<div className="column-content">
@@ -33,10 +38,6 @@ class Column extends React.Component {
 				</div>
 			</section>
 		)
-	}
-
-	renderEvent(key) {
-		return <Event key={key} details={this.state.events[key]} />;
 	}
 }
 
