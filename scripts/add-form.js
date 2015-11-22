@@ -37,10 +37,10 @@ class AddForm extends React.Component {
 					</FormField>
 				</ModalBody>
 				<ModalFooter className="add-footer">
+					<Button className="add-btn-primary" type="hollow-primary" submit={true}>Add Column</Button>
 					<Button className="add-btn-secondary" type="link-text" onClick={this.props.toggleAddInitialContent}>
 						<span className="octicon octicon-chevron-left"></span>Back
 					</Button>
-					<Button className="add-btn-primary" type="hollow-primary" submit={true}>Add Column</Button>
 				</ModalFooter>
 			</form>
 		)
