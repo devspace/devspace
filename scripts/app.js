@@ -1,6 +1,7 @@
 import React from 'react';
 import Rebase from 're-base';
 
+import Scrollbar from 'perfect-scrollbar';
 import { Spinner } from 'elemental/lib/Elemental';
 
 import Add from './add';
@@ -21,11 +22,19 @@ class App extends React.Component {
 	}
 
 	componentDidMount() {
+		Scrollbar.initialize(this.refs.app, {
+			suppressScrollY: true
+		});
+
 		base.syncState(`${this.props.auth.id}/columns`, {
 			context: this,
 			state: 'columns',
 			asArray: true
 		});
+	}
+
+	componentDidUpdate() {
+		Scrollbar.update(this.refs.app);
 	}
 
 	toggleAddModal() {

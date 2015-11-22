@@ -1,6 +1,7 @@
 import React from 'react';
 import Rebase from 're-base';
 
+import Scrollbar from 'perfect-scrollbar';
 import { Spinner } from 'elemental/lib/Elemental';
 
 import Event from './event';
@@ -19,6 +20,10 @@ class Column extends React.Component {
 	componentDidMount() {
 		var self = this;
 
+		Scrollbar.initialize(this.refs.content, {
+			suppressScrollX: true
+		});
+
 		fetch(`https://api.github.com/${self.props.details.request.prefix}/${self.props.details.request.payload}/${self.props.details.request.suffix}`, {
 			headers: {
 				'Authorization': 'token ' + self.props.accessToken,
@@ -36,6 +41,10 @@ class Column extends React.Component {
 		.catch(function(e) {
 			console.log(e);
 		});
+	}
+
+	componentDidUpdate() {
+		Scrollbar.update(this.refs.content);
 	}
 
 	renderEvent(event, key) {
