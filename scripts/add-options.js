@@ -37,7 +37,7 @@ class AddOptions extends React.Component {
 		let col = this.rows[rowKey][colKey];
 
 		return (
-			<Col key={colKey} sm="1/4">
+			<Col key={colKey} sm="1/2">
 				<button type="button" className="add-button" onClick={this.handleOption.bind(this, col)}>
 					<Card className="add-card">
 						<span className={"add-icon octicon octicon-" + col.icon}></span>

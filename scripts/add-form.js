@@ -6,6 +6,14 @@ class AddForm extends React.Component {
 	handleSubmit(event) {
 		event.preventDefault();
 
+		this.props.addColumn({
+			icon: this.props.selectedOption.icon,
+			title: this.props.selectedOption.title,
+			request: {
+				prefix: this.props.selectedOption.request.prefix,
+				suffix: this.props.selectedOption.request.suffix,
+				payload: this.refs.payload.value
+			}
 		});
 
 		this.props.toggleAddModal();
@@ -23,8 +31,8 @@ class AddForm extends React.Component {
 				</ModalHeader>
 				<ModalBody>
 					<FormField label={"Type a " + this.props.selectedOption.form.label} htmlFor="input-repo">
-							<FormInput type="text" placeholder={this.props.selectedOption.form.placeholder} name="input-repo" autoFocus />
 						<FormIconField iconPosition="right" iconKey="search" iconColor="default">
+							<input className="FormInput" ref="payload" type="text" placeholder={this.props.selectedOption.form.placeholder} name="input-repo" autoFocus />
 						</FormIconField>
 					</FormField>
 				</ModalBody>

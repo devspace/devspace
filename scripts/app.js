@@ -12,16 +12,17 @@ class App extends React.Component {
 		super();
 
 		this.state = {
-			columns: {},
+			columns: [],
 			isAddModalOpen: false,
 			isAddInitialContent: true
 		};
 	}
 
 	componentDidMount() {
-		base.syncState('columns', {
+		base.syncState(`${this.props.auth.id}/columns`, {
 			context: this,
-			state: 'columns'
+			state: 'columns',
+			asArray: true
 		});
 	}
 
@@ -38,28 +39,43 @@ class App extends React.Component {
 		});
 	}
 
-	removeColumn(key) {
-		if (confirm('Are you sure you want to remove this column?')) {
-			this.state.columns[key] = null;
-
-			this.setState({
-				columns: this.state.columns
-			});
-		}
+	addColumn(newColumn) {
+		this.setState({
+			columns: this.state.columns.concat([newColumn])
+		});
 	}
 
-	renderColumn(key) {
-		return <Column key={key} removeColumn={this.removeColumn.bind(this, key)} details={this.state.columns[key]} />;
+	removeColumn(key) {
+		this.state.columns[key] = null;
+
+		this.setState({
+			columns: this.state.columns
+		});
+	}
+
+	renderColumn(column, key) {
+		return <Column key={key} accessToken={this.props.auth.accessToken} removeColumn={this.removeColumn.bind(this, key)} details={column} />;
+	}
+
+	renderColumnLoading() {
+		return <div className="centered"><Spinner size="md" /></div>
+	}
+
+	renderContent() {
+		if (this.state.columns) {
+			return this.state.columns.map(this.renderColumn.bind(this));
+		}
+		else {
+			return this.renderColumnLoading();
+		}
 	}
 
 	render() {
 		return (
-			<div className="app">
+			<div ref="app" className="app">
 				<Nav logout={this.props.logout} toggleAddModal={this.toggleAddModal.bind(this)} />
-				<div className="app-columns">
-					{Object.keys(this.state.columns).map(this.renderColumn.bind(this))}
-				</div>
-				<Add toggleAddModal={this.toggleAddModal.bind(this)} isAddModalOpen={this.state.isAddModalOpen} toggleAddInitialContent={this.toggleAddInitialContent.bind(this)} isAddInitialContent={this.state.isAddInitialContent} />
+				<div className="app-columns">{this.renderContent()}</div>
+				<Add addColumn={this.addColumn.bind(this)} toggleAddModal={this.toggleAddModal.bind(this)} isAddModalOpen={this.state.isAddModalOpen} toggleAddInitialContent={this.toggleAddInitialContent.bind(this)} isAddInitialContent={this.state.isAddInitialContent} />
 			</div>
 		)
 	}
