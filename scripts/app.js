@@ -1,6 +1,8 @@
 import React from 'react';
 import Rebase from 're-base';
 
+import { Spinner } from 'elemental/lib/Elemental';
+
 import Add from './add';
 import Column from './column';
 import Nav from './nav';
