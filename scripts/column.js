@@ -13,7 +13,8 @@ class Column extends React.Component {
 		super();
 
 		this.state = {
-			events: undefined
+			events: undefined,
+			error: undefined
 		};
 	}
 
@@ -31,15 +32,21 @@ class Column extends React.Component {
 			}
 		})
 		.then(function(response) {
-			return response.json();
+			if (response.status >= 200 && response.status < 300) {
+				return response.json();
+			} else {
+				throw new Error(response.statusText);
+			}
 		})
 		.then(function(response) {
 			self.setState({
 				events: response
 			});
 		})
-		.catch(function(e) {
-			console.log(e);
+		.catch(function(error) {
+			self.setState({
+				error: error.message
+			});
 		});
 	}
 
@@ -55,9 +62,16 @@ class Column extends React.Component {
 		return <div className="centered"><Spinner size="md" /></div>;
 	}
 
+	renderError() {
+		return <div className="column-placeholder centered">{this.state.error}</div>;
+	}
+
 	renderContent() {
 		if (this.state.events) {
 			return this.state.events.map(this.renderEvent.bind(this));
+		}
+		else if (this.state.error) {
+			return this.renderError();
 		}
 		else {
 			return this.renderEventLoading();
