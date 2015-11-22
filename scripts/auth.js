@@ -8,29 +8,45 @@ import Home from './home';
 
 import { Spinner } from 'elemental/lib/Elemental';
 
-const firebase = new Firebase('https://devspace-io.firebaseIO.com/');
+const firebase = new Firebase('https://devspace-io.firebaseio.com/');
 
 class Auth extends React.Component {
 	constructor() {
 		super();
 
 		this.state = {
-			isAuthenticated: undefined
+			auth: undefined
 		};
 	}
 
 	componentWillMount() {
-  		firebase.onAuth((authData) => {
-  			if (authData) {
-  				this.setState({ isAuthenticated: true });
+		var self = this;
+
+		firebase.onAuth((authData) => {
+			if (authData) {
+				firebase.child(authData.github.id).update({
+					user: authData.github
+				}, function(error) {
+					if (error) {
+						self.setState({
+							auth: null
+						});
+					} else {
+						self.setState({
+							auth: authData.github
+						});
+					}
+				});
 			} else {
-				this.setState({ isAuthenticated: false });
+				self.setState({
+					auth: null
+				});
 			}
 		});
 	}
 
 	login() {
-		firebase.authWithOAuthRedirect('github', (err, authData) => {
+		firebase.authWithOAuthRedirect('github', (err) => {
 			if (err) {
 				console.err(err);
 				return;
@@ -42,25 +58,31 @@ class Auth extends React.Component {
 
 	logout() {
 		this.setState({
-			isAuthenticated: false
+			auth: null
 		});
 
 		firebase.unauth();
 	}
 
+	renderLoading() {
+		return (
+			<div className="auth">
+				<div className="centered">
+					<Spinner size="lg" type="primary" />
+				</div>
+			</div>
+		)
+	}
+
 	render() {
-		if (this.state.isAuthenticated === true) {
-			return (<App logout={this.logout.bind(this)} />);
+		if (this.state.auth) {
+			return (<App auth={this.state.auth} logout={this.logout.bind(this)} />);
 		}
-		else if (this.state.isAuthenticated === false) {
+		else if (this.state.auth === null) {
 			return (<Home login={this.login.bind(this)}/>);
 		}
 		else {
-			return(
-				<div className="auth">
-  					<Spinner size="lg" type="primary" />
-				</div>
-			);
+			return this.renderLoading();
 		}
 	}
 }
