@@ -30,9 +30,9 @@ class AddForm extends React.Component {
 					</h4>
 				</ModalHeader>
 				<ModalBody>
-					<FormField label={"Type a " + this.props.selectedOption.form.label} htmlFor="input-repo">
+					<FormField label={`Type a ${this.props.selectedOption.form.label}`} htmlFor="input-repo">
 						<FormIconField iconPosition="right" iconKey="search" iconColor="default">
-							<input className="FormInput" ref="payload" type="text" placeholder={this.props.selectedOption.form.placeholder} name="input-repo" autoFocus />
+							<input pattern={this.props.selectedOption.form.pattern} className="FormInput" ref="payload" type="text" placeholder={this.props.selectedOption.form.placeholder} name="input-repo" autoFocus required />
 						</FormIconField>
 					</FormField>
 				</ModalBody>

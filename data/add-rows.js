@@ -9,7 +9,8 @@ module.exports = {
 			},
 			form: {
 				label: 'username',
-				placeholder: 'zenorocha'
+				placeholder: 'zenorocha',
+				pattern: '[0-9A-Za-z_\.-]+'
 			}
 		},
 		col2: {
@@ -21,7 +22,8 @@ module.exports = {
 			},
 			form: {
 				label: 'username',
-				placeholder: 'zenorocha'
+				placeholder: 'zenorocha',
+				pattern: '[0-9A-Za-z_\.-]+'
 			}
 		}
 	},
@@ -35,7 +37,8 @@ module.exports = {
 			},
 			form: {
 				label: 'repository',
-				placeholder: 'zenorocha/clipboard.js'
+				placeholder: 'zenorocha/clipboard.js',
+				pattern: '[0-9A-Za-z-]+[\/][0-9A-Za-z_\.-]+'
 			}
 		},
 		col4: {
@@ -47,7 +50,8 @@ module.exports = {
 			},
 			form: {
 				label: 'organization',
-				placeholder: 'facebook'
+				placeholder: 'facebook',
+				pattern: '[0-9A-Za-z_\.-]+'
 			}
 		}
 	}
