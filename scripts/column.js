@@ -24,6 +24,12 @@ class Column extends React.Component {
 		});
 
 		this.fetchEvents();
+	}
+
+	componentWillUnmount() {
+		Scrollbar.destroy(this.refs.content);
+	}
+
 	fetchEvents() {
 		fetch(`https://api.github.com/${this.props.details.request.prefix}/${this.props.details.request.payload}/${this.props.details.request.suffix}`, {
 			headers: {

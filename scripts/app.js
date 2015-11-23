@@ -37,6 +37,10 @@ class App extends React.Component {
 		Scrollbar.update(this.refs.app);
 	}
 
+	componentWillUnmount() {
+		Scrollbar.destroy(this.refs.app);
+	}
+
 	toggleAddModal() {
 		this.setState({
 			isAddModalOpen: !this.state.isAddModalOpen,
