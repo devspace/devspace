@@ -4,6 +4,9 @@ import Rebase from 're-base';
 import Scrollbar from 'perfect-scrollbar';
 import { Spinner } from 'elemental/lib/Elemental';
 
+import ReactMixin from 'react-mixin';
+import TimerMixin from 'react-timer-mixin';
+
 import Event from './event';
 
 var base = Rebase.createClass('https://devspace-io.firebaseio.com/');
@@ -14,7 +17,9 @@ class Column extends React.Component {
 
 		this.state = {
 			events: undefined,
-			error: undefined
+			error: undefined,
+			fetchLastModified: '',
+			fetchInterval: 60 * 1000
 		};
 	}
 
@@ -24,6 +29,10 @@ class Column extends React.Component {
 		});
 
 		this.fetchEvents();
+
+		this.setInterval(() => {
+			this.fetchEvents();
+		}, this.state.fetchInterval);
 	}
 
 	componentWillUnmount() {
@@ -34,10 +43,15 @@ class Column extends React.Component {
 		fetch(`https://api.github.com/${this.props.details.request.prefix}/${this.props.details.request.payload}/${this.props.details.request.suffix}`, {
 			headers: {
 				'Authorization': 'token ' + this.props.accessToken,
-				'User-Agent': 'DevSpace'
+				'User-Agent': 'DevSpace',
+				'If-Modified-Since': this.state.fetchLastModified
 			}
 		})
 		.then((response) => {
+			this.setState({
+				fetchLastModified: response.headers.get('Last-Modified')
+			});
+
 			if (response.status >= 200 && response.status < 300) {
 				return response.json();
 			} else {
@@ -110,5 +124,7 @@ class Column extends React.Component {
 		)
 	}
 }
+
+ReactMixin.onClass(Column, TimerMixin);
 
 export default Column;
