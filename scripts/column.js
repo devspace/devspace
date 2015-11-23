@@ -9,7 +9,7 @@ import TimerMixin from 'react-timer-mixin';
 
 import Event from './event';
 
-var base = Rebase.createClass('https://devspace-io.firebaseio.com/');
+var base = Rebase.createClass('https://devspace-app.firebaseio.com/');
 
 class Column extends React.Component {
 	constructor() {

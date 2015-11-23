@@ -8,7 +8,7 @@ import Add from './add';
 import Column from './column';
 import Nav from './nav';
 
-var base = Rebase.createClass('https://devspace-io.firebaseio.com/');
+var base = Rebase.createClass('https://devspace-app.firebaseio.com/');
 
 class App extends React.Component {
 	constructor() {
