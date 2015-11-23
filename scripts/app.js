@@ -28,7 +28,7 @@ class App extends React.Component {
 			suppressScrollY: true
 		});
 
-		base.syncState(`${this.props.auth.id}/columns`, {
+		this.fb = base.syncState(`${this.props.auth.id}/columns`, {
 			context: this,
 			state: 'columns',
 			asArray: true
@@ -66,6 +66,8 @@ class App extends React.Component {
 
 	componentWillUnmount() {
 		Scrollbar.destroy(this.refs.app);
+
+		base.removeBinding(this.fb);
 	}
 
 	toggleAddModal() {
