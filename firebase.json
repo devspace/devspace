@@ -1,5 +1,5 @@
 {
-  "firebase": "devspace-io",
+  "firebase": "devspace-app",
   "public": ".",
   "ignore": [
     "firebase.json",
