@@ -19,32 +19,39 @@ class Column extends React.Component {
 	}
 
 	componentDidMount() {
-		var self = this;
-
 		Scrollbar.initialize(this.refs.content, {
 			suppressScrollX: true
 		});
 
-		fetch(`https://api.github.com/${self.props.details.request.prefix}/${self.props.details.request.payload}/${self.props.details.request.suffix}`, {
+		this.fetchEvents();
+	fetchEvents() {
+		fetch(`https://api.github.com/${this.props.details.request.prefix}/${this.props.details.request.payload}/${this.props.details.request.suffix}`, {
 			headers: {
-				'Authorization': 'token ' + self.props.accessToken,
+				'Authorization': 'token ' + this.props.accessToken,
 				'User-Agent': 'DevSpace'
 			}
 		})
-		.then(function(response) {
+		.then((response) => {
 			if (response.status >= 200 && response.status < 300) {
 				return response.json();
 			} else {
 				throw new Error(response.statusText);
 			}
 		})
-		.then(function(response) {
-			self.setState({
-				events: response
-			});
+		.then((response) => {
+			if (response.length > 0) {
+				this.setState({
+					events: response
+				});
+			}
+			else {
+				this.setState({
+					error: 'No public results'
+				});
+			}
 		})
-		.catch(function(error) {
-			self.setState({
+		.catch((error) => {
+			this.setState({
 				error: error.message
 			});
 		});
