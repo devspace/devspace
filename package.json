@@ -7,6 +7,7 @@
     "babelify": "6.4.0",
     "browserify": "11.2.0",
     "electron-prebuilt": "^0.35.1",
+    "electron-packager": "^5.1.1",
     "elemental": "^0.5.6",
     "firebase": "^2.3.1",
     "gulp": "3.9.0",
@@ -30,6 +31,7 @@
     "whatwg-fetch": "^0.10.1"
   },
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-packager . DevSpace --platform=darwin --arch=x64 --version=0.35.1 --icon=images/icon-mac.icns --ignore=\"node_modules/(electron-packager|electron-prebuilt)\" --out=dist --overwrite=true"
   }
 }
