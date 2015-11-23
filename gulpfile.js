@@ -23,7 +23,8 @@ gulp.task('styles',function() {
   gulp.src([
       'node_modules/octicons/octicons/octicons.eot',
       'node_modules/octicons/octicons/octicons.ttf',
-      'node_modules/octicons/octicons/octicons.woff'
+      'node_modules/octicons/octicons/octicons.woff',
+      'node_modules/perfect-scrollbar/dist/css/perfect-scrollbar.min.css'
     ])
     .pipe(gulp.dest('build/styles/'))
 
