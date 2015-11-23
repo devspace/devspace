@@ -15,7 +15,8 @@ class Auth extends React.Component {
 		super();
 
 		this.state = {
-			auth: undefined
+			auth: undefined,
+			isFirstLogin: undefined
 		};
 	}
 
@@ -24,18 +25,31 @@ class Auth extends React.Component {
 
 		firebase.onAuth((authData) => {
 			if (authData) {
-				firebase.child(authData.github.id).update({
-					user: authData.github
-				}, function(error) {
-					if (error) {
+				firebase.once('value', function(data) {
+					if (data.hasChild(authData.github.id)) {
 						self.setState({
-							auth: null
-						});
-					} else {
-						self.setState({
-							auth: authData.github
+							isFirstLogin: false
 						});
 					}
+					else {
+						self.setState({
+							isFirstLogin: true
+						});
+					}
+
+					firebase.child(authData.github.id).update({
+						user: authData.github
+					}, function(error) {
+						if (error) {
+							self.setState({
+								auth: null
+							});
+						} else {
+							self.setState({
+								auth: authData.github
+							});
+						}
+					});
 				});
 			} else {
 				self.setState({
@@ -76,7 +90,7 @@ class Auth extends React.Component {
 
 	render() {
 		if (this.state.auth) {
-			return (<App auth={this.state.auth} logout={this.logout.bind(this)} />);
+			return (<App isFirstLogin={this.state.isFirstLogin} auth={this.state.auth} logout={this.logout.bind(this)} />);
 		}
 		else if (this.state.auth === null) {
 			return (<Home login={this.login.bind(this)}/>);

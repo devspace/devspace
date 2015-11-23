@@ -22,6 +22,8 @@ class App extends React.Component {
 	}
 
 	componentDidMount() {
+		var self = this;
+
 		Scrollbar.initialize(this.refs.app, {
 			suppressScrollY: true
 		});
@@ -31,6 +33,31 @@ class App extends React.Component {
 			state: 'columns',
 			asArray: true
 		});
+
+		if (this.props.isFirstLogin) {
+			self.setState({
+				columns: {
+					'0': {
+						'icon': 'home',
+						'title': 'Home',
+						'request': {
+							'prefix': 'users',
+							'suffix': 'received_events',
+							'payload': this.props.auth.username
+						}
+					},
+					'1': {
+						'icon': 'person',
+						'title': 'User',
+						'request': {
+							'prefix': 'users',
+							'suffix': 'events',
+							'payload': this.props.auth.username
+						}
+					}
+				}
+			});
+		}
 	}
 
 	componentDidUpdate() {
