@@ -8,7 +8,7 @@ import Add from './add';
 import Column from './column';
 import Nav from './nav';
 
-var base = Rebase.createClass('https://devspace-app.firebaseio.com/');
+var base = Rebase.createClass('https://devspace-app.firebaseio.com/users');
 
 class App extends React.Component {
 	constructor() {
@@ -28,7 +28,7 @@ class App extends React.Component {
 			suppressScrollY: true
 		});
 
-		this.fb = base.syncState(`${this.props.auth.id}/columns`, {
+		this.fb = base.syncState(`${this.props.auth.uid}/columns`, {
 			context: this,
 			state: 'columns',
 			asArray: true
@@ -43,7 +43,7 @@ class App extends React.Component {
 						'request': {
 							'prefix': 'users',
 							'suffix': 'received_events',
-							'payload': this.props.auth.username
+							'payload': this.props.auth.github.username
 						}
 					},
 					'1': {
@@ -52,7 +52,7 @@ class App extends React.Component {
 						'request': {
 							'prefix': 'users',
 							'suffix': 'events',
-							'payload': this.props.auth.username
+							'payload': this.props.auth.github.username
 						}
 					}
 				}
@@ -98,7 +98,7 @@ class App extends React.Component {
 	}
 
 	renderColumn(column, key) {
-		return <Column key={key} accessToken={this.props.auth.accessToken} removeColumn={this.removeColumn.bind(this, key)} details={column} />;
+		return <Column key={key} accessToken={this.props.auth.github.accessToken} removeColumn={this.removeColumn.bind(this, key)} details={column} />;
 	}
 
 	renderColumnLoading() {

@@ -8,7 +8,7 @@ import Home from './home';
 
 import { Spinner } from 'elemental/lib/Elemental';
 
-const firebase = new Firebase('https://devspace-app.firebaseio.com/');
+const firebase = new Firebase('https://devspace-app.firebaseio.com/users');
 
 class Auth extends React.Component {
 	constructor() {
@@ -26,7 +26,7 @@ class Auth extends React.Component {
 		firebase.onAuth((authData) => {
 			if (authData) {
 				firebase.once('value', function(data) {
-					if (data.hasChild(authData.github.id)) {
+					if (data.hasChild(authData.uid)) {
 						self.setState({
 							isFirstLogin: false
 						});
@@ -37,7 +37,7 @@ class Auth extends React.Component {
 						});
 					}
 
-					firebase.child(authData.github.id).update({
+					firebase.child(authData.uid).update({
 						user: authData.github
 					}, function(error) {
 						if (error) {
@@ -46,7 +46,7 @@ class Auth extends React.Component {
 							});
 						} else {
 							self.setState({
-								auth: authData.github
+								auth: authData
 							});
 						}
 					});
