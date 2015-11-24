@@ -2,135 +2,147 @@ import React from 'react';
 import moment from 'moment';
 
 class Event extends React.Component {
-	componentWillMount() {
-		this.setState({
-			avatar: this.props.details.actor.avatar_url,
-			icon: this.props.details.icon,
-			login: this.props.details.actor.login,
-			repo: this.props.details.repo.name,
-			timestamp: this.props.details.created_at
-		});
+	render() {
+		var message;
+		var icon;
+		var avatar = this.props.details.actor.avatar_url;
+		var icon = this.props.details.icon;
+		var login = this.props.details.actor.login;
+		var repo = this.props.details.repo.name;
+		var timestamp = this.props.details.created_at;
+		var payload = this.props.details.payload;
 
 		switch (this.props.details.type) {
 			case 'CommitCommentEvent':
-				this.setState({
-					icon: 'comment-discussion',
-					message: ' commented on a commit at '
-				});
+				icon = 'comment-discussion';
+				message = (
+					<span> commented on a <a className="event-link" href={payload.comment.html_url} target="_blank">commit</a> at <a className="event-link" href={`https://github.com/${repo}`} target="_blank">{repo}</a></span>
+				);
 				break;
 			case 'CreateEvent':
-				let what = (this.props.details.payload.ref ? (' ' + this.props.details.payload.ref) : '');
-
-				this.setState({
-					icon: 'repo',
-					message: ` created ${this.props.details.payload.ref_type}${what} at `
-				});
+				if (payload.ref_type === 'repository') {
+					icon = 'repo';
+					message = (
+						<span> created a new {payload.ref_type} at <a className="event-link" href={`https://github.com/${repo}`} target="_blank">{repo}</a></span>
+					);
+				} else if (payload.ref_type === 'branch') {
+					icon = 'git-branch';
+					message = (
+						<span> created {payload.ref_type} <a className="event-link" href={`https://github.com/${repo}/tree/${payload.ref}`} target="_blank">{payload.ref}</a> at <a className="event-link" href={`https://github.com/${repo}`} target="_blank">{repo}</a></span>
+					);
+				} else if (payload.ref_type === 'tag') {
+					icon = 'tag';
+					message = (
+						<span> created {payload.ref_type} <a className="event-link" href={`https://github.com/${repo}/tree/${payload.ref}`} target="_blank">{payload.ref}</a> at <a className="event-link" href={`https://github.com/${repo}`} target="_blank">{repo}</a></span>
+					);
+				}
 				break;
 			case 'DeleteEvent':
-				this.setState({
-					icon: 'repo',
-					message: ` removed ${this.props.details.payload.ref_type} ${this.props.details.payload.ref} at `
-				});
+				if (payload.ref_type === 'branch') {
+					icon = 'git-branch';
+				} else if (payload.ref_type === 'tag') {
+					icon = 'tag';
+				}
+
+				message = (
+					<span> removed {payload.ref_type} {payload.ref} at <a className="event-link" href={`https://github.com/${repo}`} target="_blank">{repo}</a></span>
+				);
 				break;
 			case 'ForkEvent':
-				this.setState({
-					icon: 'repo-forked',
-					message: ' forked '
-				});
+				icon = 'repo-forked';
+				message = (
+					<span> forked <a className="event-link" href={`https://github.com/${repo}`} target="_blank">{repo}</a> to <a className="event-link" href={`https://github.com/${payload.forkee.full_name}`} target="_blank">{payload.forkee.full_name}</a></span>
+				);
 				break;
 			case 'GollumEvent':
-				this.setState({
-					icon: 'book',
-					message: ` ${this.props.details.payload.pages[0].action} the ${this.props.details.payload.pages[0].page_name} wiki page at `
-				});
+				icon = 'book';
+				message = (
+					<span> {payload.pages[0].action} a <a className="event-link" href={`https://github.com${payload.pages[0].html_url}`} target="_blank">wiki page</a> at <a className="event-link" href={`https://github.com/${repo}`} target="_blank">{repo}</a></span>
+				);
 				break;
 			case 'IssueCommentEvent':
-				this.setState({
-					icon: 'comment-discussion',
-					message: ` commented on issue #${this.props.details.payload.issue.number}  at `
-				});
+				icon = 'comment-discussion';
+				message = (
+					<span> commented on issue <a className="event-link" href={payload.comment.html_url} target="_blank">#{payload.issue.number}</a> at <a className="event-link" href={`https://github.com/${repo}`} target="_blank">{repo}</a></span>
+				);
 				break;
 			case 'IssuesEvent':
-				this.setState({
-					icon: 'issue-opened',
-					message: ` ${this.props.details.payload.action}  issue #${this.props.details.payload.issue.number}  at `
-				});
+				icon = `issue-${payload.action}`;
+				message = (
+					<span> {payload.action} issue <a className="event-link" href={payload.issue.html_url} target="_blank">#{payload.issue.number}</a> at <a className="event-link" href={`https://github.com/${repo}`} target="_blank">{repo}</a></span>
+				);
 				break;
 			case 'MemberEvent':
-				this.setState({
-					icon: 'person',
-					message: ` added @${this.props.details.payload.member.login} as a collaborator to `
-				});
-				break;
-			case 'PageBuildEvent':
-				this.setState({
-					icon: 'browser',
-					message: ` builded a GitHub Page at `
-				});
+				icon = 'person';
+				message = (
+					<span> added <a className="event-link" href={`https://github.com/${payload.member.login}`}>{payload.member.login}</a> to <a className="event-link" href={`https://github.com/${repo}`} target="_blank">{repo}</a></span>
+				);
 				break;
 			case 'PublicEvent':
-				this.setState({
-					icon: 'megaphone',
-					message: ` open sourced `
-				});
+				icon = 'megaphone';
+				message = (
+					<span> open sourced <a className="event-link" href={`https://github.com/${repo}`} target="_blank">{repo}</a></span>
+				);
 				break;
 			case 'PullRequestEvent':
-				this.setState({
-					icon: 'git-pull-request',
-					message: ` ${this.props.details.payload.action} pull request #${this.props.details.payload.number} at `
-				});
+				icon = 'git-pull-request';
+				message = (
+					<span> {payload.action} pull request <a className="event-link" href={payload.pull_request.html_url} target="_blank">#{payload.number}</a> at <a className="event-link" href={`https://github.com/${repo}`} target="_blank">{repo}</a></span>
+				);
 				break;
 			case 'PullRequestReviewCommentEvent':
-				this.setState({
-					icon: 'comment-discussion',
-					message: ` commented on pull request #${this.props.details.payload.pull_request.number} at `
-				});
+				icon = 'comment-discussion';
+				message = (
+					<span> commented on pull request <a className="event-link" href={payload.comment.html_url} target="_blank">#{payload.pull_request.number}</a> at <a className="event-link" href={`https://github.com/${repo}`} target="_blank">{repo}</a></span>
+				)
 				break;
 			case 'PushEvent':
-				this.setState({
-					icon: 'code',
-					message: ` pushed ${this.props.details.payload.size} commit(s) to `
-				});
+				icon = 'code';
+
+				if (payload.size === 1) {
+					message = (
+						<span> pushed <a className="event-link" href={`https://github.com/${repo}/commit/${payload.commits[0].sha}`} target="_blank">{payload.size} commit</a> to <a className="event-link" href={`https://github.com/${repo}`} target="_blank">{repo}</a></span>
+					);
+				} else {
+					message = (
+						<span> pushed <a className="event-link" href={`https://github.com/${repo}/compare/${payload.before}...${payload.head}`} target="_blank">{payload.size} commits</a> to <a className="event-link" href={`https://github.com/${repo}`} target="_blank">{repo}</a></span>
+					);
+				}
 				break;
 			case 'ReleaseEvent':
-				this.setState({
-					icon: 'tag',
-					message: ` released ${this.props.details.payload.release.tag_name} at `
-				});
+				icon = 'tag';
+				message = (
+					<span> released <a className="event-link" href={payload.release.html_url} target="_blank">{payload.release.tag_name}</a> at <a className="event-link" href={`https://github.com/${repo}`} target="_blank">{repo}</a></span>
+				);
 				break;
 			case 'StatusEvent':
-				this.setState({
-					icon: 'code',
-					message: ` changed the status of a commit at `
-				});
+				icon = 'code';
+				message = (
+					<span> changed the status of a commit at <a className="event-link" href={`https://github.com/${repo}`} target="_blank">{repo}</a></span>
+				);
 				break;
 			case 'WatchEvent':
-				this.setState({
-					icon: 'star',
-					message: ` starred `
-				});
+				icon = 'star';
+				message = (
+					<span> starred <a className="event-link" href={`https://github.com/${repo}`} target="_blank">{repo}</a></span>
+				);
 				break;
 		}
-	}
 
-	render() {
 		return (
 			<div className="event">
-				<a href={"https://github.com/" + this.state.login} target="_blank">
-					<img className="event-image" src={this.state.avatar + "?s=80"} alt={this.state.login} width="40" height="40" />
+				<a href={`https://github.com/${login}`} target="_blank">
+					<img className="event-image" src={`${avatar}?s=80`} alt={login} width="40" height="40" />
 				</a>
 				<div className="event-body">
 					<p className="event-text">
-						<a className="event-link" href={"https://github.com/" + this.state.login} target="_blank">
-							{this.state.login}
+						<a className="event-link" href={`https://github.com/${login}`} target="_blank">
+							{login}
 						</a>
-						<span>{this.state.message}</span>
-						<a className="event-link" href={"https://github.com/" + this.state.repo} target="_blank">
-							{this.state.repo}
-						</a>
+						{message}
 					</p>
-					<footer className="event-footer">{moment(this.props.details.created_at).fromNow()}</footer>
-					<span className={"event-icon octicon octicon-" + this.state.icon}></span>
+					<footer className="event-footer">{moment(timestamp).fromNow()}</footer>
+					<span className={`event-icon octicon octicon-${icon}`}></span>
 				</div>
 			</div>
 		)
