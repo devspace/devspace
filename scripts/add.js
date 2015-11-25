@@ -19,9 +19,11 @@ class Add extends React.Component {
 			nextProps.isAddInitialContent !== this.props.isAddInitialContent;
 	}
 
-	setSelectedOption(value) {
+	setSelectedOption(option) {
+		ga('send', 'event', 'Internal Links', 'Click', `Add Option ${option.title}`);
+
 		this.setState({
-			selectedOption: value
+			selectedOption: option
 		});
 	}
 
