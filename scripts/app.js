@@ -5,7 +5,7 @@ import Scrollbar from 'perfect-scrollbar';
 import { Spinner } from 'elemental/lib/Elemental';
 
 import Add from './add';
-import Column from './column';
+import Columns from './columns';
 import Nav from './nav';
 
 var base = Rebase.createClass('https://devspace-app.firebaseio.com/users');
@@ -36,8 +36,8 @@ class App extends React.Component {
 
 		if (this.props.isFirstLogin) {
 			self.setState({
-				columns: {
-					'0': {
+				columns: [
+					{
 						'icon': 'home',
 						'title': 'Home',
 						'request': {
@@ -46,7 +46,7 @@ class App extends React.Component {
 							'payload': this.props.auth.github.username
 						}
 					},
-					'1': {
+					{
 						'icon': 'person',
 						'title': 'User',
 						'request': {
@@ -55,7 +55,7 @@ class App extends React.Component {
 							'payload': this.props.auth.github.username
 						}
 					}
-				}
+				]
 			});
 		}
 	}
@@ -101,28 +101,11 @@ class App extends React.Component {
 		});
 	}
 
-	renderColumn(column, key) {
-		return <Column key={key} accessToken={this.props.auth.github.accessToken} removeColumn={this.removeColumn.bind(this, key)} details={column} />;
-	}
-
-	renderLoader() {
-		return <div className="centered"><Spinner size="md" /></div>
-	}
-
-	renderContent() {
-		if (this.state.columns) {
-			return this.state.columns.map(this.renderColumn.bind(this));
-		}
-		else {
-			return this.renderLoader();
-		}
-	}
-
 	render() {
 		return (
 			<div ref="app" className="app">
 				<Nav logout={this.props.logout} toggleAddModal={this.toggleAddModal.bind(this)} />
-				<div className="app-columns">{this.renderContent()}</div>
+				<Columns columns={this.state.columns} accessToken={this.props.auth.github.accessToken} removeColumn={this.removeColumn.bind(this)} />
 				<Add addColumn={this.addColumn.bind(this)} toggleAddModal={this.toggleAddModal.bind(this)} isAddModalOpen={this.state.isAddModalOpen} toggleAddInitialContent={this.toggleAddInitialContent.bind(this)} isAddInitialContent={this.state.isAddInitialContent} />
 			</div>
 		)
