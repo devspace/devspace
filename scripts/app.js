@@ -94,10 +94,10 @@ class App extends React.Component {
 	removeColumn(key) {
 		ga('send', 'event', 'Internal Links', 'Click', 'Remove Column');
 
-		let newColumns = this.state.columns;
+		let removeColumn = this.state.columns.splice(key, 1);
 
 		this.setState({
-			columns: newColumns.slice(0, key).concat(newColumns.slice(key + 1))
+			columns: this.state.columns
 		});
 	}
 

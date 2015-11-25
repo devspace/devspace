@@ -41,11 +41,11 @@ class Column extends React.Component {
 		Scrollbar.update(this.refs.content);
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		return nextProps.details !== this.props.details ||
-			nextState.events !== this.state.events ||
-			nextState.error !== this.state.error;
-	}
+	// shouldComponentUpdate(nextProps, nextState) {
+	// 	return nextProps.details !== this.props.details ||
+	// 		nextState.events !== this.state.events ||
+	// 		nextState.error !== this.state.error;
+	// }
 
 	fetchEvents() {
 		fetch(`https://api.github.com/${this.props.details.request.prefix}/${this.props.details.request.payload}/${this.props.details.request.suffix}`, {
