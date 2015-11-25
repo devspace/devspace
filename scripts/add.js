@@ -14,6 +14,11 @@ class Add extends React.Component {
 		};
 	}
 
+	shouldComponentUpdate(nextProps, nextState) {
+		return nextProps.isAddModalOpen !== this.props.isAddModalOpen ||
+			nextProps.isAddInitialContent !== this.props.isAddInitialContent;
+	}
+
 	setSelectedOption(value) {
 		this.setState({
 			selectedOption: value

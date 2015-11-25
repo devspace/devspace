@@ -3,6 +3,10 @@ import React from 'react';
 import { ModalBody, ModalFooter, ModalHeader, FormField, FormInput, FormIconField, Button } from 'elemental/lib/Elemental';
 
 class AddForm extends React.Component {
+	shouldComponentUpdate() {
+		return false;
+	}
+
 	handleSubmit(event) {
 		event.preventDefault();
 

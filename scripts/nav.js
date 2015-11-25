@@ -4,6 +4,10 @@ import ReactDOM from 'react-dom';
 import Home from './home';
 
 class Nav extends React.Component {
+	shouldComponentUpdate() {
+		return false;
+	}
+
 	render() {
 		return (
 			<div className="nav-container">

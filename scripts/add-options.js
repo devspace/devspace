@@ -9,18 +9,13 @@ class AddOptions extends React.Component {
 		this.rows = require('../data/add-rows');
 	}
 
-	render() {
-		return (
-			<div id="addOptions">
-				<ModalHeader>
-					<button className="Modal__header__close" onClick={this.props.toggleAddModal} type="button"></button>
-					<h4 className="Modal__header__text">Add column</h4>
-				</ModalHeader>
-				<ModalBody>
-					{Object.keys(this.rows).map(this.renderRow.bind(this))}
-				</ModalBody>
-			</div>
-		)
+	shouldComponentUpdate() {
+		return false;
+	}
+
+	handleOption(option) {
+		this.props.setSelectedOption(option);
+		this.props.toggleAddInitialContent();
 	}
 
 	renderRow(rowKey) {
@@ -48,9 +43,18 @@ class AddOptions extends React.Component {
 		)
 	}
 
-	handleOption(option) {
-		this.props.setSelectedOption(option);
-		this.props.toggleAddInitialContent();
+	render() {
+		return (
+			<div id="addOptions">
+				<ModalHeader>
+					<button className="Modal__header__close" onClick={this.props.toggleAddModal} type="button"></button>
+					<h4 className="Modal__header__text">Add column</h4>
+				</ModalHeader>
+				<ModalBody>
+					{Object.keys(this.rows).map(this.renderRow.bind(this))}
+				</ModalBody>
+			</div>
+		)
 	}
 }
 
