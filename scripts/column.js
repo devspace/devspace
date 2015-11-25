@@ -17,7 +17,7 @@ class Column extends React.Component {
 			events: undefined,
 			error: undefined,
 			fetchLastModified: '',
-			fetchInterval: 60 * 1000
+			fetchInterval: undefined
 		};
 	}
 
@@ -28,9 +28,13 @@ class Column extends React.Component {
 
 		this.fetchEvents(this.props.details);
 
-		this.setInterval(() => {
+		let interval = this.setInterval(() => {
 			this.fetchEvents(this.props.details);
-		}, this.state.fetchInterval);
+		}, 60 * 1000);
+
+		this.setState({
+			fetchInterval: interval
+		});
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -86,12 +90,16 @@ class Column extends React.Component {
 				this.setState({
 					error: 'No public events'
 				});
+
+				this.clearInterval(this.state.fetchInterval);
 			}
 		})
 		.catch((error) => {
 			this.setState({
 				error: error.message
 			});
+
+			this.clearInterval(this.state.fetchInterval);
 		});
 	}
 
