@@ -1,5 +1,6 @@
 import React from 'react';
 
+import parse from 'parse-link-header';
 import Scrollbar from 'perfect-scrollbar';
 import { Spinner } from 'elemental/lib/Elemental';
 
@@ -45,6 +46,8 @@ class Column extends React.Component {
 			}
 		})
 		.then((response) => {
+			let link = parse(response.headers.get('Link'));
+
 			this.setState({
 				fetchLastModified: response.headers.get('Last-Modified')
 			});
