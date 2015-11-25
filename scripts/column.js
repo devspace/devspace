@@ -10,35 +10,6 @@ import TimerMixin from 'react-timer-mixin';
 import Event from './event';
 
 class Column extends React.Component {
-	constructor() {
-		super();
-
-		this.state = {
-			events: undefined,
-			error: undefined,
-			fetchLastModified: '',
-			fetchInterval: 60 * 1000
-		};
-	}
-
-	componentDidMount() {
-		Scrollbar.initialize(this.refs.content, {
-			suppressScrollX: true
-		});
-
-		this.fetchEvents(this.props.details);
-
-		this.setInterval(() => {
-			this.fetchEvents(this.props.details);
-		}, this.state.fetchInterval);
-	}
-
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.details !== this.props.details) {
-			this.fetchEvents(nextProps.details, true);
-		}
-	}
-
 	componentWillUnmount() {
 		Scrollbar.destroy(this.refs.content);
 	}
@@ -47,56 +18,8 @@ class Column extends React.Component {
 		Scrollbar.update(this.refs.content);
 	}
 
-	// shouldComponentUpdate(nextProps, nextState) {
-	// 	return nextProps.details !== this.props.details ||
-	// 		nextState.events !== this.state.events ||
-	// 		nextState.error !== this.state.error;
-	// }
-
-	fetchEvents(details, forceUpdate) {
-		fetch(`https://api.github.com/${details.request.prefix}/${details.request.payload}/${details.request.suffix}`, {
-			headers: {
-				'Authorization': 'token ' + this.props.accessToken,
-				'User-Agent': 'DevSpace',
-				'If-Modified-Since': forceUpdate || this.state.fetchLastModified
-			}
-		})
-		.then((response) => {
-			let link = parse(response.headers.get('Link'));
-
-			this.setState({
-				fetchLastModified: response.headers.get('Last-Modified')
-			});
-
-			if (response.status === 200) {
-				return response.json();
-			} else if (response.status > 400) {
-				throw new Error(response.statusText);
-			} else {
-				return this.state.events;
-			}
-		})
-		.then((response) => {
-			if (response.length > 0) {
-				this.setState({
-					events: response
-				});
-			}
-			else {
-				this.setState({
-					error: 'No public events'
-				});
-			}
-		})
-		.catch((error) => {
-			this.setState({
-				error: error.message
-			});
-		});
-	}
-
 	renderEvent(event, key) {
-		return <Event key={key} details={this.state.events[key]} />;
+		return <Event key={key} details={this.props.responses[key]} />;
 	}
 
 	renderEventLoading() {
@@ -104,14 +27,14 @@ class Column extends React.Component {
 	}
 
 	renderError() {
-		return <div className="column-placeholder centered">{this.state.error}</div>;
+		return <div className="column-placeholder centered">{this.props.error}</div>;
 	}
 
 	renderContent() {
-		if (this.state.events) {
-			return this.state.events.map(this.renderEvent.bind(this));
+		if (this.props.responses) {
+			return this.props.responses.map(this.renderEvent.bind(this));
 		}
-		else if (this.state.error) {
+		else if (this.props.error) {
 			return this.renderError();
 		}
 		else {
