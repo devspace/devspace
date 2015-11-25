@@ -10,6 +10,8 @@ class AddForm extends React.Component {
 	handleSubmit(event) {
 		event.preventDefault();
 
+		ga('send', 'event', 'Internal Links', 'Submit', 'Add Form');
+
 		this.props.addColumn({
 			icon: this.props.selectedOption.icon,
 			title: this.props.selectedOption.title,
