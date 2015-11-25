@@ -84,6 +84,8 @@ class App extends React.Component {
 	}
 
 	addColumn(newColumn) {
+		ga('send', 'event', 'Internal Links', 'Click', 'Add Column');
+
 		this.setState({
 			columns: this.state.columns.concat([newColumn])
 		});
@@ -91,6 +93,7 @@ class App extends React.Component {
 
 	removeColumn(key) {
 		this.state.columns[key] = null;
+		ga('send', 'event', 'Internal Links', 'Click', 'Remove Column');
 
 		this.setState({
 			columns: this.state.columns

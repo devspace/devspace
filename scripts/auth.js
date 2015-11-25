@@ -60,6 +60,8 @@ class Auth extends React.Component {
 	}
 
 	login() {
+		ga('send', 'event', 'Internal Links', 'Click', 'Login');
+
 		firebase.authWithOAuthRedirect('github', (err) => {
 			if (err) {
 				console.err(err);
@@ -71,6 +73,8 @@ class Auth extends React.Component {
 	}
 
 	logout() {
+		ga('send', 'event', 'Internal Links', 'Click', 'Logout');
+
 		this.setState({
 			auth: null
 		});
