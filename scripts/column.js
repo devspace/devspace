@@ -96,7 +96,7 @@ class Column extends React.Component {
 	}
 
 	renderEvent(event, key) {
-		return <Event key={key} details={this.state.events[key]} />;
+		return <Event key={key} details={this.state.events[key]} trackExternalLink={this.props.trackExternalLink} />;
 	}
 
 	renderEventLoading() {

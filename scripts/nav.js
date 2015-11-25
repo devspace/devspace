@@ -24,12 +24,12 @@ class Nav extends React.Component {
 					<footer className="nav-footer">
 						<ul className="nav-list">
 							<li className="nav-item">
-								<a className="nav-link" href="https://github.com/devspace/devspace/releases" target="_blank" title="Releases">
+								<a className="nav-link" onClick={this.props.trackExternalLink} href="https://github.com/devspace/devspace/releases" target="_blank" title="Releases">
 									<span className="nav-icon octicon octicon-megaphone"></span>
 								</a>
 							</li>
 							<li className="nav-item">
-								<a className="nav-link" href="https://github.com/devspace/devspace/issues/new" target="_blank" title="Report a bug">
+								<a className="nav-link" onClick={this.props.trackExternalLink} href="https://github.com/devspace/devspace/issues/new" target="_blank" title="Report a bug">
 									<span className="nav-icon octicon octicon-bug"></span>
 								</a>
 							</li>

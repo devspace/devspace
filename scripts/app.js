@@ -103,11 +103,15 @@ class App extends React.Component {
 		});
 	}
 
+	trackExternalLink(event) {
+		ga('send', 'event', 'External Links', 'Click', event.currentTarget.href);
+	}
+
 	render() {
 		return (
 			<div ref="app" className="app">
-				<Nav logout={this.props.logout} toggleAddModal={this.toggleAddModal.bind(this)} />
-				<Columns columns={this.state.columns} accessToken={this.props.auth.github.accessToken} removeColumn={this.removeColumn.bind(this)} />
+				<Nav logout={this.props.logout} toggleAddModal={this.toggleAddModal.bind(this)} trackExternalLink={this.trackExternalLink.bind(this)} />
+				<Columns columns={this.state.columns} accessToken={this.props.auth.github.accessToken} removeColumn={this.removeColumn.bind(this)} trackExternalLink={this.trackExternalLink.bind(this)} />
 				<Add addColumn={this.addColumn.bind(this)} toggleAddModal={this.toggleAddModal.bind(this)} isAddModalOpen={this.state.isAddModalOpen} toggleAddInitialContent={this.toggleAddInitialContent.bind(this)} isAddInitialContent={this.state.isAddInitialContent} />
 			</div>
 		)
