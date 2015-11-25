@@ -92,11 +92,12 @@ class App extends React.Component {
 	}
 
 	removeColumn(key) {
-		this.state.columns[key] = null;
 		ga('send', 'event', 'Internal Links', 'Click', 'Remove Column');
 
+		let newColumns = this.state.columns;
+
 		this.setState({
-			columns: this.state.columns
+			columns: newColumns.slice(0, key).concat(newColumns.slice(key + 1))
 		});
 	}
 
@@ -104,7 +105,7 @@ class App extends React.Component {
 		return <Column key={key} accessToken={this.props.auth.github.accessToken} removeColumn={this.removeColumn.bind(this, key)} details={column} />;
 	}
 
-	renderColumnLoading() {
+	renderLoader() {
 		return <div className="centered"><Spinner size="md" /></div>
 	}
 
@@ -113,7 +114,7 @@ class App extends React.Component {
 			return this.state.columns.map(this.renderColumn.bind(this));
 		}
 		else {
-			return this.renderColumnLoading();
+			return this.renderLoader();
 		}
 	}
 

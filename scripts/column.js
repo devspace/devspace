@@ -1,5 +1,4 @@
 import React from 'react';
-import Rebase from 're-base';
 
 import Scrollbar from 'perfect-scrollbar';
 import { Spinner } from 'elemental/lib/Elemental';
@@ -8,8 +7,6 @@ import ReactMixin from 'react-mixin';
 import TimerMixin from 'react-timer-mixin';
 
 import Event from './event';
-
-var base = Rebase.createClass('https://devspace-app.firebaseio.com/');
 
 class Column extends React.Component {
 	constructor() {
@@ -52,9 +49,9 @@ class Column extends React.Component {
 				fetchLastModified: response.headers.get('Last-Modified')
 			});
 
-			if (response.status >= 200 && response.status < 300) {
+			if (response.status === 200) {
 				return response.json();
-			} else {
+			} else if (response.status > 400) {
 				throw new Error(response.statusText);
 			}
 		})
@@ -66,7 +63,7 @@ class Column extends React.Component {
 			}
 			else {
 				this.setState({
-					error: 'No public results'
+					error: 'No public events'
 				});
 			}
 		})
@@ -113,7 +110,7 @@ class Column extends React.Component {
 						<h1 className="column-header-title">
 							<span className={"octicon octicon-" + this.props.details.icon}></span>
 							{this.props.details.request.payload}
-							<span className="octicon octicon-x" onClick={this.props.removeColumn.bind()}></span>
+							<span className="octicon octicon-x" onClick={this.props.removeColumn.bind(this)}></span>
 						</h1>
 					</header>
 					<div ref="content" className="column-content">
