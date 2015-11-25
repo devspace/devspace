@@ -26,11 +26,17 @@ class Column extends React.Component {
 			suppressScrollX: true
 		});
 
-		this.fetchEvents();
+		this.fetchEvents(this.props.details);
 
 		this.setInterval(() => {
-			this.fetchEvents();
+			this.fetchEvents(this.props.details);
 		}, this.state.fetchInterval);
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.details !== this.props.details) {
+			this.fetchEvents(nextProps.details, true);
+		}
 	}
 
 	componentWillUnmount() {
@@ -47,12 +53,12 @@ class Column extends React.Component {
 			nextState.error !== this.state.error;
 	}
 
-	fetchEvents() {
-		fetch(`https://api.github.com/${this.props.details.request.prefix}/${this.props.details.request.payload}/${this.props.details.request.suffix}`, {
+	fetchEvents(details, forceUpdate) {
+		fetch(`https://api.github.com/${details.request.prefix}/${details.request.payload}/${details.request.suffix}`, {
 			headers: {
 				'Authorization': 'token ' + this.props.accessToken,
 				'User-Agent': 'DevSpace',
-				'If-Modified-Since': this.state.fetchLastModified
+				'If-Modified-Since': forceUpdate || this.state.fetchLastModified
 			}
 		})
 		.then((response) => {
@@ -66,6 +72,8 @@ class Column extends React.Component {
 				return response.json();
 			} else if (response.status > 400) {
 				throw new Error(response.statusText);
+			} else {
+				return this.state.events;
 			}
 		})
 		.then((response) => {
