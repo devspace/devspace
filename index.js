@@ -1,6 +1,7 @@
 var app = require('app');
 var path = require('path');
 var BrowserWindow = require('browser-window');
+var Menu = require('menu');
 
 var mainWindow = null;
 
@@ -27,4 +28,6 @@ app.on('ready', function() {
 
   mainWindow.loadURL('https://devspace-app.firebaseapp.com/');
   mainWindow.show();
+
+  Menu.setApplicationMenu(Menu.buildFromTemplate(require('./menu')));
 });
