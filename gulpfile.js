@@ -35,14 +35,6 @@ gulp.task('styles',function() {
     .pipe(gulp.dest('build/styles/'))
 });
 
-/*
-  Images
-*/
-gulp.task('images',function(){
-  gulp.src('css/images/**')
-    .pipe(gulp.dest('./build/css/images'))
-});
-
 function handleErrors() {
   var args = Array.prototype.slice.call(arguments);
   notify.onError({
@@ -90,7 +82,7 @@ gulp.task('scripts', function() {
 });
 
 // run 'scripts' task first, then watch for future changes
-gulp.task('default', ['images','styles','scripts'], function() {
+gulp.task('default', ['styles','scripts'], function() {
   gulp.watch('styles/**/*', ['styles']); // gulp watch for stylus changes
   return buildScript('main.js', true); // browserify watch for JS changes
 });
