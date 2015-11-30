@@ -2,3 +2,4 @@ build
 dist
 bower_components
 node_modules
+*.log

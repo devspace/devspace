@@ -17,7 +17,7 @@ class Column extends React.Component {
 			events: undefined,
 			error: undefined,
 			fetchLastModified: '',
-			fetchInterval: 60 * 1000
+			fetchInterval: undefined
 		};
 	}
 
@@ -28,9 +28,13 @@ class Column extends React.Component {
 
 		this.fetchEvents(this.props.details);
 
-		this.setInterval(() => {
+		let interval = this.setInterval(() => {
 			this.fetchEvents(this.props.details);
-		}, this.state.fetchInterval);
+		}, 60 * 1000);
+
+		this.setState({
+			fetchInterval: interval
+		});
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -46,12 +50,6 @@ class Column extends React.Component {
 	componentDidUpdate() {
 		Scrollbar.update(this.refs.content);
 	}
-
-	// shouldComponentUpdate(nextProps, nextState) {
-	// 	return nextProps.details !== this.props.details ||
-	// 		nextState.events !== this.state.events ||
-	// 		nextState.error !== this.state.error;
-	// }
 
 	fetchEvents(details, forceUpdate) {
 		fetch(`https://api.github.com/${details.request.prefix}/${details.request.payload}/${details.request.suffix}`, {
@@ -86,17 +84,21 @@ class Column extends React.Component {
 				this.setState({
 					error: 'No public events'
 				});
+
+				this.clearInterval(this.state.fetchInterval);
 			}
 		})
 		.catch((error) => {
 			this.setState({
 				error: error.message
 			});
+
+			this.clearInterval(this.state.fetchInterval);
 		});
 	}
 
 	renderEvent(event, key) {
-		return <Event key={key} details={this.state.events[key]} />;
+		return <Event key={key} details={this.state.events[key]} trackExternalLink={this.props.trackExternalLink} />;
 	}
 
 	renderEventLoading() {

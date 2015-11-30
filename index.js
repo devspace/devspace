@@ -10,16 +10,21 @@ app.on('ready', function() {
 
   var mainWindow = new BrowserWindow({
     width: screenSize.width,
-    height: screenSize.height
+    height: screenSize.height,
+    webPreferences: {
+      nodeIntegration: false
+    }
   });
 
   mainWindow.on('closed', function() {
     mainWindow = null;
   });
 
-  mainWindow.webContents.on('did-finish-load', function() {
-    mainWindow.show();
+  mainWindow.webContents.on('new-window', function(e, url) {
+    e.preventDefault();
+    require('shell').openExternal(url);
   });
 
   mainWindow.loadURL('https://devspace-app.firebaseapp.com/');
+  mainWindow.show();
 });

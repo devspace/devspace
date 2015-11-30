@@ -1,7 +1,6 @@
 import React from 'react';
 import Rebase from 're-base';
 
-import Scrollbar from 'perfect-scrollbar';
 import { Spinner } from 'elemental/lib/Elemental';
 
 import Add from './add';
@@ -22,12 +21,6 @@ class App extends React.Component {
 	}
 
 	componentDidMount() {
-		var self = this;
-
-		Scrollbar.initialize(this.refs.app, {
-			suppressScrollY: true
-		});
-
 		this.fb = base.syncState(`${this.props.auth.uid}/columns`, {
 			context: this,
 			state: 'columns',
@@ -35,7 +28,7 @@ class App extends React.Component {
 		});
 
 		if (this.props.isFirstLogin) {
-			self.setState({
+			this.setState({
 				columns: [
 					{
 						'icon': 'home',
@@ -60,13 +53,7 @@ class App extends React.Component {
 		}
 	}
 
-	componentDidUpdate() {
-		Scrollbar.update(this.refs.app);
-	}
-
 	componentWillUnmount() {
-		Scrollbar.destroy(this.refs.app);
-
 		base.removeBinding(this.fb);
 	}
 
@@ -103,11 +90,15 @@ class App extends React.Component {
 		});
 	}
 
+	trackExternalLink(event) {
+		ga('send', 'event', 'External Links', 'Click', event.currentTarget.href);
+	}
+
 	render() {
 		return (
-			<div ref="app" className="app">
-				<Nav logout={this.props.logout} toggleAddModal={this.toggleAddModal.bind(this)} />
-				<Columns columns={this.state.columns} accessToken={this.props.auth.github.accessToken} removeColumn={this.removeColumn.bind(this)} />
+			<div className="app">
+				<Nav logout={this.props.logout} toggleAddModal={this.toggleAddModal.bind(this)} trackExternalLink={this.trackExternalLink.bind(this)} />
+				<Columns columns={this.state.columns} accessToken={this.props.auth.github.accessToken} removeColumn={this.removeColumn.bind(this)} trackExternalLink={this.trackExternalLink.bind(this)} />
 				<Add addColumn={this.addColumn.bind(this)} toggleAddModal={this.toggleAddModal.bind(this)} isAddModalOpen={this.state.isAddModalOpen} toggleAddInitialContent={this.toggleAddInitialContent.bind(this)} isAddInitialContent={this.state.isAddInitialContent} />
 			</div>
 		)
