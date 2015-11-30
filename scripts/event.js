@@ -2,10 +2,6 @@ import React from 'react';
 import moment from 'moment';
 
 class Event extends React.Component {
-	shouldComponentUpdate(nextProps, nextState) {
-		return nextProps.details !== this.props.details;
-	}
-
 	render() {
 		var message;
 		var icon;

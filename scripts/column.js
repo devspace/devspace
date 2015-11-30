@@ -51,12 +51,6 @@ class Column extends React.Component {
 		Scrollbar.update(this.refs.content);
 	}
 
-	// shouldComponentUpdate(nextProps, nextState) {
-	// 	return nextProps.details !== this.props.details ||
-	// 		nextState.events !== this.state.events ||
-	// 		nextState.error !== this.state.error;
-	// }
-
 	fetchEvents(details, forceUpdate) {
 		fetch(`https://api.github.com/${details.request.prefix}/${details.request.payload}/${details.request.suffix}`, {
 			headers: {
