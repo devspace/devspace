@@ -46,22 +46,22 @@ class Auth extends React.Component {
 	}
 
 	render() {
-		if (this.props.auth) {
+		if ( this.props.isAuthed ) {
 			return (<App isFirstLogin={this.props.isFirstLogin} auth={this.props.auth} logout={this.logout.bind(this)} />);
-		}
-		else if (!this.props.auth) {
+		} else if ( !this.props.isAuthed  && !this.props.isLoading ) {
 			return (<Home login={this.login.bind(this)}/>);
-		}
-		else {
+		} else {
 			return this.renderLoading();
 		}
 	}
 }
 
 function mapStateToProps(state) {
-	const { auth, isFirstLogin } = state.default;
+	const { auth, isAuthed, isLoading, isFirstLogin } = state.default;
 	return {
 		auth: auth,
+		isAuthed: isAuthed,
+		isLoading: isLoading,
 		isFirstLogin: isFirstLogin
 	}
 }
