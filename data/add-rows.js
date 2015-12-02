@@ -1,3 +1,5 @@
+import * as random from '../data/add-random';
+
 module.exports = {
 	row1: {
 		col1: {
@@ -9,7 +11,7 @@ module.exports = {
 			},
 			form: {
 				label: 'username',
-				placeholder: 'zenorocha',
+				placeholders: random.users,
 				pattern: '[0-9A-Za-z_\.-]+'
 			}
 		},
@@ -22,7 +24,7 @@ module.exports = {
 			},
 			form: {
 				label: 'username',
-				placeholder: 'zenorocha',
+				placeholders: random.users,
 				pattern: '[0-9A-Za-z_\.-]+'
 			}
 		}
@@ -37,7 +39,7 @@ module.exports = {
 			},
 			form: {
 				label: 'repository',
-				placeholder: 'zenorocha/clipboard.js',
+				placeholders: random.repos,
 				pattern: '[0-9A-Za-z-]+[\/][0-9A-Za-z_\.-]+'
 			}
 		},
@@ -50,7 +52,7 @@ module.exports = {
 			},
 			form: {
 				label: 'organization',
-				placeholder: 'facebook',
+				placeholders: random.orgs,
 				pattern: '[0-9A-Za-z_\.-]+'
 			}
 		}

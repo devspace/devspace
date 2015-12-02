@@ -25,6 +25,13 @@ class AddForm extends React.Component {
 		this.props.toggleAddModal();
 	}
 
+	getRandomPlaceholder() {
+		let array = this.props.selectedOption.form.placeholders;
+		let index = Math.floor(Math.random() * array.length);
+
+		return array[index];
+	}
+
 	render() {
 		return (
 			<form id="addForm" onSubmit={this.handleSubmit.bind(this)}>
@@ -37,7 +44,7 @@ class AddForm extends React.Component {
 				</ModalHeader>
 				<ModalBody>
 					<FormField label={`Type a ${this.props.selectedOption.form.label}`} htmlFor="input-repo">
-						<input pattern={this.props.selectedOption.form.pattern} className="FormInput" ref="payload" type="text" placeholder={this.props.selectedOption.form.placeholder} name="input-repo" autoFocus required />
+						<input pattern={this.props.selectedOption.form.pattern} className="FormInput" ref="payload" type="text" placeholder={this.getRandomPlaceholder()} name="input-repo" autoFocus required />
 					</FormField>
 				</ModalBody>
 				<ModalFooter className="add-footer">
