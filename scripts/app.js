@@ -21,11 +21,13 @@ class App extends React.Component {
 	}
 
 	componentDidMount() {
-		this.fb = base.syncState(`${this.props.auth.uid}/columns`, {
+		this.firebaseSync = base.syncState(`${this.props.auth.uid}/columns`, {
 			context: this,
 			state: 'columns',
 			asArray: true
 		});
+
+		this.firebaseRef = new Firebase(`https://devspace-app.firebaseio.com/users/${this.props.auth.uid}`)
 
 		if (this.props.isFirstLogin) {
 			this.setState({
@@ -54,7 +56,8 @@ class App extends React.Component {
 	}
 
 	componentWillUnmount() {
-		base.removeBinding(this.fb);
+		base.removeBinding(this.firebaseSync);
+		delete this.firebaseRef;
 	}
 
 	toggleAddModal() {
@@ -90,15 +93,20 @@ class App extends React.Component {
 		});
 	}
 
-	trackExternalLink(event) {
+	handleExternalLink(event) {
 		ga('send', 'event', 'External Links', 'Click', event.currentTarget.href);
+
+		this.firebaseRef.child('hits').push({
+			href: event.currentTarget.href,
+			timestamp: Date.now()
+		});
 	}
 
 	render() {
 		return (
 			<div className="app">
-				<Nav logout={this.props.logout} toggleAddModal={this.toggleAddModal.bind(this)} trackExternalLink={this.trackExternalLink.bind(this)} />
-				<Columns columns={this.state.columns} accessToken={this.props.auth.github.accessToken} removeColumn={this.removeColumn.bind(this)} trackExternalLink={this.trackExternalLink.bind(this)} />
+				<Nav logout={this.props.logout} toggleAddModal={this.toggleAddModal.bind(this)} handleExternalLink={this.handleExternalLink.bind(this)} />
+				<Columns columns={this.state.columns} accessToken={this.props.auth.github.accessToken} removeColumn={this.removeColumn.bind(this)} handleExternalLink={this.handleExternalLink.bind(this)} />
 				<Add addColumn={this.addColumn.bind(this)} toggleAddModal={this.toggleAddModal.bind(this)} isAddModalOpen={this.state.isAddModalOpen} toggleAddInitialContent={this.toggleAddInitialContent.bind(this)} isAddInitialContent={this.state.isAddInitialContent} />
 			</div>
 		)

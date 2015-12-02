@@ -30,7 +30,7 @@ class Columns extends React.Component {
 	}
 
 	renderColumn(column, key) {
-		return <Column key={key} accessToken={this.props.accessToken} removeColumn={this.props.removeColumn.bind(this, key)} details={column} trackExternalLink={this.props.trackExternalLink} />;
+		return <Column key={key} accessToken={this.props.accessToken} removeColumn={this.props.removeColumn.bind(this, key)} details={column} handleExternalLink={this.props.handleExternalLink} />;
 	}
 
 	renderContent() {
