@@ -1,6 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 
-import Auth from './auth';
+import { configureStore } from './store/configureStore';
 
-ReactDOM.render(<Auth/>, document.querySelector('#wrapper'));
+import Auth from './containers/auth';
+
+const store = configureStore();
+
+ReactDOM.render((
+    <Provider store={store}>
+        <Auth />
+    </Provider>),
+    document.querySelector('#wrapper')
+);
