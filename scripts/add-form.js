@@ -19,7 +19,8 @@ class AddForm extends React.Component {
 				prefix: this.props.selectedOption.request.prefix,
 				suffix: this.props.selectedOption.request.suffix,
 				payload: this.refs.payload.value
-			}
+			},
+			timestamp: Date.now()
 		});
 
 		this.props.toggleAddModal();

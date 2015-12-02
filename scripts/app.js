@@ -39,7 +39,8 @@ class App extends React.Component {
 							'prefix': 'users',
 							'suffix': 'received_events',
 							'payload': this.props.auth.github.username
-						}
+						},
+						timestamp: Date.now()
 					},
 					{
 						'icon': 'person',
@@ -48,7 +49,8 @@ class App extends React.Component {
 							'prefix': 'users',
 							'suffix': 'events',
 							'payload': this.props.auth.github.username
-						}
+						},
+						timestamp: Date.now()
 					}
 				]
 			});
