@@ -10,18 +10,17 @@ class AddForm extends React.Component {
 	handleSubmit(event) {
 		event.preventDefault();
 
-		ga('send', 'event', 'Internal Links', 'Submit', 'Add Form');
-
-		this.props.addColumn({
+		let column = {
 			icon: this.props.selectedOption.icon,
 			title: this.props.selectedOption.title,
 			request: {
 				prefix: this.props.selectedOption.request.prefix,
 				suffix: this.props.selectedOption.request.suffix,
 				payload: this.refs.payload.value
-			},
-			timestamp: Date.now()
-		});
+			}
+		};
+
+		this.props.addColumn(column);
 
 		this.props.toggleAddModal();
 	}

@@ -20,7 +20,7 @@ class Add extends React.Component {
 	}
 
 	setSelectedOption(option) {
-		ga('send', 'event', 'Internal Links', 'Click', `Add Option ${option.title}`);
+		mixpanel.track('Chose Column', option);
 
 		this.setState({
 			selectedOption: option

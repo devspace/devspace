@@ -27,39 +27,38 @@ class App extends React.Component {
 			asArray: true
 		});
 
-		this.firebaseRef = new Firebase(`https://devspace-app.firebaseio.com/users/${this.props.auth.uid}`)
-
 		if (this.props.isFirstLogin) {
-			this.setState({
-				columns: [
-					{
-						'icon': 'home',
-						'title': 'Home',
-						'request': {
-							'prefix': 'users',
-							'suffix': 'received_events',
-							'payload': this.props.auth.github.username
-						},
-						timestamp: Date.now()
-					},
-					{
-						'icon': 'person',
-						'title': 'User',
-						'request': {
-							'prefix': 'users',
-							'suffix': 'events',
-							'payload': this.props.auth.github.username
-						},
-						timestamp: Date.now()
-					}
-				]
-			});
+			this.handleFirstLogin();
 		}
 	}
 
 	componentWillUnmount() {
 		base.removeBinding(this.firebaseSync);
-		delete this.firebaseRef;
+	}
+
+	handleFirstLogin() {
+		this.setState({
+			columns: [
+				{
+					'icon': 'home',
+					'title': 'Home',
+					'request': {
+						'prefix': 'users',
+						'suffix': 'received_events',
+						'payload': this.props.auth.github.username
+					}
+				},
+				{
+					'icon': 'person',
+					'title': 'User',
+					'request': {
+						'prefix': 'users',
+						'suffix': 'events',
+						'payload': this.props.auth.github.username
+					}
+				}
+			]
+		});
 	}
 
 	toggleAddModal() {
@@ -78,7 +77,7 @@ class App extends React.Component {
 	}
 
 	addColumn(newColumn) {
-		ga('send', 'event', 'Internal Links', 'Click', 'Add Column');
+		mixpanel.track('Added Column', newColumn);
 
 		this.setState({
 			columns: this.state.columns.concat([newColumn])
@@ -86,29 +85,20 @@ class App extends React.Component {
 	}
 
 	removeColumn(key) {
-		ga('send', 'event', 'Internal Links', 'Click', 'Remove Column');
+		mixpanel.track('Removed Column', this.state.columns[key]);
 
-		let removeColumn = this.state.columns.splice(key, 1);
+		this.state.columns.splice(key, 1);
 
 		this.setState({
 			columns: this.state.columns
 		});
 	}
 
-	handleExternalLink(event) {
-		ga('send', 'event', 'External Links', 'Click', event.currentTarget.href);
-
-		this.firebaseRef.child('hits').push({
-			href: event.currentTarget.href,
-			timestamp: Date.now()
-		});
-	}
-
 	render() {
 		return (
 			<div className="app">
-				<Nav logout={this.props.logout} toggleAddModal={this.toggleAddModal.bind(this)} handleExternalLink={this.handleExternalLink.bind(this)} />
-				<Columns columns={this.state.columns} accessToken={this.props.auth.github.accessToken} removeColumn={this.removeColumn.bind(this)} handleExternalLink={this.handleExternalLink.bind(this)} />
+				<Nav logout={this.props.logout} toggleAddModal={this.toggleAddModal.bind(this)} />
+				<Columns columns={this.state.columns} accessToken={this.props.auth.github.accessToken} removeColumn={this.removeColumn.bind(this)} />
 				<Add addColumn={this.addColumn.bind(this)} toggleAddModal={this.toggleAddModal.bind(this)} isAddModalOpen={this.state.isAddModalOpen} toggleAddInitialContent={this.toggleAddInitialContent.bind(this)} isAddInitialContent={this.state.isAddInitialContent} />
 			</div>
 		)
