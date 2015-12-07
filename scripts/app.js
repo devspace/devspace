@@ -77,7 +77,10 @@ class App extends React.Component {
 	}
 
 	addColumn(newColumn) {
-		mixpanel.track('Added Column', newColumn);
+		mixpanel.track('Added Column', {
+			title: newColumn.title,
+			request: `${newColumn.request.prefix}/${newColumn.request.payload}/${newColumn.request.suffix}`
+		});
 
 		this.setState({
 			columns: this.state.columns.concat([newColumn])
@@ -85,7 +88,12 @@ class App extends React.Component {
 	}
 
 	removeColumn(key) {
-		mixpanel.track('Removed Column', this.state.columns[key]);
+		let column = this.state.columns[key];
+
+		mixpanel.track('Removed Column', {
+			title: column.title,
+			request: `${column.request.prefix}/${column.request.payload}/${column.request.suffix}`
+		});
 
 		this.state.columns.splice(key, 1);
 
