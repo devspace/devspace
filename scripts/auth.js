@@ -37,18 +37,21 @@ class Auth extends React.Component {
 						});
 					}
 
-					firebase.child(authData.uid).update({
-						user: authData.github
-					}, function(error) {
-						if (error) {
-							self.setState({
-								auth: null
-							});
-						} else {
-							self.setState({
-								auth: authData
-							});
-						}
+					let user = authData.github.cachedUserProfile;
+
+					mixpanel.identify(user.id);
+					mixpanel.people.set({
+						'Avatar': user.avatar_url,
+						'Company': user.company,
+						'Followers': user.followers,
+						'Following': user.following,
+						'Location': user.location,
+						'Login': user.login,
+						'Site': user.blog,
+						'Repos': user.public_repos,
+						'GitHub Created': user.created_at,
+						'$email': user.email,
+						'$name': user.name
 					});
 				});
 			} else {
