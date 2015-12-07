@@ -42,6 +42,7 @@ export function authLoading(isLoading) {
 export function login() {
     return (dispatch, state) => {
         dispatch(authLoading(true));
+
         firebase.authWithOAuthRedirect('github', (err) => {
             if (err) {
                 throw err;

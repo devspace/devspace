@@ -10,7 +10,7 @@ const initialState = {
 };
 
 export default function(state = initialState, action) {
-    switch ( action.type ) {
+    switch (action.type) {
         case types.LOGIN:
             return Object.assign({}, state, {
                 auth: action.auth,

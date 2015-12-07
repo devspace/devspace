@@ -1,11 +1,12 @@
+'use strict';
+
 import React from 'react';
+import ReactMixin from 'react-mixin';
+import TimerMixin from 'react-timer-mixin';
 
 import parse from 'parse-link-header';
 import Scrollbar from 'perfect-scrollbar';
 import { Spinner } from 'elemental/lib/Elemental';
-
-import ReactMixin from 'react-mixin';
-import TimerMixin from 'react-timer-mixin';
 
 import Event from './event';
 

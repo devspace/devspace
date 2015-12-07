@@ -1,3 +1,5 @@
+'use strict';
+
 import React from 'react';
 
 import { ModalBody, ModalFooter, ModalHeader, Row, Col, Card } from 'elemental/lib/Elemental';

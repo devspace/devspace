@@ -1,3 +1,5 @@
+'use strict';
+
 import React from 'react';
 
 import { ModalBody, ModalFooter, ModalHeader, FormField, FormInput, FormIconField, Button } from 'elemental/lib/Elemental';

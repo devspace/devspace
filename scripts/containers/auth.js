@@ -1,15 +1,12 @@
+'use strict';
+
 import 'whatwg-fetch';
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Firebase from 'firebase';
-
 
 import App from './../app';
 import Home from './../components/home';
 
 import { Spinner } from 'elemental/lib/Elemental';
-
-const firebase = new Firebase('https://devspace-app.firebaseio.com/users');
 
 import { connect } from 'react-redux';
 import * as actionCreators from '../actions/authed';
@@ -25,13 +22,12 @@ class Auth extends React.Component {
 	}
 
 	login() {
-		ga('send', 'event', 'Internal Links', 'Click', 'Login');
-
+		mixpanel.track('Logged In');
 		this.props.dispatch(actionCreators.login());
 	}
 
 	logout() {
-		ga('send', 'event', 'Internal Links', 'Click', 'Logout');
+		mixpanel.track('Logged Out');
 		this.props.dispatch(actionCreators.logout());
 	}
 
@@ -46,9 +42,9 @@ class Auth extends React.Component {
 	}
 
 	render() {
-		if ( this.props.isAuthed ) {
+		if (this.props.isAuthed) {
 			return (<App isFirstLogin={this.props.isFirstLogin} auth={this.props.auth} logout={this.logout.bind(this)} />);
-		} else if ( !this.props.isAuthed  && !this.props.isLoading ) {
+		} else if (!this.props.isAuthed && !this.props.isLoading) {
 			return (<Home login={this.login.bind(this)}/>);
 		} else {
 			return this.renderLoading();

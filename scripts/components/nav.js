@@ -1,7 +1,6 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+'use strict';
 
-import Home from './home';
+import React from 'react';
 
 class Nav extends React.Component {
 	shouldComponentUpdate() {
