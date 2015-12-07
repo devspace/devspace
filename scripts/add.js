@@ -22,8 +22,6 @@ class Add extends React.Component {
 	}
 
 	setSelectedOption(option) {
-		mixpanel.track('Chose Column', option.title);
-
 		this.setState({
 			selectedOption: option
 		});
