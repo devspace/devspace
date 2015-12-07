@@ -64,8 +64,6 @@ class App extends React.Component {
 	}
 
 	toggleAddModal() {
-		ga('send', 'event', 'Internal Links', 'Click', 'Toggle Add Modal');
-
 		this.setState({
 			isAddModalOpen: !this.state.isAddModalOpen,
 			isAddInitialContent: true
