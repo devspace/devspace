@@ -10,16 +10,13 @@ import { Spinner } from 'elemental/lib/Elemental';
 
 import Event from '../components/event';
 
-class Column extends React.Component {
-	constructor() {
-		super();
+import { connect } from 'react-redux';
+import * as actionCreators from '../actions/column';
 
-		this.state = {
-			events: undefined,
-			error: undefined,
-			fetchLastModified: '',
-			fetchInterval: undefined
-		};
+class Column extends React.Component {
+	constructor(props) {
+		super(props);
+		const { dispatch } = this.props;
 	}
 
 	componentDidMount() {
@@ -33,9 +30,9 @@ class Column extends React.Component {
 			this.fetchEvents(this.props.details);
 		}, 60 * 1000);
 
-		this.setState({
-			fetchInterval: interval
-		});
+		this.props.dispatch(
+			actionCreators.changeInterval(interval)
+		);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -57,49 +54,49 @@ class Column extends React.Component {
 			headers: {
 				'Authorization': 'token ' + this.props.accessToken,
 				'User-Agent': 'DevSpace',
-				'If-Modified-Since': forceUpdate || this.state.fetchLastModified
+				'If-Modified-Since': forceUpdate || this.props.lastModified
 			}
 		})
 		.then((response) => {
 			let link = parse(response.headers.get('Link'));
 
-			this.setState({
-				fetchLastModified: response.headers.get('Last-Modified')
-			});
+			this.props.dispatch(
+				actionCreators.changeLastModified(response.headers.get('Last-Modified'))
+			);
 
 			if (response.status === 200) {
 				return response.json();
 			} else if (response.status > 400) {
 				throw new Error(response.statusText);
 			} else {
-				return this.state.events;
+				return this.props.events;
 			}
 		})
 		.then((response) => {
 			if (response.length > 0) {
-				this.setState({
-					events: response
-				});
+				this.props.dispatch(
+					actionCreators.changeEvents(response)
+				);
 			}
 			else {
-				this.setState({
-					error: 'No public events'
-				});
+				this.props.dispatch(
+					actionCreators.changeError('No public events')
+				);
 
-				this.clearInterval(this.state.fetchInterval);
+				this.clearInterval(this.props.interval);
 			}
 		})
 		.catch((error) => {
-			this.setState({
-				error: error.message
-			});
+			this.props.dispatch(
+				actionCreators.changeError(error.message)
+			);
 
-			this.clearInterval(this.state.fetchInterval);
+			this.clearInterval(this.props.interval);
 		});
 	}
 
 	renderEvent(event, key) {
-		return <Event key={key} details={this.state.events[key]} />;
+		return <Event key={key} details={this.props.events[key]} />;
 	}
 
 	renderEventLoading() {
@@ -107,14 +104,14 @@ class Column extends React.Component {
 	}
 
 	renderError() {
-		return <div className="column-placeholder centered">{this.state.error}</div>;
+		return <div className="column-placeholder centered">{this.props.error}</div>;
 	}
 
 	renderContent() {
-		if (this.state.events) {
-			return this.state.events.map(this.renderEvent.bind(this));
+		if (this.props.events) {
+			return this.props.events.map(this.renderEvent.bind(this));
 		}
-		else if (this.state.error) {
+		else if (this.props.error) {
 			return this.renderError();
 		}
 		else {
@@ -144,4 +141,14 @@ class Column extends React.Component {
 
 ReactMixin.onClass(Column, TimerMixin);
 
-export default Column;
+function mapStateToProps(state) {
+	const { lastModified, interval, error, events } = state.column;
+	return {
+		lastModified: lastModified,
+		interval: interval,
+		error: error,
+		events: events
+	}
+}
+
+export default connect(mapStateToProps)(Column);
