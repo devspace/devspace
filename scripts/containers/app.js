@@ -6,8 +6,8 @@ import Rebase from 're-base';
 import { Spinner } from 'elemental/lib/Elemental';
 
 import Add from './add';
-import Columns from './components/columns';
-import Nav from './components/nav';
+import Columns from '../components/columns';
+import Nav from '../components/nav';
 
 var base = Rebase.createClass('https://devspace-app.firebaseio.com/users');
 

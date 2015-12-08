@@ -8,7 +8,7 @@ class AddOptions extends React.Component {
 	constructor() {
 		super();
 
-		this.rows = require('../data/add-rows');
+		this.rows = require('../constants/add-rows');
 	}
 
 	shouldComponentUpdate() {

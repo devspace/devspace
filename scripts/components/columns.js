@@ -6,7 +6,7 @@ import Rebase from 're-base';
 import Scrollbar from 'perfect-scrollbar';
 import { Spinner } from 'elemental/lib/Elemental';
 
-import Column from './column';
+import Column from '../containers/column';
 
 class Columns extends React.Component {
 	componentDidMount() {

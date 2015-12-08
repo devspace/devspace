@@ -1,4 +1,4 @@
-import * as random from '../data/add-random';
+import * as random from './add-random';
 
 module.exports = {
 	row1: {

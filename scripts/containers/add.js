@@ -4,8 +4,8 @@ import React from 'react';
 
 import { Modal } from 'elemental/lib/Elemental';
 
-import AddForm from './add-form';
-import AddOptions from './add-options';
+import AddForm from '../components/add-form';
+import AddOptions from '../components/add-options';
 
 class Add extends React.Component {
 	constructor() {

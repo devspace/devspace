@@ -8,7 +8,7 @@ import parse from 'parse-link-header';
 import Scrollbar from 'perfect-scrollbar';
 import { Spinner } from 'elemental/lib/Elemental';
 
-import Event from './event';
+import Event from '../components/event';
 
 class Column extends React.Component {
 	constructor() {

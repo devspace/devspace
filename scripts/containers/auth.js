@@ -3,8 +3,8 @@
 import 'whatwg-fetch';
 import React from 'react';
 
-import App from './../app';
-import Home from './../components/home';
+import App from './app';
+import Home from '../components/home';
 
 import { Spinner } from 'elemental/lib/Elemental';
 
