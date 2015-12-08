@@ -26,7 +26,7 @@ app.on('ready', function() {
     require('shell').openExternal(url);
   });
 
-  mainWindow.loadURL('https://devspace-app.firebaseapp.com/');
+  mainWindow.loadURL('https://app.devspace.io/');
   mainWindow.show();
 
   Menu.setApplicationMenu(Menu.buildFromTemplate(require('./menu')));
