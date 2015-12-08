@@ -71,11 +71,12 @@ export function initAuth() {
                         'Company': user.company,
                         'Followers': user.followers,
                         'Following': user.following,
+                        'GitHub Created': user.created_at,
+                        'ID': user.id,
                         'Location': user.location,
                         'Login': user.login,
-                        'Site': user.blog,
                         'Repos': user.public_repos,
-                        'GitHub Created': user.created_at,
+                        'Site': user.blog,
                         '$email': user.email,
                         '$name': user.name
                     });
