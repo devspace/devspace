@@ -37,23 +37,27 @@ class Auth extends React.Component {
 						});
 					}
 
+					self.setState({
+						auth: authData
+					});
+
 					let user = authData.github.cachedUserProfile;
 
 					mixpanel.identify(user.id);
 					mixpanel.people.set({
-                        'Avatar': user.avatar_url,
-                        'Company': user.company,
-                        'Followers': user.followers,
-                        'Following': user.following,
-                        'GitHub Created': user.created_at,
-                        'ID': user.id,
-                        'Location': user.location,
-                        'Login': user.login,
-                        'Repos': user.public_repos,
-                        'Site': user.blog,
-                        '$email': user.email,
-                        '$name': user.name
-                    });
+						'Avatar': user.avatar_url,
+						'Company': user.company,
+						'Followers': user.followers,
+						'Following': user.following,
+						'GitHub Created': user.created_at,
+						'ID': user.id,
+						'Location': user.location,
+						'Login': user.login,
+						'Repos': user.public_repos,
+						'Site': user.blog,
+						'$email': user.email,
+						'$name': user.name
+					});
 				});
 			} else {
 				self.setState({
