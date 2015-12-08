@@ -53,7 +53,7 @@ class Auth extends React.Component {
 }
 
 function mapStateToProps(state) {
-	const { auth, isAuthed, isLoading, isFirstLogin } = state.default;
+	const { auth, isAuthed, isLoading, isFirstLogin } = state.auth;
 	return {
 		auth: auth,
 		isAuthed: isAuthed,

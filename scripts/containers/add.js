@@ -43,7 +43,8 @@ class Add extends React.Component {
 }
 
 function mapStateToProps(state) {
-	const { selectedOption } = state.default;
+	console.log(state);
+	const { selectedOption } = state.add;
 	return {
 		selectedOption: selectedOption
 	}
