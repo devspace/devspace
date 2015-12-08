@@ -68,7 +68,7 @@ class Auth extends React.Component {
 	}
 
 	login() {
-		mixpanel.track('Login');
+		mixpanel.track('Logged In');
 
 		firebase.authWithOAuthRedirect('github', (err) => {
 			if (err) {
@@ -81,7 +81,7 @@ class Auth extends React.Component {
 	}
 
 	logout() {
-		mixpanel.track('Logout');
+		mixpanel.track('Logged Out');
 
 		this.setState({
 			auth: null
