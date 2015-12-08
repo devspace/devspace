@@ -7,13 +7,13 @@ import { Modal } from 'elemental/lib/Elemental';
 import AddForm from '../components/add-form';
 import AddOptions from '../components/add-options';
 
-class Add extends React.Component {
-	constructor() {
-		super();
+import { connect } from 'react-redux';
+import * as actionCreators from '../actions/add';
 
-		this.state = {
-			selectedOption: {}
-		};
+class Add extends React.Component {
+	constructor(props) {
+		super(props);
+		const { dispatch } = this.props;
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -21,18 +21,15 @@ class Add extends React.Component {
 			nextProps.isAddInitialContent !== this.props.isAddInitialContent;
 	}
 
-	setSelectedOption(option) {
-		this.setState({
-			selectedOption: option
-		});
+	changeSelectedOption(option) {
+		this.props.dispatch(actionCreators.changeSelectedOption(option));
 	}
 
 	renderContent() {
 		if (this.props.isAddInitialContent) {
-			return <AddOptions setSelectedOption={this.setSelectedOption.bind(this)} toggleAddModal={this.props.toggleAddModal} toggleAddInitialContent={this.props.toggleAddInitialContent} />
-		}
-		else {
-			return <AddForm auth={this.props.auth} addColumn={this.props.addColumn} selectedOption={this.state.selectedOption} toggleAddModal={this.props.toggleAddModal} toggleAddInitialContent={this.props.toggleAddInitialContent} />
+			return <AddOptions changeSelectedOption={this.changeSelectedOption.bind(this)} toggleAddModal={this.props.toggleAddModal} toggleAddInitialContent={this.props.toggleAddInitialContent} />
+		} else {
+			return <AddForm auth={this.props.auth} addColumn={this.props.addColumn} selectedOption={this.props.selectedOption} toggleAddModal={this.props.toggleAddModal} toggleAddInitialContent={this.props.toggleAddInitialContent} />
 		}
 	}
 
@@ -45,4 +42,11 @@ class Add extends React.Component {
 	}
 }
 
-export default Add;
+function mapStateToProps(state) {
+	const { selectedOption } = state.default;
+	return {
+		selectedOption: selectedOption
+	}
+}
+
+export default connect(mapStateToProps)(Add);

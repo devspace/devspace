@@ -16,7 +16,7 @@ class AddOptions extends React.Component {
 	}
 
 	handleOption(option) {
-		this.props.setSelectedOption(option);
+		this.props.changeSelectedOption(option);
 		this.props.toggleAddInitialContent();
 	}
 
