@@ -10,7 +10,7 @@ class Nav extends React.Component {
 
 	trackLink(event) {
 		mixpanel.track('Clicked Sidebar', {
-			title: event.currentTarget.title
+			title: event.currentTarget.getAttribute('aria-label')
 		});
 	}
 
@@ -31,7 +31,7 @@ class Nav extends React.Component {
 					<header className="nav-top">
 						<ul className="nav-list">
 							<li className="nav-item">
-								<a className="nav-link" onClick={this.handleAddLink.bind(this)} title="Add column">
+								<a className="nav-link tooltipped tooltipped-e" onClick={this.handleAddLink.bind(this)} aria-label="Add column">
 									<span className="nav-icon octicon octicon-plus"></span>
 								</a>
 							</li>
@@ -40,17 +40,17 @@ class Nav extends React.Component {
 					<footer className="nav-footer">
 						<ul className="nav-list">
 							<li className="nav-item">
-								<a className="nav-link" onClick={this.trackLink.bind(this)} href="https://github.com/devspace/devspace/releases" target="_blank" title="Releases">
+								<a className="nav-link tooltipped tooltipped-e" onClick={this.trackLink.bind(this)} href="https://github.com/devspace/devspace/releases" target="_blank" aria-label="Releases">
 									<span className="nav-icon octicon octicon-megaphone"></span>
 								</a>
 							</li>
 							<li className="nav-item">
-								<a className="nav-link" onClick={this.trackLink.bind(this)} href="https://github.com/devspace/devspace/issues/new" target="_blank" title="Report a bug">
+								<a className="nav-link tooltipped tooltipped-e" onClick={this.trackLink.bind(this)} href="https://github.com/devspace/devspace/issues/new" target="_blank" aria-label="Report a bug">
 									<span className="nav-icon octicon octicon-bug"></span>
 								</a>
 							</li>
 							<li className="nav-item">
-								<a className="nav-link" onClick={this.handleLogoutLink.bind(this)} title="Logout">
+								<a className="nav-link tooltipped tooltipped-e" onClick={this.handleLogoutLink.bind(this)} aria-label="Logout">
 									<span className="nav-icon octicon octicon-sign-out"></span>
 								</a>
 							</li>
