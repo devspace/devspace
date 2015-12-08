@@ -6,7 +6,7 @@ const initialState = {
     selectedOption: {}
 };
 
-export default function(state = initialState, action) {
+export default function add(state = initialState, action) {
     switch (action.type) {
         case types.CHANGE_SELECTED_OPTION:
             return Object.assign({}, state, {

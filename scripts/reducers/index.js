@@ -3,9 +3,12 @@
 import React from 'react';
 import { combineReducers } from 'redux';
 
-import * as authReducers from './auth';
-import * as addReducers from './add';
+import auth from './auth';
+import add from './add';
 
-const combinedReducers = combineReducers(authReducers, addReducers);
+const combinedReducers = combineReducers({
+    auth,
+    add
+});
 
 export default combinedReducers;

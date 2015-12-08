@@ -9,7 +9,7 @@ const initialState = {
     isLoading: true
 };
 
-export default function(state = initialState, action) {
+export default function auth(state = initialState, action) {
     switch (action.type) {
         case types.LOGIN:
             return Object.assign({}, state, {
