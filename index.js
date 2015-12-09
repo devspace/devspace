@@ -2,6 +2,7 @@ var app = require('app');
 var path = require('path');
 var BrowserWindow = require('browser-window');
 var Menu = require('menu');
+var shell = require('shell');
 
 var mainWindow = null;
 
@@ -23,11 +24,15 @@ app.on('ready', function() {
 
   mainWindow.webContents.on('new-window', function(e, url) {
     e.preventDefault();
-    require('shell').openExternal(url);
+    shell.openExternal(url);
   });
 
   mainWindow.loadURL('https://app.devspace.io/');
   mainWindow.show();
 
   Menu.setApplicationMenu(Menu.buildFromTemplate(require('./menu')));
+});
+
+app.on('window-all-closed', function() {
+  app.quit();
 });
