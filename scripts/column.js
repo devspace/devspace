@@ -22,6 +22,8 @@ class Column extends React.Component {
 	}
 
 	componentDidMount() {
+		document.addEventListener('visibilitychange', this.handleVisibility.bind(this));
+
 		Scrollbar.initialize(this.refs.content, {
 			suppressScrollX: true
 		});
@@ -44,11 +46,19 @@ class Column extends React.Component {
 	}
 
 	componentWillUnmount() {
+		document.removeEventListener('visibilitychange', this.handleVisibility.bind(this));
+
 		Scrollbar.destroy(this.refs.content);
 	}
 
 	componentDidUpdate() {
 		Scrollbar.update(this.refs.content);
+	}
+
+	handleVisibility() {
+		if (document.visibilityState === 'visible') {
+			this.fetchEvents(this.props.details);
+		}
 	}
 
 	fetchEvents(details, forceUpdate) {
