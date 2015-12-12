@@ -6,6 +6,16 @@ var shell = require('shell');
 
 var mainWindow = null;
 
+var appURL = 'https://app.devspace.io/';
+
+if (process.env.DEBUG) {
+  appURL = 'http://localhost:8000/';
+
+  require('electron-debug')({
+    showDevTools: true
+  });
+}
+
 app.commandLine.appendSwitch("disable-renderer-backgrounding");
 
 app.on('ready', function() {
@@ -29,7 +39,7 @@ app.on('ready', function() {
     shell.openExternal(url);
   });
 
-  mainWindow.loadURL('https://app.devspace.io/');
+  mainWindow.loadURL(appURL);
   mainWindow.show();
 
   Menu.setApplicationMenu(Menu.buildFromTemplate(require('./menu')));
