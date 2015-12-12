@@ -24,24 +24,23 @@ class Column extends React.Component {
 	componentDidMount() {
 		document.addEventListener('visibilitychange', this.handleVisibility.bind(this));
 
-		Scrollbar.initialize(this.refs.content, {
-			suppressScrollX: true
-		});
+		Scrollbar.initialize(this.refs.content, { suppressScrollX: true });
 
 		this.fetchEvents(this.props.details);
-
-		let interval = this.setInterval(() => {
-			this.fetchEvents(this.props.details);
-		}, 60 * 1000);
-
-		this.setState({
-			fetchInterval: interval
-		});
+		this.startInterval();
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.details !== this.props.details) {
 			this.fetchEvents(nextProps.details, true);
+		}
+
+		if (nextProps.isOnline === true) {
+			this.fetchEvents(this.props.details, true);
+			this.startInterval();
+		}
+		else if (nextProps.isOnline === false) {
+			this.clearInterval(this.state.fetchInterval);
 		}
 	}
 
@@ -56,9 +55,17 @@ class Column extends React.Component {
 	}
 
 	handleVisibility() {
-		if (document.visibilityState === 'visible') {
+		if (document.visibilityState === 'visible' && this.props.isOnline !== false) {
 			this.fetchEvents(this.props.details);
 		}
+	}
+
+	startInterval() {
+		let interval = this.setInterval(() => {
+			this.fetchEvents(this.props.details);
+		}, 60 * 1000);
+
+		this.setState({ fetchInterval: interval });
 	}
 
 	fetchEvents(details, forceUpdate) {

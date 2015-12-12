@@ -4,9 +4,9 @@ import Rebase from 're-base';
 import { Spinner } from 'elemental/lib/Elemental';
 
 import Add from './add';
+import Banner from './banner';
 import Columns from './columns';
 import Nav from './nav';
-import Update from './update';
 
 var base = Rebase.createClass('https://devspace-app.firebaseio.com/users');
 
@@ -16,6 +16,7 @@ class App extends React.Component {
 
 		this.state = {
 			columns: undefined,
+			isOnline: undefined,
 			isAddModalOpen: false,
 			isAddInitialContent: true
 		};
@@ -28,6 +29,9 @@ class App extends React.Component {
 			asArray: true
 		});
 
+		window.addEventListener('online',  this.handleOnlineStatus.bind(this));
+		window.addEventListener('offline',  this.handleOnlineStatus.bind(this));
+
 		if (this.props.isFirstLogin) {
 			this.handleFirstLogin();
 		}
@@ -35,6 +39,19 @@ class App extends React.Component {
 
 	componentWillUnmount() {
 		base.removeBinding(this.firebaseSync);
+
+		window.removeEventListener('online',  this.handleOnlineStatus.bind(this));
+		window.removeEventListener('offline',  this.handleOnlineStatus.bind(this));
+	}
+
+	handleOnlineStatus() {
+		this.setState({ isOnline: navigator.onLine });
+
+		if (navigator.onLine) {
+			setTimeout(() => {
+				this.setState({ isOnline: undefined });
+			}, 2000);
+		}
 	}
 
 	handleFirstLogin() {
@@ -81,9 +98,7 @@ class App extends React.Component {
 			request: `${newColumn.request.prefix}/${newColumn.request.payload}/${newColumn.request.suffix}`
 		});
 
-		this.setState({
-			columns: this.state.columns.concat([newColumn])
-		});
+		this.setState({ columns: this.state.columns.concat([newColumn]) });
 	}
 
 	removeColumn(key) {
@@ -96,16 +111,15 @@ class App extends React.Component {
 
 		this.state.columns.splice(key, 1);
 
-		this.setState({
-			columns: this.state.columns
-		});
+		this.setState({ columns: this.state.columns });
 	}
 
 	render() {
 		return (
 			<div className="app">
+				<Banner isOnline={this.state.isOnline} />
 				<Nav logout={this.props.logout} toggleAddModal={this.toggleAddModal.bind(this)} />
-				<Columns columns={this.state.columns} accessToken={this.props.auth.github.accessToken} removeColumn={this.removeColumn.bind(this)} toggleAddModal={this.toggleAddModal.bind(this)} />
+				<Columns isOnline={this.state.isOnline} columns={this.state.columns} accessToken={this.props.auth.github.accessToken} removeColumn={this.removeColumn.bind(this)} toggleAddModal={this.toggleAddModal.bind(this)} />
 				<Add addColumn={this.addColumn.bind(this)} toggleAddModal={this.toggleAddModal.bind(this)} isAddModalOpen={this.state.isAddModalOpen} toggleAddInitialContent={this.toggleAddInitialContent.bind(this)} isAddInitialContent={this.state.isAddInitialContent} />
 			</div>
 		)

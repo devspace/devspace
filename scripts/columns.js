@@ -8,9 +8,7 @@ import Column from './column';
 
 class Columns extends React.Component {
 	componentDidMount() {
-		Scrollbar.initialize(this.refs.container, {
-			suppressScrollY: true
-		});
+		Scrollbar.initialize(this.refs.container, { suppressScrollY: true });
 	}
 
 	componentDidUpdate() {
@@ -22,7 +20,8 @@ class Columns extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		return nextProps.columns !== this.props.columns;
+		return nextProps.isOnline !== this.props.isOnline ||
+			nextProps.columns !== this.props.columns;
 	}
 
 	renderLoader() {
@@ -40,7 +39,7 @@ class Columns extends React.Component {
 	}
 
 	renderColumn(column, key) {
-		return <Column key={key} accessToken={this.props.accessToken} removeColumn={this.props.removeColumn.bind(this, key)} details={column} />;
+		return <Column key={key} isOnline={this.props.isOnline} accessToken={this.props.accessToken} removeColumn={this.props.removeColumn.bind(this, key)} details={column} />;
 	}
 
 	renderContent() {
