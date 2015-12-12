@@ -2,7 +2,7 @@ import React from 'react';
 import Rebase from 're-base';
 
 import Scrollbar from 'perfect-scrollbar';
-import { Spinner } from 'elemental/lib/Elemental';
+import { Button, Spinner } from 'elemental/lib/Elemental';
 
 import Column from './column';
 
@@ -29,16 +29,29 @@ class Columns extends React.Component {
 		return <div className="centered"><Spinner size="md" /></div>
 	}
 
+	renderBlank() {
+		return (
+			<div className="columns-blank centered">
+				<span className="columns-blank-icon octicon octicon-squirrel"></span>
+				<p className="columns-blank-title">You don't have any columns</p>
+				<Button className="columns-blank-btn" size="lg" onClick={this.props.toggleAddModal}>Add a column</Button>
+			</div>
+		)
+	}
+
 	renderColumn(column, key) {
 		return <Column key={key} accessToken={this.props.accessToken} removeColumn={this.props.removeColumn.bind(this, key)} details={column} />;
 	}
 
 	renderContent() {
-		if (this.props.columns) {
-			return this.props.columns.map(this.renderColumn.bind(this));
-		}
-		else {
+		if (!this.props.columns) {
 			return this.renderLoader();
+		}
+		else if (this.props.columns.length === 0) {
+			return this.renderBlank();
+		}
+		else if (this.props.columns.length > 0) {
+			return this.props.columns.map(this.renderColumn.bind(this));
 		}
 	}
 
