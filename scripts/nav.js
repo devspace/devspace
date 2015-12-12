@@ -1,7 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-
-import Home from './home';
 
 class Nav extends React.Component {
 	shouldComponentUpdate() {
@@ -39,11 +36,6 @@ class Nav extends React.Component {
 					</header>
 					<footer className="nav-footer">
 						<ul className="nav-list">
-							<li className="nav-item">
-								<a className="nav-link tooltipped tooltipped-e" onClick={this.trackLink.bind(this)} href="https://github.com/devspace/devspace/releases" target="_blank" aria-label="Releases">
-									<span className="nav-icon octicon octicon-megaphone"></span>
-								</a>
-							</li>
 							<li className="nav-item">
 								<a className="nav-link tooltipped tooltipped-e" onClick={this.trackLink.bind(this)} href="https://github.com/devspace/devspace/issues/new" target="_blank" aria-label="Report a bug">
 									<span className="nav-icon octicon octicon-bug"></span>
