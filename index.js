@@ -6,6 +6,8 @@ var shell = require('shell');
 
 var mainWindow = null;
 
+app.commandLine.appendSwitch("disable-renderer-backgrounding");
+
 app.on('ready', function() {
   var screen = require('screen');
   var screenSize = screen.getPrimaryDisplay().workAreaSize;
