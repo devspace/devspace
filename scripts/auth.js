@@ -45,6 +45,8 @@ class Auth extends React.Component {
 
 					mixpanel.identify(user.id);
 					mixpanel.people.set({
+						'$email': authData.github.email,
+						'$name': user.name,
 						'Avatar': user.avatar_url,
 						'Company': user.company,
 						'Followers': user.followers,
@@ -54,9 +56,7 @@ class Auth extends React.Component {
 						'Location': user.location,
 						'Login': user.login,
 						'Repos': user.public_repos,
-						'Site': user.blog,
-						'$email': user.email,
-						'$name': user.name
+						'Site': user.blog
 					});
 				});
 			} else {
