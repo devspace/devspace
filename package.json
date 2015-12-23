@@ -1,6 +1,6 @@
 {
   "name": "devspace",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-alpha.4",
   "main": "index.js",
   "dependencies": {
     "babel": "5.8.23",
@@ -35,6 +35,6 @@
   },
   "scripts": {
     "start": "electron .",
-    "build": "electron-packager . DevSpace --platform=darwin --arch=x64 --version=0.35.1 --icon=images/icon-mac.icns --ignore=\"node_modules|scripts|styles|dist\" --out=dist --overwrite=true --app-version=\"1.0.0-alpha.3\""
+    "build": "electron-packager . DevSpace --platform=darwin --arch=x64 --version=0.35.1 --icon=images/icon-mac.icns --ignore=\"node_modules|scripts|styles|dist\" --out=dist --overwrite=true --app-version=\"1.0.0-alpha.4\""
   }
 }
