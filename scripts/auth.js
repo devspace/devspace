@@ -76,7 +76,7 @@ class Auth extends React.Component {
 				return;
 			}
 		}, {
-			scope: 'notifications'
+			scope: 'user,repo'
 		});
 	}
 
