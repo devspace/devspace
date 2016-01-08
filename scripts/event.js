@@ -82,7 +82,7 @@ class Event extends React.Component {
 			case 'MemberEvent':
 				icon = 'person';
 				message = (
-					<span> added <a className="event-link" href={`https://github.com/${payload.member.login}`}>{payload.member.login}</a> to <a className="event-link" href={`https://github.com/${repo}`} onClick={this.trackLink.bind(this)} target="_blank">{repo}</a></span>
+					<span> added <a className="event-link" href={`https://github.com/${payload.member.login}`} onClick={this.trackLink.bind(this)} target="_blank">{payload.member.login}</a> to <a className="event-link" href={`https://github.com/${repo}`} onClick={this.trackLink.bind(this)} target="_blank">{repo}</a></span>
 				);
 				break;
 			case 'PublicEvent':
