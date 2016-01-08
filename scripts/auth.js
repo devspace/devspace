@@ -8,7 +8,7 @@ import Home from './home';
 
 import { Spinner } from 'elemental/lib/Elemental';
 
-const firebase = new Firebase('https://devspace-app.firebaseio.com/users');
+const firebase = new Firebase('https://devspace-app.firebaseio.com/v1/users');
 
 class Auth extends React.Component {
 	constructor() {

@@ -8,7 +8,7 @@ import Banner from './banner';
 import Columns from './columns';
 import Nav from './nav';
 
-var base = Rebase.createClass('https://devspace-app.firebaseio.com/users');
+var base = Rebase.createClass('https://devspace-app.firebaseio.com/v1/users');
 
 class App extends React.Component {
 	constructor() {
@@ -58,20 +58,12 @@ class App extends React.Component {
 		this.setState({
 			columns: [
 				{
-					'title': 'Home',
-					'request': {
-						'prefix': 'users',
-						'suffix': 'received_events',
-						'payload': this.props.auth.github.username
-					}
+					'type': 'Home',
+					'payload': this.props.auth.github.username
 				},
 				{
-					'title': 'User',
-					'request': {
-						'prefix': 'users',
-						'suffix': 'events',
-						'payload': this.props.auth.github.username
-					}
+					'type': 'User',
+					'payload': this.props.auth.github.username
 				}
 			]
 		});
@@ -92,8 +84,8 @@ class App extends React.Component {
 
 	addColumn(newColumn) {
 		mixpanel.track('Added Column', {
-			title: newColumn.title,
-			request: `${newColumn.request.prefix}/${newColumn.request.payload}/${newColumn.request.suffix}`
+			type: newColumn.type,
+			payload: newColumn.payload
 		});
 
 		this.setState({ columns: this.state.columns.concat([newColumn]) });
@@ -103,8 +95,8 @@ class App extends React.Component {
 		let column = this.state.columns[key];
 
 		mixpanel.track('Removed Column', {
-			title: column.title,
-			request: `${column.request.prefix}/${column.request.payload}/${column.request.suffix}`
+			type: column.type,
+			payload: column.payload
 		});
 
 		this.state.columns.splice(key, 1);

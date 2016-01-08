@@ -13,12 +13,8 @@ class AddForm extends React.Component {
 		event.preventDefault();
 
 		let column = {
-			title: this.props.selectedOption.title,
-			request: {
-				prefix: this.props.selectedOption.request.prefix,
-				suffix: this.props.selectedOption.request.suffix,
-				payload: this.refs.payload.value
-			}
+			type: this.props.selectedOption.type,
+			payload: this.refs.payload.value
 		};
 
 		this.props.addColumn(column);
@@ -39,8 +35,8 @@ class AddForm extends React.Component {
 				<ModalHeader>
 					<button className="Modal__header__close" onClick={this.props.toggleAddModal} type="button"></button>
 					<h4 className="Modal__header__text">
-						<span className={"octicon octicon-" + getIcon(this.props.selectedOption.title)}></span>
-						{this.props.selectedOption.title}
+						<span className={"octicon octicon-" + getIcon(this.props.selectedOption.type)}></span>
+						{this.props.selectedOption.type}
 					</h4>
 				</ModalHeader>
 				<ModalBody>

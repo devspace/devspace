@@ -19,6 +19,23 @@ exports.getIcon = function(type) {
 	return icon;
 };
 
-exports.getURL = function(details) {
-	return `https://api.github.com/${details.request.prefix}/${details.request.payload}/${details.request.suffix}`;
+exports.getURL = function(type, payload) {
+	let endpoint;
+
+	switch (type) {
+		case 'Home':
+			endpoint = `users/${payload}/received_events`;
+			break;
+		case 'User':
+			endpoint = `users/${payload}/events`;
+			break;
+		case 'Repository':
+			endpoint = `repos/${payload}/events`;
+			break;
+		case 'Organization':
+			endpoint = `orgs/${payload}/events`;
+			break;
+	}
+
+	return `https://api.github.com/${endpoint}`;
 };

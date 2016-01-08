@@ -3,11 +3,7 @@ import * as random from '../data/add-random';
 module.exports = {
 	row1: {
 		col1: {
-			title: 'Home',
-			request: {
-				prefix: 'users',
-				suffix: 'received_events'
-			},
+			type: 'Home',
 			form: {
 				label: 'username',
 				placeholders: random.users,
@@ -15,11 +11,7 @@ module.exports = {
 			}
 		},
 		col2: {
-			title: 'User',
-			request: {
-				prefix: 'users',
-				suffix: 'events'
-			},
+			type: 'User',
 			form: {
 				label: 'username',
 				placeholders: random.users,
@@ -29,11 +21,7 @@ module.exports = {
 	},
 	row2: {
 		col3: {
-			title: 'Repository',
-			request: {
-				prefix: 'repos',
-				suffix: 'events'
-			},
+			type: 'Repository',
 			form: {
 				label: 'repository',
 				placeholders: random.repos,
@@ -41,11 +29,7 @@ module.exports = {
 			}
 		},
 		col4: {
-			title: 'Organization',
-			request: {
-				prefix: 'orgs',
-				suffix: 'events'
-			},
+			type: 'Organization',
 			form: {
 				label: 'organization',
 				placeholders: random.orgs,

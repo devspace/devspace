@@ -8,7 +8,7 @@ import ReactMixin from 'react-mixin';
 import TimerMixin from 'react-timer-mixin';
 
 import Event from './event';
-import { getIcon, getURL } from '../data/column';
+import { getURL, getIcon } from '../data/column';
 
 class Column extends React.Component {
 	constructor() {
@@ -70,7 +70,7 @@ class Column extends React.Component {
 	}
 
 	fetchEvents(details, forceUpdate) {
-		fetch(getURL(details), {
+		fetch(getURL(this.props.details.type, this.props.details.payload), {
 			headers: {
 				'User-Agent': 'DevSpace',
 				'Authorization': 'token ' + this.props.github.accessToken,
@@ -150,8 +150,8 @@ class Column extends React.Component {
 				<div className="column-container">
 					<header className="column-header">
 						<h1 className="column-header-title">
-							<span className={"octicon octicon-" + getIcon(this.props.details.title)}></span>
-							{this.props.details.request.payload}
+							<span className={"octicon octicon-" + getIcon(this.props.details.type)}></span>
+							{this.props.details.payload}
 							<span className="octicon octicon-x" onClick={this.props.removeColumn.bind(this)}></span>
 						</h1>
 					</header>
