@@ -39,7 +39,7 @@ class Columns extends React.Component {
 	}
 
 	renderColumn(column, key) {
-		return <Column key={key} isOnline={this.props.isOnline} accessToken={this.props.accessToken} removeColumn={this.props.removeColumn.bind(this, key)} details={column} />;
+		return <Column key={key} isOnline={this.props.isOnline} github={this.props.github} removeColumn={this.props.removeColumn.bind(this, key)} details={column} />;
 	}
 
 	renderContent() {

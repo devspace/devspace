@@ -119,7 +119,7 @@ class App extends React.Component {
 			<div className="app">
 				<Banner isOnline={this.state.isOnline} />
 				<Nav logout={this.props.logout} toggleAddModal={this.toggleAddModal.bind(this)} />
-				<Columns isOnline={this.state.isOnline} columns={this.state.columns} accessToken={this.props.auth.github.accessToken} removeColumn={this.removeColumn.bind(this)} toggleAddModal={this.toggleAddModal.bind(this)} />
+				<Columns isOnline={this.state.isOnline} columns={this.state.columns} github={this.props.auth.github} removeColumn={this.removeColumn.bind(this)} toggleAddModal={this.toggleAddModal.bind(this)} />
 				<Add addColumn={this.addColumn.bind(this)} toggleAddModal={this.toggleAddModal.bind(this)} isAddModalOpen={this.state.isAddModalOpen} toggleAddInitialContent={this.toggleAddInitialContent.bind(this)} isAddInitialContent={this.state.isAddInitialContent} />
 			</div>
 		)

@@ -16,8 +16,8 @@ class Column extends React.Component {
 		this.state = {
 			events: undefined,
 			error: undefined,
-			fetchLastModified: '',
-			fetchInterval: undefined
+			lastModified: undefined,
+			interval: undefined
 		};
 	}
 
@@ -40,7 +40,7 @@ class Column extends React.Component {
 			this.startInterval();
 		}
 		else if (nextProps.isOnline === false) {
-			this.clearInterval(this.state.fetchInterval);
+			this.clearInterval(this.state.interval);
 		}
 	}
 
@@ -65,53 +65,58 @@ class Column extends React.Component {
 			this.fetchEvents(this.props.details);
 		}, 60 * 1000);
 
-		this.setState({ fetchInterval: interval });
+		this.setState({ interval: interval });
 	}
 
 	fetchEvents(details, forceUpdate) {
 		fetch(`https://api.github.com/${details.request.prefix}/${details.request.payload}/${details.request.suffix}`, {
 			headers: {
-				'Authorization': 'token ' + this.props.accessToken,
+				'Authorization': 'token ' + this.props.github.accessToken,
 				'User-Agent': 'DevSpace',
-				'If-Modified-Since': forceUpdate || this.state.fetchLastModified
+				'If-Modified-Since': forceUpdate || this.state.lastModified
 			}
 		})
-		.then((response) => {
-			let link = parse(response.headers.get('Link'));
+		.then(this.fetchParseResponse.bind(this))
+		.then(this.fetchHandleResponse.bind(this))
+		.catch(this.fetchHandleError.bind(this));
+	}
 
-			this.setState({
-				fetchLastModified: response.headers.get('Last-Modified')
-			});
+	fetchParseResponse(response) {
+		let link = parse(response.headers.get('Link'));
 
-			if (response.status === 200) {
-				return response.json();
-			} else if (response.status > 400) {
-				throw new Error(response.statusText);
-			} else {
-				return this.state.events;
-			}
-		})
-		.then((response) => {
-			if (response.length > 0) {
-				this.setState({
-					events: response
-				});
-			}
-			else {
-				this.setState({
-					error: 'No public events'
-				});
-
-				this.clearInterval(this.state.fetchInterval);
-			}
-		})
-		.catch((error) => {
-			this.setState({
-				error: error.message
-			});
-
-			this.clearInterval(this.state.fetchInterval);
+		this.setState({
+			lastModified: response.headers.get('Last-Modified')
 		});
+
+		if (response.status === 200) {
+			return response.json();
+		} else if (response.status > 400) {
+			throw new Error(response.statusText);
+		} else {
+			return this.state.events;
+		}
+	}
+
+	fetchHandleResponse(response) {
+		if (response.length > 0) {
+			this.setState({
+				events: response
+			});
+		} else {
+			this.setError('No public events');
+		}
+	}
+
+	fetchHandleError(error) {
+		this.setError(error.message);
+	}
+
+	setError(message) {
+		this.setState({
+			error: message
+		});
+
+		this.clearInterval(this.state.interval);
 	}
 
 	renderEvent(event, key) {
