@@ -1,4 +1,4 @@
-exports.icon = function(type) {
+exports.getIcon = function(type) {
 	let icon;
 
 	switch (type) {
@@ -17,4 +17,8 @@ exports.icon = function(type) {
 	}
 
 	return icon;
+};
+
+exports.getURL = function(details) {
+	return `https://api.github.com/${details.request.prefix}/${details.request.payload}/${details.request.suffix}`;
 };

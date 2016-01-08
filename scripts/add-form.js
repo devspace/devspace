@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ModalBody, ModalFooter, ModalHeader, FormField, FormInput, FormIconField, Button } from 'elemental/lib/Elemental';
 
-import { icon } from '../data/column';
+import { getIcon } from '../data/column';
 
 class AddForm extends React.Component {
 	shouldComponentUpdate() {
@@ -39,7 +39,7 @@ class AddForm extends React.Component {
 				<ModalHeader>
 					<button className="Modal__header__close" onClick={this.props.toggleAddModal} type="button"></button>
 					<h4 className="Modal__header__text">
-						<span className={"octicon octicon-" + icon(this.props.selectedOption.title)}></span>
+						<span className={"octicon octicon-" + getIcon(this.props.selectedOption.title)}></span>
 						{this.props.selectedOption.title}
 					</h4>
 				</ModalHeader>
