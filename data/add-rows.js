@@ -3,7 +3,6 @@ import * as random from '../data/add-random';
 module.exports = {
 	row1: {
 		col1: {
-			icon: 'home',
 			title: 'Home',
 			request: {
 				prefix: 'users',
@@ -16,7 +15,6 @@ module.exports = {
 			}
 		},
 		col2: {
-			icon: 'person',
 			title: 'User',
 			request: {
 				prefix: 'users',
@@ -31,7 +29,6 @@ module.exports = {
 	},
 	row2: {
 		col3: {
-			icon: 'repo',
 			title: 'Repository',
 			request: {
 				prefix: 'repos',
@@ -44,7 +41,6 @@ module.exports = {
 			}
 		},
 		col4: {
-			icon: 'organization',
 			title: 'Organization',
 			request: {
 				prefix: 'orgs',

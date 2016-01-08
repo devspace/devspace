@@ -2,6 +2,8 @@ import React from 'react';
 
 import { ModalBody, ModalFooter, ModalHeader, Row, Col, Card } from 'elemental/lib/Elemental';
 
+import { icon } from '../data/column';
+
 class AddOptions extends React.Component {
 	constructor() {
 		super();
@@ -35,7 +37,7 @@ class AddOptions extends React.Component {
 			<Col key={colKey} sm="1/2">
 				<button type="button" className="add-button" onClick={this.handleOption.bind(this, col)}>
 					<Card className="add-card">
-						<span className={"add-icon octicon octicon-" + col.icon}></span>
+						<span className={"add-icon octicon octicon-" + icon(col.title)}></span>
 						<h1 className="add-title">{col.title}</h1>
 					</Card>
 				</button>

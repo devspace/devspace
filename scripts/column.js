@@ -8,6 +8,7 @@ import ReactMixin from 'react-mixin';
 import TimerMixin from 'react-timer-mixin';
 
 import Event from './event';
+import { icon } from '../data/column';
 
 class Column extends React.Component {
 	constructor() {
@@ -149,7 +150,7 @@ class Column extends React.Component {
 				<div className="column-container">
 					<header className="column-header">
 						<h1 className="column-header-title">
-							<span className={"octicon octicon-" + this.props.details.icon}></span>
+							<span className={"octicon octicon-" + icon(this.props.details.title)}></span>
 							{this.props.details.request.payload}
 							<span className="octicon octicon-x" onClick={this.props.removeColumn.bind(this)}></span>
 						</h1>

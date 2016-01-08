@@ -58,7 +58,6 @@ class App extends React.Component {
 		this.setState({
 			columns: [
 				{
-					'icon': 'home',
 					'title': 'Home',
 					'request': {
 						'prefix': 'users',
@@ -67,7 +66,6 @@ class App extends React.Component {
 					}
 				},
 				{
-					'icon': 'person',
 					'title': 'User',
 					'request': {
 						'prefix': 'users',

@@ -2,6 +2,8 @@ import React from 'react';
 
 import { ModalBody, ModalFooter, ModalHeader, FormField, FormInput, FormIconField, Button } from 'elemental/lib/Elemental';
 
+import { icon } from '../data/column';
+
 class AddForm extends React.Component {
 	shouldComponentUpdate() {
 		return false;
@@ -11,7 +13,6 @@ class AddForm extends React.Component {
 		event.preventDefault();
 
 		let column = {
-			icon: this.props.selectedOption.icon,
 			title: this.props.selectedOption.title,
 			request: {
 				prefix: this.props.selectedOption.request.prefix,
@@ -38,7 +39,7 @@ class AddForm extends React.Component {
 				<ModalHeader>
 					<button className="Modal__header__close" onClick={this.props.toggleAddModal} type="button"></button>
 					<h4 className="Modal__header__text">
-						<span className={"octicon octicon-" + this.props.selectedOption.icon}></span>
+						<span className={"octicon octicon-" + icon(this.props.selectedOption.title)}></span>
 						{this.props.selectedOption.title}
 					</h4>
 				</ModalHeader>
