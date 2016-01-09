@@ -70,7 +70,7 @@ class Column extends React.Component {
 	}
 
 	fetchEvents(details, forceUpdate) {
-		fetch(getURL(this.props.details.type, this.props.details.payload), {
+		fetch(getURL(this.props.details.type, this.props.details.payload, this.props.github.username), {
 			headers: {
 				'User-Agent': 'DevSpace',
 				'Authorization': 'token ' + this.props.github.accessToken,

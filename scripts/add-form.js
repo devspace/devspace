@@ -1,25 +1,67 @@
 import React from 'react';
 
-import { ModalBody, ModalFooter, ModalHeader, FormField, FormInput, FormIconField, Button } from 'elemental/lib/Elemental';
+import { ModalBody, ModalFooter, ModalHeader, FormField, FormInput, FormIconField, Button, Spinner } from 'elemental/lib/Elemental';
 
 import { getIcon } from '../data/column';
 
 class AddForm extends React.Component {
-	shouldComponentUpdate() {
-		return false;
+	constructor() {
+		super();
+
+		this.state = {
+			checkingOrgMembership: false
+		};
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		return nextState.checkingOrgMembership !== this.state.checkingOrgMembership;
+	}
+
+	checkOrgMembership(type, payload, github) {
+		let self = this;
+
+		return new Promise(function(resolve, reject) {
+			if (type !== 'Organization') {
+				resolve(type);
+			} else {
+				self.setState({ checkingOrgMembership: true });
+
+				fetch(`https://api.github.com/orgs/${payload}/members/${github.username}`, {
+					headers: {
+						'User-Agent': 'DevSpace',
+						'Authorization': 'token ' + github.accessToken
+					}
+				})
+				.then(function(response) {
+					self.setState({ checkingOrgMembership: false });
+
+					if (response.status === 204 || response.status === 302) {
+						resolve('Organization (Private)');
+					} else {
+						resolve('Organization');
+					}
+				})
+				.catch(function() {
+					resolve('Organization');
+				});
+			}
+		});
 	}
 
 	handleSubmit(event) {
+		let self = this;
+
 		event.preventDefault();
 
-		let column = {
-			type: this.props.selectedOption.type,
-			payload: this.refs.payload.value
-		};
+		this.checkOrgMembership(self.props.selectedOption.type, self.refs.payload.value, self.props.github)
+			.then(function(type) {
+				self.props.addColumn({
+					type: type,
+					payload: self.refs.payload.value
+				});
 
-		this.props.addColumn(column);
-
-		this.props.toggleAddModal();
+				self.props.toggleAddModal();
+			});
 	}
 
 	getRandomPlaceholder() {
@@ -27,6 +69,22 @@ class AddForm extends React.Component {
 		let index = Math.floor(Math.random() * array.length);
 
 		return array[index];
+	}
+
+	renderButton() {
+		if (this.state.checkingOrgMembership) {
+			return (
+				<Button disabled className="add-btn-primary" type="hollow-primary" submit={true}>
+					<Spinner type="primary"/>Add Column
+				</Button>
+			)
+		} else {
+			return (
+				<Button className="add-btn-primary" type="hollow-primary" submit={true}>
+					Add Column
+				</Button>
+			)
+		}
 	}
 
 	render() {
@@ -45,7 +103,7 @@ class AddForm extends React.Component {
 					</FormField>
 				</ModalBody>
 				<ModalFooter className="add-footer">
-					<Button className="add-btn-primary" type="hollow-primary" submit={true}>Add Column</Button>
+					{this.renderButton()}
 					<Button className="add-btn-secondary" type="link-text" onClick={this.props.toggleAddInitialContent}>
 						<span className="octicon octicon-chevron-left"></span>Back
 					</Button>

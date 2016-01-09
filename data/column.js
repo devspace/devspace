@@ -14,12 +14,15 @@ exports.getIcon = function(type) {
 		case 'Organization':
 			icon = 'organization';
 			break;
+		case 'Organization (Private)':
+			icon = 'organization';
+			break;
 	}
 
 	return icon;
 };
 
-exports.getURL = function(type, payload) {
+exports.getURL = function(type, payload, username) {
 	let endpoint;
 
 	switch (type) {
@@ -34,6 +37,9 @@ exports.getURL = function(type, payload) {
 			break;
 		case 'Organization':
 			endpoint = `orgs/${payload}/events`;
+			break;
+		case 'Organization (Private)':
+			endpoint = `users/${username}/events/orgs/${payload}`;
 			break;
 	}
 
