@@ -18,13 +18,11 @@ class AddForm extends React.Component {
 	}
 
 	checkOrgMembership(type, payload, github) {
-		let self = this;
-
 		return new Promise(function(resolve, reject) {
 			if (type !== 'Organization') {
 				resolve(type);
 			} else {
-				self.setState({ checkingOrgMembership: true });
+				this.setState({ checkingOrgMembership: true });
 
 				fetch(`https://api.github.com/orgs/${payload}/members/${github.username}`, {
 					headers: {
@@ -32,8 +30,8 @@ class AddForm extends React.Component {
 						'Authorization': 'token ' + github.accessToken
 					}
 				})
-				.then(function(response) {
-					self.setState({ checkingOrgMembership: false });
+				.then((response) => {
+					this.setState({ checkingOrgMembership: false });
 
 					if (response.status === 204 || response.status === 302) {
 						resolve('Organization (Private)');
@@ -41,7 +39,7 @@ class AddForm extends React.Component {
 						resolve('Organization');
 					}
 				})
-				.catch(function() {
+				.then(() => {
 					resolve('Organization');
 				});
 			}
@@ -49,18 +47,16 @@ class AddForm extends React.Component {
 	}
 
 	handleSubmit(event) {
-		let self = this;
-
 		event.preventDefault();
 
-		this.checkOrgMembership(self.props.selectedOption.type, self.refs.payload.value, self.props.github)
-			.then(function(type) {
-				self.props.addColumn({
+		this.checkOrgMembership(this.props.selectedOption.type, this.refs.payload.value, this.props.github)
+			.then((type) => {
+				this.props.addColumn({
 					type: type,
-					payload: self.refs.payload.value
+					payload: this.refs.payload.value
 				});
 
-				self.props.toggleAddModal();
+				this.props.toggleAddModal();
 			});
 	}
 
