@@ -1,5 +1,6 @@
 import React from 'react';
 
+import request from 'superagent';
 import parse from 'parse-link-header';
 import Scrollbar from 'perfect-scrollbar';
 import { Spinner } from 'elemental/lib/Elemental';
@@ -70,46 +71,37 @@ class Column extends React.Component {
 	}
 
 	fetchEvents(details, forceUpdate) {
-		fetch(getURL(this.props.details.type, this.props.details.payload, this.props.github.username), {
-			headers: {
-				'User-Agent': 'DevSpace',
-				'Authorization': 'token ' + this.props.github.accessToken,
-				'If-Modified-Since': forceUpdate || this.state.lastModified
-			}
-		})
-		.then(this.fetchParseResponse.bind(this))
-		.then(this.fetchHandleResponse.bind(this))
-		.catch(this.fetchHandleError.bind(this));
+		request
+			.get(getURL(details.type, details.payload, this.props.github.username))
+			.set('Authorization', 'token ' + this.props.github.accessToken)
+			.set('If-Modified-Since', forceUpdate || this.state.lastModified)
+			.end(this.handleResponse.bind(this));
 	}
 
-	fetchParseResponse(response) {
-		let link = parse(response.headers.get('Link'));
-
-		this.setState({
-			lastModified: response.headers.get('Last-Modified')
-		});
-
+	handleResponse(error, response) {
 		if (response.status === 200) {
-			return response.json();
+			this.setResponse(response);
 		} else if (response.status > 400) {
-			throw new Error(response.statusText);
+			this.setError(response.statusText);
 		} else {
 			return this.state.events;
 		}
 	}
 
-	fetchHandleResponse(response) {
-		if (response.length > 0) {
+	setResponse(response) {
+		let link = parse(response.headers['link']);
+
+		this.setState({
+			lastModified: response.headers['last-modified']
+		});
+
+		if (response.body.length > 0) {
 			this.setState({
-				events: response
+				events: response.body
 			});
 		} else {
 			this.setError('No public events');
 		}
-	}
-
-	fetchHandleError(error) {
-		this.setError(error.message);
 	}
 
 	setError(message) {

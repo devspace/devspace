@@ -1,5 +1,6 @@
 import React from 'react';
 
+import request from 'superagent';
 import { ModalBody, ModalFooter, ModalHeader, FormField, FormInput, FormIconField, Button, Spinner } from 'elemental/lib/Elemental';
 
 import { getIcon } from '../data/column';
@@ -17,31 +18,33 @@ class AddForm extends React.Component {
 		return nextState.checkingOrgMembership !== this.state.checkingOrgMembership;
 	}
 
-	checkOrgMembership(type, payload, github) {
-		return new Promise(function(resolve, reject) {
-			if (type !== 'Organization') {
-				resolve(type);
+	checkOrgMembership(payload) {
+		return new Promise((resolve, reject) => {
+			if (this.props.selectedOption.type !== 'Organization') {
+				resolve(this.props.selectedOption.type);
 			} else {
-				this.setState({ checkingOrgMembership: true });
-
-				fetch(`https://api.github.com/orgs/${payload}/members/${github.username}`, {
-					headers: {
-						'User-Agent': 'DevSpace',
-						'Authorization': 'token ' + github.accessToken
-					}
-				})
-				.then((response) => {
-					this.setState({ checkingOrgMembership: false });
-
-					if (response.status === 204 || response.status === 302) {
-						resolve('Organization (Private)');
-					} else {
-						resolve('Organization');
-					}
-				})
-				.then(() => {
-					resolve('Organization');
+				this.setState({
+					checkingOrgMembership: true
 				});
+
+				request
+					.get(`https://api.github.com/orgs/${payload}/members/${this.props.github.username}`)
+					.set('Authorization', 'token ' + this.props.github.accessToken)
+					.end((error, response) => {
+						if (error) {
+							resolve('Organization');
+						} else {
+							this.setState({
+								checkingOrgMembership: false
+							});
+
+							if (response.status === 204 || response.status === 302) {
+								resolve('Organization (Private)');
+							} else {
+								resolve('Organization');
+							}
+						}
+					});
 			}
 		});
 	}
@@ -49,15 +52,14 @@ class AddForm extends React.Component {
 	handleSubmit(event) {
 		event.preventDefault();
 
-		this.checkOrgMembership(this.props.selectedOption.type, this.refs.payload.value, this.props.github)
-			.then((type) => {
-				this.props.addColumn({
-					type: type,
-					payload: this.refs.payload.value
-				});
-
-				this.props.toggleAddModal();
+		this.checkOrgMembership(this.refs.payload.value).then((type) => {
+			this.props.addColumn({
+				type: type,
+				payload: this.refs.payload.value
 			});
+
+			this.props.toggleAddModal();
+		});
 	}
 
 	getRandomPlaceholder() {
