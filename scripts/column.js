@@ -81,25 +81,25 @@ class Column extends React.Component {
 	}
 
 	handleResponse(error, response) {
-		if (response && response.status === 200) {
-			this.setResponse(response);
-		} else if (response && response.status > 400) {
-			this.setError(response.statusText);
-		} else {
-			return this.state.events;
-		}
-	}
-
-	setResponse(response) {
 		let link = parse(response.headers['link']);
 
 		this.setState({
 			lastModified: response.headers['last-modified']
 		});
 
-		if (response.body.length > 0) {
+		if (response && response.status === 200) {
+			this.setEvents(response.body);
+		} else if (response && response.status > 400) {
+			this.setError(response.statusText);
+		} else {
+			this.setEvents(this.state.events);
+		}
+	}
+
+	setEvents(response) {
+		if (response.length > 0) {
 			this.setState({
-				events: response.body
+				events: response
 			});
 		} else {
 			this.setError('No public events');
