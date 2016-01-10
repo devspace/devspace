@@ -47,6 +47,8 @@ class Column extends React.Component {
 	}
 
 	componentWillUnmount() {
+		this.fetch.abort();
+
 		document.removeEventListener('visibilitychange', this.handleVisibility.bind(this));
 
 		Scrollbar.destroy(this.refs.content);
@@ -71,7 +73,7 @@ class Column extends React.Component {
 	}
 
 	fetchEvents(details, forceUpdate) {
-		request
+		this.fetch = request
 			.get(getURL(details.type, details.payload, this.props.github.username))
 			.set('Authorization', 'token ' + this.props.github.accessToken)
 			.set('If-Modified-Since', forceUpdate || this.state.lastModified)
@@ -79,9 +81,9 @@ class Column extends React.Component {
 	}
 
 	handleResponse(error, response) {
-		if (response.status === 200) {
+		if (response && response.status === 200) {
 			this.setResponse(response);
-		} else if (response.status > 400) {
+		} else if (response && response.status > 400) {
 			this.setError(response.statusText);
 		} else {
 			return this.state.events;
