@@ -60,11 +60,10 @@ function buildScript(file, watch) {
       .on('error', handleErrors)
       .pipe(source(file))
       .pipe(gulp.dest('./build/'))
-      // If you also want to uglify it
-      // .pipe(buffer())
-      // .pipe(uglify())
-      // .pipe(rename('app.min.js'))
-      // .pipe(gulp.dest('./build'))
+      .pipe(buffer())
+      .pipe(uglify())
+      .pipe(rename('main.min.js'))
+      .pipe(gulp.dest('./build'))
   }
 
   // listen for an update and run rebundle
