@@ -16,7 +16,7 @@ html {
 body {
     height: 100%;
     margin: 0;
-    overflow: auto;
+    overflow: hidden;
     padding: 0;
 }
 
@@ -25,13 +25,13 @@ button:focus {
 }
 
 #wrapper {
-    height: 100%;
-    margin: 0;
-    overflow: auto;
-    padding: 0;
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
+    background: #444448;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    overflow: hidden;
 }
 
 .centered {

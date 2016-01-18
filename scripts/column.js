@@ -2,7 +2,6 @@ import React from 'react';
 
 import request from 'superagent';
 import parse from 'parse-link-header';
-import Scrollbar from 'perfect-scrollbar';
 import { Spinner } from 'elemental/lib/Elemental';
 
 import ReactMixin from 'react-mixin';
@@ -26,8 +25,6 @@ class Column extends React.Component {
 	componentDidMount() {
 		document.addEventListener('visibilitychange', this.handleVisibility.bind(this));
 
-		Scrollbar.initialize(this.refs.content, { suppressScrollX: true });
-
 		this.fetchEvents(this.props.details);
 		this.startInterval();
 	}
@@ -50,12 +47,6 @@ class Column extends React.Component {
 		this.fetch.abort();
 
 		document.removeEventListener('visibilitychange', this.handleVisibility.bind(this));
-
-		Scrollbar.destroy(this.refs.content);
-	}
-
-	componentDidUpdate() {
-		Scrollbar.update(this.refs.content);
 	}
 
 	handleVisibility() {

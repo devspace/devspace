@@ -1,24 +1,11 @@
 import React from 'react';
 import Rebase from 're-base';
 
-import Scrollbar from 'perfect-scrollbar';
 import { Button, Spinner } from 'elemental/lib/Elemental';
 
 import Column from './column';
 
 class Columns extends React.Component {
-	componentDidMount() {
-		Scrollbar.initialize(this.refs.container, { suppressScrollY: true });
-	}
-
-	componentDidUpdate() {
-		Scrollbar.update(this.refs.container);
-	}
-
-	componentWillUnmount() {
-		Scrollbar.destroy(this.refs.container);
-	}
-
 	shouldComponentUpdate(nextProps, nextState) {
 		return nextProps.isOnline !== this.props.isOnline ||
 			nextProps.columns !== this.props.columns;
