@@ -1,14 +1,16 @@
 import React from 'react';
-import Rebase from 're-base';
 
 import { Button, Spinner } from 'elemental/lib/Elemental';
 
 import Column from './column';
 
 class Columns extends React.Component {
-	shouldComponentUpdate(nextProps, nextState) {
-		return nextProps.isOnline !== this.props.isOnline ||
-			nextProps.columns !== this.props.columns;
+	shouldComponentUpdate(nextProps) {
+		return nextProps.columns === this.props.columns ||
+			nextProps.columnsErrors !== this.props.columnsErrors ||
+			nextProps.columnsEvents !== this.props.columnsEvents ||
+			nextProps.isOnline !== this.props.isOnline ||
+			nextProps.isVisible !== this.props.isVisible;
 	}
 
 	renderLoader() {
@@ -26,7 +28,10 @@ class Columns extends React.Component {
 	}
 
 	renderColumn(column, key) {
-		return <Column key={key} isOnline={this.props.isOnline} github={this.props.github} removeColumn={this.props.removeColumn.bind(this, key)} details={column} />;
+		let error = this.props.columnsErrors && this.props.columnsErrors[key] ? this.props.columnsErrors[key] : undefined;
+		let events = this.props.columnsEvents && this.props.columnsEvents[key] ? this.props.columnsEvents[key] : undefined;
+
+		return <Column key={key} index={key} isOnline={this.props.isOnline} isVisible={this.props.isVisible} error={error} events={events} fetchColumn={this.props.fetchColumn.bind(this)} removeColumn={this.props.removeColumn.bind(this, key)} details={column} />;
 	}
 
 	renderContent() {
@@ -43,7 +48,7 @@ class Columns extends React.Component {
 
 	render() {
 		return (
-			<div className="columns" ref="container">
+			<div ref="container" className="columns">
 				{this.renderContent()}
 			</div>
 		)

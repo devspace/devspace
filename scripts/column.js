@@ -1,131 +1,88 @@
 import React from 'react';
 
-import request from 'superagent';
-import parse from 'parse-link-header';
 import { Spinner } from 'elemental/lib/Elemental';
 
 import ReactMixin from 'react-mixin';
 import TimerMixin from 'react-timer-mixin';
 
 import Event from './event';
-import { getURL, getIcon } from '../data/column';
+import { getIcon } from '../data/column';
 
 class Column extends React.Component {
-	constructor() {
-		super();
-
-		this.state = {
-			events: undefined,
-			error: undefined,
-			lastModified: undefined,
-			interval: undefined
-		};
-	}
-
 	componentDidMount() {
-		document.addEventListener('visibilitychange', this.handleVisibility.bind(this));
-
-		this.fetchEvents(this.props.details);
+		this.fetch = this.props.fetchColumn(this.props.index);
 		this.startInterval();
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.details !== this.props.details) {
-			this.fetchEvents(nextProps.details, true);
+	shouldComponentUpdate(nextProps) {
+		return nextProps.columns !== this.props.columns ||
+			nextProps.error !== this.props.error ||
+			nextProps.events !== this.props.events ||
+			nextProps.isOnline !== this.props.isOnline ||
+			nextProps.isVisible !== this.props.isVisible;
+	}
+
+	componentWillUpdate(nextProps) {
+		// Error changes
+		if (nextProps.error) {
+			this.clearInterval(this.interval);
 		}
 
+		// Connectivity changes
 		if (nextProps.isOnline === true) {
-			this.fetchEvents(this.props.details, true);
+			this.fetch = this.props.fetchColumn(this.props.index);
 			this.startInterval();
 		}
 		else if (nextProps.isOnline === false) {
-			this.clearInterval(this.state.interval);
+			this.clearInterval(this.interval);
+		}
+
+		// Visibility changes
+		if (nextProps.isVisible === true) {
+			this.fetch = this.props.fetchColumn(this.props.index);
 		}
 	}
 
 	componentWillUnmount() {
 		this.fetch.abort();
-
-		document.removeEventListener('visibilitychange', this.handleVisibility.bind(this));
+		this.clearInterval(this.interval);
 	}
 
-	handleVisibility() {
-		if (document.visibilityState === 'visible' && this.props.isOnline !== false) {
-			this.fetchEvents(this.props.details);
-		}
-	}
+	/* ======================================================================
+	   Interval
+	   ====================================================================== */
 
 	startInterval() {
-		let interval = this.setInterval(() => {
-			this.fetchEvents(this.props.details);
+		this.interval = this.setInterval(() => {
+			this.fetch = this.props.fetchColumn(this.props.index);
 		}, 60 * 1000);
-
-		this.setState({ interval: interval });
 	}
 
-	fetchEvents(details, forceUpdate) {
-		this.fetch = request
-			.get(getURL(details.type, details.payload, this.props.github.username))
-			.set('Authorization', 'token ' + this.props.github.accessToken)
-			.set('If-Modified-Since', forceUpdate || this.state.lastModified)
-			.end(this.handleResponse.bind(this));
-	}
-
-	handleResponse(error, response) {
-		let link = parse(response.headers['link']);
-
-		this.setState({
-			lastModified: response.headers['last-modified']
-		});
-
-		if (response && response.status === 200) {
-			this.setEvents(response.body);
-		} else if (response && response.status > 400) {
-			this.setError(response.statusText);
-		} else {
-			this.setEvents(this.state.events);
-		}
-	}
-
-	setEvents(response) {
-		if (response.length > 0) {
-			this.setState({
-				events: response
-			});
-		} else {
-			this.setError('No public events');
-		}
-	}
-
-	setError(message) {
-		this.setState({
-			error: message
-		});
-
-		this.clearInterval(this.state.interval);
-	}
+	/* ======================================================================
+	   Rendering
+	   ====================================================================== */
 
 	renderEvent(event, key) {
-		return <Event key={key} details={this.state.events[key]} />;
+		return <Event key={key} details={event} />;
 	}
 
-	renderEventLoading() {
+	renderLoading() {
 		return <div className="centered"><Spinner size="md" /></div>;
 	}
 
 	renderError() {
-		return <div className="column-placeholder centered">{this.state.error}</div>;
+		return <div className="column-placeholder centered">{this.props.error}</div>;
 	}
 
 	renderContent() {
-		if (this.state.events) {
-			return this.state.events.map(this.renderEvent.bind(this));
+		if (this.props.events) {
+			return this.props.events.map(this.renderEvent.bind(this));
 		}
-		else if (this.state.error) {
+		else if (this.props.error) {
 			return this.renderError();
 		}
 		else {
-			return this.renderEventLoading();
+			return this.renderLoading();
 		}
 	}
 
@@ -137,7 +94,7 @@ class Column extends React.Component {
 						<h1 className="column-header-title">
 							<span className={"octicon octicon-" + getIcon(this.props.details.type)}></span>
 							{this.props.details.payload}
-							<span className="octicon octicon-x" onClick={this.props.removeColumn.bind(this)}></span>
+							<span className="octicon octicon-x" onClick={this.props.removeColumn.bind(this, this.props.index)}></span>
 						</h1>
 					</header>
 					<div ref="content" className="column-content">

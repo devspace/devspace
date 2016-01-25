@@ -8,7 +8,12 @@ import Banner from './banner';
 import Columns from './columns';
 import Nav from './nav';
 
-var base = Rebase.createClass('https://devspace-app.firebaseio.com/v1/users');
+import update from 'react-addons-update';
+import request from 'superagent';
+import parse from 'parse-link-header';
+import { getURL } from '../data/column';
+
+const base = Rebase.createClass('https://devspace-app.firebaseio.com/v1/users');
 
 class App extends React.Component {
 	constructor() {
@@ -16,21 +21,37 @@ class App extends React.Component {
 
 		this.state = {
 			columns: undefined,
-			isOnline: undefined,
+			columnsErrors: undefined,
+			columnsEvents: undefined,
+			columnsModified: undefined,
 			isAddModalOpen: false,
-			isAddInitialContent: true
+			isAddInitialContent: true,
+			isOnline: undefined,
+			isVisible: undefined
 		};
 	}
+
+	/* ======================================================================
+	   Lifecycle
+	   ====================================================================== */
 
 	componentDidMount() {
 		this.firebaseSync = base.syncState(`${this.props.auth.uid}/columns`, {
 			context: this,
 			state: 'columns',
-			asArray: true
+			asArray: true,
+			then: function() {
+				this.setState({
+					columnsErrors: [],
+					columnsEvents: [],
+					columnsModified: []
+				});
+			}
 		});
 
-		window.addEventListener('online',  this.handleOnlineStatus.bind(this));
-		window.addEventListener('offline',  this.handleOnlineStatus.bind(this));
+		window.addEventListener('online', this.handleConnectivity.bind(this));
+		window.addEventListener('offline', this.handleConnectivity.bind(this));
+		window.addEventListener('visibilitychange', this.handleVisibility.bind(this));
 
 		if (this.props.isFirstLogin) {
 			this.handleFirstLogin();
@@ -40,19 +61,14 @@ class App extends React.Component {
 	componentWillUnmount() {
 		base.removeBinding(this.firebaseSync);
 
-		window.removeEventListener('online',  this.handleOnlineStatus.bind(this));
-		window.removeEventListener('offline',  this.handleOnlineStatus.bind(this));
+		window.removeEventListener('online', this.handleConnectivity.bind(this));
+		window.removeEventListener('offline', this.handleConnectivity.bind(this));
+		window.removeEventListener('visibilitychange', this.handleVisibility.bind(this));
 	}
 
-	handleOnlineStatus() {
-		this.setState({ isOnline: navigator.onLine });
-
-		if (navigator.onLine) {
-			setTimeout(() => {
-				this.setState({ isOnline: undefined });
-			}, 2000);
-		}
-	}
+	/* ======================================================================
+	   First Login
+	   ====================================================================== */
 
 	handleFirstLogin() {
 		this.setState({
@@ -69,6 +85,40 @@ class App extends React.Component {
 		});
 	}
 
+	/* ======================================================================
+	   Status Handlers
+	   ====================================================================== */
+
+	handleConnectivity() {
+		this.setState({ isOnline: navigator.onLine });
+
+		if (navigator.onLine) {
+			setTimeout(() => {
+				this.setState({ isOnline: undefined });
+			}, 2000);
+		}
+	}
+
+	handleVisibility() {
+		if (this.state.isOnline !== false) {
+			if (document.visibilityState === 'visible') {
+				this.setState({ isVisible: true });
+			}
+			else if (document.visibilityState === 'hidden') {
+				this.setState({ isVisible: false });
+			}
+
+			this.setState({ isVisible: undefined });
+		}
+		else {
+			this.setState({ isVisible: undefined });
+		}
+	}
+
+	/* ======================================================================
+	   Add Modal
+	   ====================================================================== */
+
 	toggleAddModal() {
 		this.setState({
 			isAddModalOpen: !this.state.isAddModalOpen,
@@ -82,6 +132,10 @@ class App extends React.Component {
 		});
 	}
 
+	/* ======================================================================
+	   Column
+	   ====================================================================== */
+
 	addColumn(newColumn) {
 		mixpanel.track('Added Column', {
 			type: newColumn.type,
@@ -89,6 +143,59 @@ class App extends React.Component {
 		});
 
 		this.setState({ columns: this.state.columns.concat([newColumn]) });
+	}
+
+	fetchColumn(key) {
+		let column = this.state.columns[key];
+		let lastModified = this.state.columnsModified ? this.state.columnsModified[key] : 0;
+
+		return request
+			.get(getURL(column.type, column.payload, this.props.auth.github.username))
+			.set('Authorization', 'token ' + this.props.auth.github.accessToken)
+			.set('If-Modified-Since', lastModified)
+			.end(this.handleResponse.bind(this, key));
+	}
+
+	handleResponse(key, error, response) {
+		if (response && response.status === 200) {
+			let newState = update(this.state, {
+				columnsModified: {
+					[key]: { $set: response.headers['last-modified'] }
+				}
+			});
+
+			this.setState(newState);
+
+			this.setEvents(response.body, key);
+		} else if (response && response.status > 400) {
+			this.setError(response.statusText, key);
+		} else {
+			this.setEvents(this.state.columnsEvents[key], key);
+		}
+	}
+
+	setEvents(response, key) {
+		if (response.length > 0) {
+			let newState = update(this.state, {
+				columnsEvents: {
+					[key]: { $set: response }
+				}
+			});
+
+			this.setState(newState);
+		} else {
+			this.setError('No public events', key);
+		}
+	}
+
+	setError(message, key) {
+		let newState = update(this.state, {
+			columnsErrors: {
+				[key]: { $set: message }
+			}
+		});
+
+		this.setState(newState);
 	}
 
 	removeColumn(key) {
@@ -100,16 +207,28 @@ class App extends React.Component {
 		});
 
 		this.state.columns.splice(key, 1);
+		this.state.columnsEvents.splice(key, 1);
+		this.state.columnsErrors.splice(key, 1);
+		this.state.columnsModified.splice(key, 1);
 
-		this.setState({ columns: this.state.columns });
+		this.setState({
+			columns: this.state.columns,
+			columnsErrors: this.state.columnsErrors,
+			columnsEvents: this.state.columnsEvents,
+			columnsModified: this.state.columnsModified
+		});
 	}
+
+	/* ======================================================================
+	   Rendering
+	   ====================================================================== */
 
 	render() {
 		return (
 			<div className="app">
 				<Banner isOnline={this.state.isOnline} />
 				<Nav logout={this.props.logout} toggleAddModal={this.toggleAddModal.bind(this)} />
-				<Columns isOnline={this.state.isOnline} columns={this.state.columns} github={this.props.auth.github} removeColumn={this.removeColumn.bind(this)} toggleAddModal={this.toggleAddModal.bind(this)} />
+				<Columns columns={this.state.columns} columnsErrors={this.state.columnsErrors} columnsEvents={this.state.columnsEvents} isOnline={this.state.isOnline} isVisible={this.state.isVisible} fetchColumn={this.fetchColumn.bind(this)} removeColumn={this.removeColumn.bind(this)} toggleAddModal={this.toggleAddModal.bind(this)} />
 				<Add addColumn={this.addColumn.bind(this)} toggleAddModal={this.toggleAddModal.bind(this)} isAddModalOpen={this.state.isAddModalOpen} toggleAddInitialContent={this.toggleAddInitialContent.bind(this)} isAddInitialContent={this.state.isAddInitialContent} github={this.props.auth.github} />
 			</div>
 		)
