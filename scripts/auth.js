@@ -44,6 +44,7 @@ class Auth extends React.Component {
 
 					mixpanel.identify(user.id);
 					mixpanel.people.set({
+						'$created': new Date(),
 						'$email': authData.github.email,
 						'$name': user.name,
 						'Avatar': user.avatar_url,
