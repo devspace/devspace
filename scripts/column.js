@@ -91,11 +91,11 @@ class Column extends React.Component {
 			<section className="column">
 				<div className="column-container">
 					<header className="column-header">
-						<h1 className="column-header-title">
+						<h1 className="column-header-title one-line">
 							<span className={"octicon octicon-" + getIcon(this.props.details.type)}></span>
 							{this.props.details.payload}
-							<span className="octicon octicon-x" onClick={this.props.removeColumn.bind(this, this.props.index)}></span>
 						</h1>
+						<span className="octicon octicon-x" onClick={this.props.removeColumn.bind(this, this.props.index)}></span>
 					</header>
 					<div ref="content" className="column-content">
 						{this.renderContent()}

@@ -20,21 +20,14 @@
     background: #303236;
     box-sizing: border-box;
     height: 45px;
-    padding: 12px 12px 10px;
+    padding: 12px 30px 10px 12px;
+    position: relative;
 }
 
 .column-header-title {
     color: rgb(221, 221, 221);
     font-size: 20px;
-    font-weight: normal;
     margin: 0;
-    max-width: 100%;
-    overflow: hidden;
-    position: relative;
-    text-overflow: ellipsis;
-    vertical-align: bottom;
-    white-space: nowrap;
-    word-wrap: normal;
 }
 
 .column-header-title .octicon {
@@ -42,18 +35,19 @@
     margin-right: 8px;
 }
 
-.column-header-title .octicon-x {
+.column-header .octicon-x {
     color: #999;
     cursor: pointer;
     font-size: 18px;
-    margin: 2px 0 0;
+    line-height: 45px;
     position: absolute;
-    right: 0;
+    right: 12px;
+    top: 0;
     transition: color 0.3s ease-in-out;
 }
 
-.column-header-title .octicon-x:hover,
-.column-header-title .octicon-x:focus {
+.column-header .octicon-x:hover,
+.column-header .octicon-x:focus {
     color: #ddd;
 }
 
@@ -103,4 +97,14 @@
 
 ::-webkit-scrollbar-corner {
   background-color: #222426;
+}
+
+/* Misc
+   ========================================================================== */
+
+.one-line {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
