@@ -1,21 +1,18 @@
 .home {
-    position: absolute;
-    width: 100%;
-    height: 100%;
     background-image: -webkit-linear-gradient(top, #13131E, #36354F);
     background-image: linear-gradient(to bottom, #13131E, #36354F);
     background-color: #36354F;
-    min-height: 100%;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
 }
 
 .home-container {
     display: block;
-    height: 560px;
-    left: 50%;
-    margin: -300px 0 0 -265px;
-    position: absolute;
-    top: 50%;
-    width: 530px;
+    margin: 50px auto 0;
+    max-width: 530px;
+    flex: 1;
+    padding: 0 20px;
 }
 
 .home-logo {
@@ -83,4 +80,79 @@
 .home-btn:hover .octicon,
 .home-btn:focus .octicon {
     color: #735CDC;
+}
+
+.home-sublink {
+    color: white;
+    display: block;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    margin-bottom: 36px;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.home-footer {
+    box-shadow: 0 -4px 0 0 #AFB4FF;
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 900;
+    height: 74px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    width: 100%;
+}
+
+.home-footer a {
+    color: #fff;
+}
+
+.home-footer a:focus,
+.home-footer a:hover, {
+    color: #AFB4FF;
+    text-decoration: none;
+    border-bottom: 2px solid #AFB4FF;
+}
+
+.home-footer-container {
+    max-width: 930px;
+    margin: 0 auto;
+    padding: 25px 0 0px;
+    height: 45px;
+}
+
+.home-footer-copyright {
+    float: left;
+    margin: 0 30px;
+}
+
+.home-footer-nav {
+    float: right;
+    list-style: none;
+    margin: 0 30px;
+    padding: 0;
+}
+
+.home-footer-nav li {
+    display: inline-block;
+    margin-left: 20px;
+}
+
+@media screen and (max-width: 580px) {
+    .home-footer {
+        height: 120px;
+    }
+
+    .home-footer-nav {
+        margin-top: 25px;
+    }
+
+    .home-footer-copyright,
+    .home-footer-nav {
+        float: none;
+        text-align: center;
+    }
 }

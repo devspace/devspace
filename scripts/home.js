@@ -16,6 +16,18 @@ class Home extends React.Component {
 						<span className="octicon octicon-mark-github"></span> Login with GitHub
 					</button>
 				</main>
+				<footer className="home-footer">
+					<div className="home-footer-container">
+						<p className="home-footer-copyright">© 2016 <a target="_blank" href="http://www.liferay.com">Liferay, Inc</a></p>
+						<ul className="home-footer-nav">
+							<li><a target="_blank" href="https://blog.devspace.io">Blog</a></li>
+							<li><a target="_blank" href="https://github.com/devspace/devspace/releases">Changelog</a></li>
+							<li><a target="_blank" href="https://devspace.io/privacy">Privacy</a></li>
+							<li><a target="_blank" href="mailto:hi@devspace.io">Email</a></li>
+							<li><a target="_blank" href="http://twitter.com/devspace_">Twitter</a></li>
+						</ul>
+					</div>
+				</footer>
 			</div>
 		)
 	}
