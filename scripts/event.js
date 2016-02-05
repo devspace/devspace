@@ -12,6 +12,7 @@ class Event extends React.Component {
 	render() {
 		var message;
 		var icon;
+		var branch;
 		var avatar = this.props.details.actor.avatar_url;
 		var icon = this.props.details.icon;
 		var login = this.props.details.actor.login;
@@ -105,14 +106,15 @@ class Event extends React.Component {
 				break;
 			case 'PushEvent':
 				icon = 'code';
+				branch = payload.ref.substr(payload.ref.lastIndexOf('/') + 1, payload.ref.length);
 
 				if (payload.size === 1) {
 					message = (
-						<span> pushed <a className="event-link" href={`https://github.com/${repo}/commit/${payload.commits[0].sha}`} onClick={this.trackLink.bind(this)} target="_blank">{payload.size} commit</a> to <a className="event-link" href={`https://github.com/${repo}`} onClick={this.trackLink.bind(this)} target="_blank">{repo}</a></span>
+						<span> pushed <a className="event-link" href={`https://github.com/${repo}/commit/${payload.commits[0].sha}`} onClick={this.trackLink.bind(this)} target="_blank">{payload.size} commit</a> to <a className="event-link" href={`https://github.com/${repo}/tree/${branch}`} onClick={this.trackLink.bind(this)} target="_blank">{branch}</a> at <a className="event-link" href={`https://github.com/${repo}`} onClick={this.trackLink.bind(this)} target="_blank">{repo}</a></span>
 					);
 				} else {
 					message = (
-						<span> pushed <a className="event-link" href={`https://github.com/${repo}/compare/${payload.before}...${payload.head}`} onClick={this.trackLink.bind(this)} target="_blank">{payload.size} commits</a> to <a className="event-link" href={`https://github.com/${repo}`} onClick={this.trackLink.bind(this)} target="_blank">{repo}</a></span>
+						<span> pushed <a className="event-link" href={`https://github.com/${repo}/compare/${payload.before}...${payload.head}`} onClick={this.trackLink.bind(this)} target="_blank">{payload.size} commits</a> to <a className="event-link" href={`https://github.com/${repo}/tree/${branch}`} onClick={this.trackLink.bind(this)} target="_blank">{branch}</a> at <a className="event-link" href={`https://github.com/${repo}`} onClick={this.trackLink.bind(this)} target="_blank">{repo}</a></span>
 					);
 				}
 				break;
