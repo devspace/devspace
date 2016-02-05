@@ -16,12 +16,22 @@
     width: 100%;
 }
 
+/* Header
+   ========================================================================== */
+
 .column-header {
     background: #303236;
     box-sizing: border-box;
     height: 45px;
-    padding: 12px 30px 10px 12px;
     position: relative;
+}
+
+.column .column-header {
+  padding: 12px 12px 10px 12px;
+}
+
+.column:hover .column-header {
+  padding: 12px 30px 10px 12px;
 }
 
 .column-header-title {
@@ -35,21 +45,35 @@
     margin-right: 8px;
 }
 
-.column-header .octicon-x {
+.column-header-icon.tooltipped {
+    position: absolute;
+    right: 12px;
+    top: 0;
+}
+
+.column-header-icon .octicon {
     color: #999;
     cursor: pointer;
     font-size: 18px;
     line-height: 45px;
-    position: absolute;
-    right: 12px;
-    top: 0;
     transition: color 0.3s ease-in-out;
 }
 
-.column-header .octicon-x:hover,
-.column-header .octicon-x:focus {
+.column-header-icon .octicon:hover,
+.column-header-icon .octicon:focus {
     color: #ddd;
 }
+
+.column .column-header-icon {
+    display: none;
+}
+
+.column:hover .column-header-icon {
+    display: block;
+}
+
+/* Body
+   ========================================================================== */
 
 .column-content {
     height: ~"calc(100% - 44px)";
@@ -62,6 +86,9 @@
     color: rgb(221, 221, 221);
     height: 100%;
 }
+
+/* Scrollbar
+   ========================================================================== */
 
 ::-webkit-scrollbar-track {
   background-color: #222426;

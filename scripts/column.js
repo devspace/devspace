@@ -95,7 +95,9 @@ class Column extends React.Component {
 							<span className={"octicon octicon-" + getIcon(this.props.details.type)}></span>
 							{this.props.details.payload}
 						</h1>
-						<span className="octicon octicon-x" onClick={this.props.removeColumn.bind(this, this.props.index)}></span>
+						<a className="column-header-icon tooltipped tooltipped-s" onClick={this.props.removeColumn.bind(this, this.props.index)} aria-label="Delete">
+							<span className="octicon octicon-x"></span>
+						</a>
 					</header>
 					<div ref="content" className="column-content">
 						{this.renderContent()}
@@ -105,6 +107,8 @@ class Column extends React.Component {
 		)
 	}
 }
+
+
 
 ReactMixin.onClass(Column, TimerMixin);
 
