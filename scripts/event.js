@@ -162,7 +162,7 @@ class Event extends React.Component {
 			icon: icon,
 			login: login,
 			messageHtml: messageHtml,
-			messageString: messageString,
+			messageString: messageString.toLowerCase(),
 			timestamp: timestamp
 		}
 	}
@@ -192,7 +192,7 @@ class Event extends React.Component {
 		let filters = this.props.filters;
 
 		if (filters && filters.matching) {
-			let matching = _words([filters.matching], /[0-9A-Za-z_#\.\-\/]+/g);
+			let matching = _words([filters.matching.toLowerCase()], /[0-9A-Za-z_#\.\-\/]+/g);
 
 			for (var i = 0; i < matching.length; i++) {
 				if (event.messageString.indexOf(matching[i]) !== -1) {
@@ -204,7 +204,7 @@ class Event extends React.Component {
 		}
 
 		if (filters && filters.excluding) {
-			let excluding = _words([filters.excluding], /[0-9A-Za-z_#\.\-\/]+/g);
+			let excluding = _words([filters.excluding.toLowerCase()], /[0-9A-Za-z_#\.\-\/]+/g);
 
 			for (var i = 0; i < excluding.length; i++) {
 				if (event.messageString.indexOf(excluding[i]) === -1) {
