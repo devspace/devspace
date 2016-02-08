@@ -6,6 +6,7 @@ import { Spinner } from 'elemental/lib/Elemental';
 import Add from './add';
 import Banner from './banner';
 import Columns from './columns';
+import Filter from './filter';
 import Nav from './nav';
 
 import update from 'react-addons-update';
@@ -20,10 +21,12 @@ class App extends React.Component {
 		super();
 
 		this.state = {
+			activeColumn: undefined,
 			columns: undefined,
 			columnsErrors: undefined,
 			columnsEvents: undefined,
 			columnsModified: undefined,
+			isFilterModalOpen: false,
 			isAddModalOpen: false,
 			isAddInitialContent: true,
 			isOnline: undefined,
@@ -220,16 +223,41 @@ class App extends React.Component {
 	}
 
 	/* ======================================================================
-	   Rendering
+	   Filter
 	   ====================================================================== */
+
+	setFilter(matching, excluding) {
+		let newState = update(this.state, {
+			columns: {
+				[this.state.activeColumn]: {
+					filters: {
+						$set: {
+							matching: matching,
+							excluding: excluding
+						}
+					}
+				}
+			}
+		});
+
+		this.setState(newState);
+	}
+
+	toggleFilterModal(index) {
+		this.setState({
+			activeColumn: index,
+			isFilterModalOpen: !this.state.isFilterModalOpen
+		});
+	}
 
 	render() {
 		return (
 			<div className="app">
 				<Banner isOnline={this.state.isOnline} />
 				<Nav logout={this.props.logout} toggleAddModal={this.toggleAddModal.bind(this)} />
-				<Columns columns={this.state.columns} columnsErrors={this.state.columnsErrors} columnsEvents={this.state.columnsEvents} isOnline={this.state.isOnline} isVisible={this.state.isVisible} fetchColumn={this.fetchColumn.bind(this)} removeColumn={this.removeColumn.bind(this)} toggleAddModal={this.toggleAddModal.bind(this)} />
+				<Columns columns={this.state.columns} columnsErrors={this.state.columnsErrors} columnsEvents={this.state.columnsEvents} isOnline={this.state.isOnline} isVisible={this.state.isVisible} fetchColumn={this.fetchColumn.bind(this)} removeColumn={this.removeColumn.bind(this)} toggleAddModal={this.toggleAddModal.bind(this)} toggleFilterModal={this.toggleFilterModal.bind(this)} isFilterModalOpen={this.state.isFilterModalOpen} />
 				<Add addColumn={this.addColumn.bind(this)} toggleAddModal={this.toggleAddModal.bind(this)} isAddModalOpen={this.state.isAddModalOpen} toggleAddInitialContent={this.toggleAddInitialContent.bind(this)} isAddInitialContent={this.state.isAddInitialContent} github={this.props.auth.github} />
+				<Filter activeColumn={this.state.activeColumn} columns={this.state.columns} isFilterModalOpen={this.state.isFilterModalOpen} toggleFilterModal={this.toggleFilterModal.bind(this)} setFilter={this.setFilter.bind(this)} />
 			</div>
 		)
 	}

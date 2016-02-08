@@ -27,11 +27,7 @@
 }
 
 .column .column-header {
-  padding: 12px 12px 10px 12px;
-}
-
-.column:hover .column-header {
-  padding: 12px 30px 10px 12px;
+  padding: 12px 62px 10px 12px;
 }
 
 .column-header-title {
@@ -47,8 +43,15 @@
 
 .column-header-icon.tooltipped {
     position: absolute;
-    right: 12px;
     top: 0;
+}
+
+.column-header-icon-first {
+    right: 36px;
+}
+
+.column-header-icon-second {
+    right: 12px;
 }
 
 .column-header-icon .octicon {
@@ -57,19 +60,12 @@
     font-size: 18px;
     line-height: 45px;
     transition: color 0.3s ease-in-out;
+    position: relative;
 }
 
 .column-header-icon .octicon:hover,
 .column-header-icon .octicon:focus {
     color: #ddd;
-}
-
-.column .column-header-icon {
-    display: none;
-}
-
-.column:hover .column-header-icon {
-    display: block;
 }
 
 /* Body

@@ -18,6 +18,7 @@ class Column extends React.Component {
 		return nextProps.columns !== this.props.columns ||
 			nextProps.error !== this.props.error ||
 			nextProps.events !== this.props.events ||
+			nextProps.isFilterModalOpen !== this.props.isFilterModalOpen ||
 			nextProps.isOnline !== this.props.isOnline ||
 			nextProps.isVisible !== this.props.isVisible;
 	}
@@ -63,7 +64,7 @@ class Column extends React.Component {
 	   ====================================================================== */
 
 	renderEvent(event, key) {
-		return <Event key={key} details={event} />;
+		return <Event key={key} details={event} filters={this.props.details.filters} />;
 	}
 
 	renderLoading() {
@@ -95,7 +96,10 @@ class Column extends React.Component {
 							<span className={"octicon octicon-" + getIcon(this.props.details.type)}></span>
 							{this.props.details.payload}
 						</h1>
-						<a className="column-header-icon tooltipped tooltipped-s" onClick={this.props.removeColumn.bind(this, this.props.index)} aria-label="Delete">
+						<a className="column-header-icon column-header-icon-first tooltipped tooltipped-s" onClick={this.props.toggleFilterModal.bind(this, this.props.index)} aria-label="Filter">
+							<span className="octicon octicon-settings"></span>
+						</a>
+						<a className="column-header-icon column-header-icon-second tooltipped tooltipped-s" onClick={this.props.removeColumn.bind(this, this.props.index)} aria-label="Remove">
 							<span className="octicon octicon-x"></span>
 						</a>
 					</header>
