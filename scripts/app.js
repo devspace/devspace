@@ -227,6 +227,13 @@ class App extends React.Component {
 	   ====================================================================== */
 
 	setFilter(matching, excluding) {
+		mixpanel.track('Saved Filter', {
+			matching: matching,
+			excluding: excluding,
+			columnType: this.state.columns[this.state.activeColumn].type,
+			columnPayload: this.state.columns[this.state.activeColumn].payload
+		});
+
 		let newState = update(this.state, {
 			columns: {
 				[this.state.activeColumn]: {
