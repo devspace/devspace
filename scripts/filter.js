@@ -61,7 +61,7 @@ class Filter extends React.Component {
 							</FormField>
 						</FormRow>
 						<FormField label="Pattern" htmlFor="pattern">
-							<FormInput defaultValue={pattern} placeholder="/^((?!starred).)*$/g" name="pattern" type="text" />
+							<FormInput defaultValue={pattern} placeholder="/(starred)/g" name="pattern" type="text" />
 						</FormField>
 						<FormNote>
 							<span className="octicon octicon-alert"></span> A pattern regex overrides matching and excluding fields
