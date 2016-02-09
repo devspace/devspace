@@ -165,7 +165,7 @@ class Event extends React.Component {
 			icon: icon,
 			login: login,
 			messageHtml: messageHtml,
-			messageString: messageString.toLowerCase(),
+			messageString: messageString,
 			timestamp: timestamp
 		}
 	}
@@ -182,6 +182,33 @@ class Event extends React.Component {
 		}
 
 		return regex;
+	}
+
+	/* Filters
+	   ========================================================================== */
+
+	filterPattern(content, filter) {
+		let hasFound = false;
+		let regex = this.formatPattern(filter);
+
+		if (content.search(regex) !== -1) {
+			return true;
+		}
+
+		return hasFound;
+	}
+
+	filterGeneric(content, filter) {
+		let hasFound = false;
+		let words = _words([filter.toLowerCase()], /[0-9A-Za-z_#\.\-\/]+/g);
+
+		for (var i = 0; i < words.length; i++) {
+			if (content.toLowerCase().indexOf(words[i]) !== -1) {
+				hasFound = true;
+			}
+		}
+
+		return hasFound;
 	}
 
 	/* Rendering
@@ -212,35 +239,25 @@ class Event extends React.Component {
 		let filters = this.props.filters;
 
 		if (filters && filters.pattern) {
-			let pattern = this.formatPattern(filters.pattern);
+			let hasPattern = this.filterPattern(event.messageString, filters.pattern);
 
-			if (event.messageString.search(pattern) === -1) {
+			if (hasPattern === false) {
 				return <span></span>;
 			}
 		}
 		else {
+			let hasMatching, hasExcluding;
+
 			if (filters && filters.matching) {
-				let matching = _words([filters.matching.toLowerCase()], /[0-9A-Za-z_#\.\-\/]+/g);
-
-				for (var i = 0; i < matching.length; i++) {
-					if (event.messageString.indexOf(matching[i]) !== -1) {
-						continue;
-					}
-
-					return <span></span>;
-				}
+				hasMatching = this.filterGeneric(event.messageString, filters.matching);
 			}
 
 			if (filters && filters.excluding) {
-				let excluding = _words([filters.excluding.toLowerCase()], /[0-9A-Za-z_#\.\-\/]+/g);
+				hasExcluding = this.filterGeneric(event.messageString, filters.excluding);
+			}
 
-				for (var i = 0; i < excluding.length; i++) {
-					if (event.messageString.indexOf(excluding[i]) === -1) {
-						continue;
-					}
-
-					return <span></span>;
-				}
+			if (hasMatching === false || hasExcluding === true) {
+				return <span></span>;
 			}
 		}
 

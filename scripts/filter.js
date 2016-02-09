@@ -57,7 +57,7 @@ class Filter extends React.Component {
 								<FormInput defaultValue={matching} placeholder="commented" name="matching" type="text" />
 							</FormField>
 							<FormField width="one-half" label="Excluding" htmlFor="excluding">
-								<FormInput defaultValue={excluding} placeholder="yourbot" name="excluding" type="text" />
+								<FormInput defaultValue={excluding} placeholder="added, yourbot" name="excluding" type="text" />
 							</FormField>
 						</FormRow>
 						<FormField label="Pattern" htmlFor="pattern">
