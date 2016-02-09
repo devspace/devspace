@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Modal, ModalBody, ModalHeader, ModalFooter, FormField, FormInput, Button  } from 'elemental/lib/Elemental';
+import { Modal, ModalBody, ModalHeader, ModalFooter, FormRow, FormField, FormInput, FormNote, Button  } from 'elemental/lib/Elemental';
 
 
 
@@ -15,14 +15,16 @@ class Filter extends React.Component {
 
 		let matching = event.currentTarget.matching.value;
 		let excluding = event.currentTarget.excluding.value;
+		let pattern = event.currentTarget.pattern.value;
 
-		this.props.setFilter(matching, excluding);
+		this.props.setFilter(matching, excluding, pattern);
 		this.props.toggleFilterModal();
 	}
 
 	render() {
 		let matching = '';
 		let excluding = '';
+		let pattern = '';
 
 		if (this.props.activeColumn !== undefined) {
 			let column = this.props.columns[this.props.activeColumn];
@@ -33,6 +35,10 @@ class Filter extends React.Component {
 
 			if (column && column.filters && column.filters.excluding) {
 				excluding = column.filters.excluding;
+			}
+
+			if (column && column.filters && column.filters.pattern) {
+				pattern = column.filters.pattern;
 			}
 		}
 
@@ -46,12 +52,20 @@ class Filter extends React.Component {
 						</h4>
 					</ModalHeader>
 					<ModalBody>
-						<FormField label="Matching" htmlFor="matching">
-							<FormInput defaultValue={matching} placeholder="Enter terms to match" name="matching" type="text" />
+						<FormRow>
+							<FormField width="one-half" label="Matching" htmlFor="matching">
+								<FormInput defaultValue={matching} placeholder="commented" name="matching" type="text" />
+							</FormField>
+							<FormField width="one-half" label="Excluding" htmlFor="excluding">
+								<FormInput defaultValue={excluding} placeholder="yourbot" name="excluding" type="text" />
+							</FormField>
+						</FormRow>
+						<FormField label="Pattern" htmlFor="pattern">
+							<FormInput defaultValue={pattern} placeholder="/^((?!starred).)*$/g" name="pattern" type="text" />
 						</FormField>
-						<FormField label="Excluding" htmlFor="excluding">
-							<FormInput defaultValue={excluding} placeholder="Enter terms to exclude" name="excluding" type="text" />
-						</FormField>
+						<FormNote>
+							<span className="octicon octicon-alert"></span> A pattern regex overrides matching and excluding fields
+						</FormNote>
 					</ModalBody>
 					<ModalFooter>
 						<Button type="hollow-primary" submit={true}>

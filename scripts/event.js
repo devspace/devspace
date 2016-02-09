@@ -12,6 +12,9 @@ class Event extends React.Component {
 		});
 	}
 
+	/* Formatting
+	   ====================================================================== */
+
 	formatEvent() {
 		var branch, messageHtml, messageString;
 		var avatar = this.props.details.actor.avatar_url;
@@ -167,6 +170,23 @@ class Event extends React.Component {
 		}
 	}
 
+	formatPattern(pattern) {
+		let regex;
+		let regexParts = pattern.match(/^\/(.*?)\/([gim]*)$/);
+
+		// Check if the parsed pattern has delimiters and modifiers
+		if (regexParts) {
+		    regex = new RegExp(regexParts[1], regexParts[2]);
+		} else {
+		    regex = new RegExp(pattern, 'g');
+		}
+
+		return regex;
+	}
+
+	/* Rendering
+	   ====================================================================== */
+
 	renderEvent(event) {
 		return (
 			<div className="event">
@@ -191,27 +211,36 @@ class Event extends React.Component {
 		let event = this.formatEvent();
 		let filters = this.props.filters;
 
-		if (filters && filters.matching) {
-			let matching = _words([filters.matching.toLowerCase()], /[0-9A-Za-z_#\.\-\/]+/g);
+		if (filters && filters.pattern) {
+			let pattern = this.formatPattern(filters.pattern);
 
-			for (var i = 0; i < matching.length; i++) {
-				if (event.messageString.indexOf(matching[i]) !== -1) {
-					continue;
-				}
-
+			if (event.messageString.search(pattern) === -1) {
 				return <span></span>;
 			}
 		}
+		else {
+			if (filters && filters.matching) {
+				let matching = _words([filters.matching.toLowerCase()], /[0-9A-Za-z_#\.\-\/]+/g);
 
-		if (filters && filters.excluding) {
-			let excluding = _words([filters.excluding.toLowerCase()], /[0-9A-Za-z_#\.\-\/]+/g);
+				for (var i = 0; i < matching.length; i++) {
+					if (event.messageString.indexOf(matching[i]) !== -1) {
+						continue;
+					}
 
-			for (var i = 0; i < excluding.length; i++) {
-				if (event.messageString.indexOf(excluding[i]) === -1) {
-					continue;
+					return <span></span>;
 				}
+			}
 
-				return <span></span>;
+			if (filters && filters.excluding) {
+				let excluding = _words([filters.excluding.toLowerCase()], /[0-9A-Za-z_#\.\-\/]+/g);
+
+				for (var i = 0; i < excluding.length; i++) {
+					if (event.messageString.indexOf(excluding[i]) === -1) {
+						continue;
+					}
+
+					return <span></span>;
+				}
 			}
 		}
 

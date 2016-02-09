@@ -226,10 +226,11 @@ class App extends React.Component {
 	   Filter
 	   ====================================================================== */
 
-	setFilter(matching, excluding) {
+	setFilter(matching, excluding, pattern) {
 		mixpanel.track('Saved Filter', {
 			matching: matching,
 			excluding: excluding,
+			pattern: pattern,
 			columnType: this.state.columns[this.state.activeColumn].type,
 			columnPayload: this.state.columns[this.state.activeColumn].payload
 		});
@@ -240,7 +241,8 @@ class App extends React.Component {
 					filters: {
 						$set: {
 							matching: matching,
-							excluding: excluding
+							excluding: excluding,
+							pattern: pattern
 						}
 					}
 				}
