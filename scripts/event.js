@@ -15,16 +15,16 @@ class Event extends React.Component {
 	/* Formatting
 	   ====================================================================== */
 
-	formatEvent() {
+	formatEvent(details) {
 		var branch, messageHtml, messageString;
-		var avatar = this.props.details.actor.avatar_url;
-		var icon = this.props.details.icon;
-		var login = this.props.details.actor.login;
-		var payload = this.props.details.payload;
-		var repo = this.props.details.repo.name;
-		var timestamp = this.props.details.created_at;
+		var avatar = details.actor.avatar_url;
+		var icon = details.icon;
+		var login = details.actor.login;
+		var payload = details.payload;
+		var repo = details.repo.name;
+		var timestamp = details.created_at;
 
-		switch (this.props.details.type) {
+		switch (details.type) {
 			case 'CommitCommentEvent':
 				icon = 'comment-discussion';
 				messageString = `${login} commented on a commit at ${repo}`;
@@ -208,7 +208,7 @@ class Event extends React.Component {
 	}
 
 	render() {
-		let event = this.formatEvent();
+		let event = this.formatEvent(this.props.details);
 		let filters = this.props.filters;
 
 		if (filters && filters.pattern) {
