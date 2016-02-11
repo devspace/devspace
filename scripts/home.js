@@ -15,6 +15,10 @@ class Home extends React.Component {
 					<button className="home-btn" onClick={this.props.login}>
 						<span className="octicon octicon-mark-github"></span> Login with GitHub
 					</button>
+					<p className="home-subbtn">Why all these permissions?</p>
+					<p className="home-subbtn">
+						<a target="_blank" href="https://devspace.io/privacy">Privacy</a> • <a target="_blank" href="https://github.com/dear-github/dear-github/issues/113">Open Letter to GitHub</a>
+					</p>
 				</main>
 				<footer className="home-footer">
 					<div className="home-footer-container">

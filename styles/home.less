@@ -55,7 +55,7 @@
     font-family: 'Roboto', sans-serif;
     font-size: 22px;
     font-weight: 400;
-    margin: 36px auto;
+    margin: 36px auto 12px;
     padding: .75em 1.15em;
     text-align: center;
     text-decoration: none;
@@ -82,13 +82,31 @@
     color: #735CDC;
 }
 
-.home-sublink {
+.home-subbtn {
     color: white;
     display: block;
     text-align: center;
     font-family: 'Roboto', sans-serif;
     font-weight: 300;
+    margin: 0 0 6px;
+}
+
+.home-subbtn:last-child {
     margin-bottom: 36px;
+}
+
+.home-subbtn a {
+    border-bottom: 2px solid transparent;
+    color: white;
+    font-weight: 400;
+    transition: all 0.3s ease-in-out;
+}
+
+.home-subbtn a:focus,
+.home-subbtn a:hover {
+    color: #AFB4FF;
+    text-decoration: none;
+    border-bottom: 2px solid #AFB4FF;
 }
 
 /* ==========================================================================
@@ -107,7 +125,9 @@
 }
 
 .home-footer a {
+    border-bottom: 2px solid transparent;
     color: #fff;
+    transition: all 0.3s ease-in-out;
 }
 
 .home-footer a:focus,
