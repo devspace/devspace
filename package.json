@@ -7,7 +7,6 @@
     "firebase": "^2.3.1",
     "lodash.indexof": "^4.0.1",
     "lodash.words": "^3.1.2",
-    "moment": "^2.10.6",
     "octicons": "^3.1.0",
     "parse-link-header": "^0.4.1",
     "re-base": "^1.2.2",
@@ -16,6 +15,7 @@
     "react-addons-update": "^0.14.6",
     "react-dom": "0.14.0",
     "react-mixin": "^2.0.2",
+    "react-timeago": "^2.2.1",
     "react-timer-mixin": "^0.13.3",
     "superagent": "^1.6.1"
   },

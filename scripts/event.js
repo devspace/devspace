@@ -1,5 +1,5 @@
 import React from 'react';
-import moment from 'moment';
+import TimeAgo from 'react-timeago';
 
 import _words from 'lodash.words';
 import _indexOf from 'lodash.indexof';
@@ -227,7 +227,9 @@ class Event extends React.Component {
 						</a>
 						{event.messageHtml}
 					</p>
-					<footer className="event-footer">{moment(event.timestamp).fromNow()}</footer>
+					<footer className="event-footer">
+						<TimeAgo date={event.timestamp} />
+					</footer>
 					<span className={`event-icon octicon octicon-${event.icon}`}></span>
 				</div>
 			</div>
