@@ -123,7 +123,7 @@ class Event extends React.Component {
 				break;
 			case 'PushEvent':
 				icon = 'code';
-				branch = payload.ref.substr(payload.ref.lastIndexOf('/') + 1, payload.ref.length);
+				branch = payload.ref.substr(11);
 
 				if (payload.size === 1) {
 					messageString = `${login} pushed ${payload.size} commit to ${branch} at ${repo}`;
