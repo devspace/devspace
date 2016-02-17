@@ -67,8 +67,19 @@ class Auth extends React.Component {
 		});
 	}
 
-	login() {
-		mixpanel.track('Logged In');
+	publicLogin() {
+		mixpanel.track('Logged With Public Access');
+
+		firebase.authWithOAuthRedirect('github', (err) => {
+			if (err) {
+				console.err(err);
+				return;
+			}
+		}, { scope: 'user,public_repo' });
+	}
+
+	privateLogin() {
+		mixpanel.track('Logged With Private Access');
 
 		firebase.authWithOAuthRedirect('github', (err) => {
 			if (err) {
@@ -105,7 +116,7 @@ class Auth extends React.Component {
 			return (<App isFirstLogin={this.state.isFirstLogin} auth={this.state.auth} logout={this.logout.bind(this)} />);
 		}
 		else if (this.state.auth === null) {
-			return (<Home login={this.login.bind(this)}/>);
+			return (<Home publicLogin={this.publicLogin.bind(this)} privateLogin={this.privateLogin.bind(this)}/>);
 		}
 		else {
 			return this.renderLoading();

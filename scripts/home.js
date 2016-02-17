@@ -11,14 +11,20 @@ class Home extends React.Component {
 				<main className="home-container">
 					<img className="home-logo" src="./images/icon.png" height="256" width="256" alt="DevSpace Logo" />
 					<h1 className="home-title">DevSpace</h1>
-					<h2 className="home-subtitle">The best way to stay in touch with what's happening now on GitHub</h2>
-					<button className="home-btn" onClick={this.props.login}>
-						<span className="octicon octicon-mark-github"></span> Login with GitHub
-					</button>
-					<p className="home-subbtn">Why all these permissions?</p>
-					<p className="home-subbtn">
-						<a target="_blank" href="https://devspace.io/privacy">Privacy</a> • <a target="_blank" href="https://github.com/dear-github/dear-github/issues/113">Open Letter to GitHub</a>
-					</p>
+					<h2 className="home-subtitle">Stay up to date with what's happening now on GitHub</h2>
+					<div className="home-btn-container">
+						<button className="home-btn" onClick={this.props.publicLogin}>
+							<span className="octicon octicon-globe"></span> Public Access
+						</button>
+						<span className="home-btn-divider">or</span>
+						<button className="home-btn" onClick={this.props.privateLogin}>
+							<span className="octicon octicon-lock"></span> Private Access
+						</button>
+						<p className="home-subbtn">Why all these permissions?</p>
+						<p className="home-subbtn">
+							<a target="_blank" href="https://github.com/dear-github/dear-github/issues/113">Read our Open Letter to GitHub</a>
+						</p>
+					</div>
 				</main>
 				<footer className="home-footer">
 					<div className="home-footer-container">
