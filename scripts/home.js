@@ -13,6 +13,7 @@ class Home extends React.Component {
 					<h1 className="home-title">DevSpace</h1>
 					<h2 className="home-subtitle">Stay up to date with what's happening now on GitHub</h2>
 					<div className="home-btn-container">
+						<p className="home-subbtn">Login with GitHub</p>
 						<button className="home-btn" onClick={this.props.publicLogin}>
 							<span className="octicon octicon-globe"></span> Public Access
 						</button>
