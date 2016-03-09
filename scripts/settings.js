@@ -42,7 +42,7 @@ class Settings extends React.Component {
 					<ModalHeader>
 						<button className="Modal__header__close" onClick={this.props.toggleSettingsModal} type="button"></button>
 						<h4 className="Modal__header__text">
-							<span className="octicon octicon-settings"></span> Settings
+							<span className="octicon octicon-gear"></span> Settings
 						</h4>
 					</ModalHeader>
 					<ModalBody>
