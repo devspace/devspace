@@ -8,6 +8,7 @@ import Banner from './banner';
 import Columns from './columns';
 import Filter from './filter';
 import Nav from './nav';
+import Settings from './settings';
 
 import update from 'react-addons-update';
 import request from 'superagent';
@@ -26,11 +27,13 @@ class App extends React.Component {
 			columnsErrors: undefined,
 			columnsEvents: undefined,
 			columnsModified: undefined,
-			isFilterModalOpen: false,
-			isAddModalOpen: false,
 			isAddInitialContent: true,
+			isAddModalOpen: false,
+			isFilterModalOpen: false,
+			isSettingsModalOpen: false,
 			isOnline: undefined,
-			isVisible: undefined
+			isVisible: undefined,
+			settings: undefined
 		};
 	}
 
@@ -39,7 +42,7 @@ class App extends React.Component {
 	   ====================================================================== */
 
 	componentDidMount() {
-		this.firebaseSync = base.syncState(`${this.props.auth.uid}/columns`, {
+		this.columnsSync = base.syncState(`${this.props.auth.uid}/columns`, {
 			context: this,
 			state: 'columns',
 			asArray: true,
@@ -52,6 +55,11 @@ class App extends React.Component {
 			}
 		});
 
+		this.settingsSync = base.syncState(`${this.props.auth.uid}/settings`, {
+			context: this,
+			state: 'settings'
+		});
+
 		window.addEventListener('online', this.handleConnectivity.bind(this));
 		window.addEventListener('offline', this.handleConnectivity.bind(this));
 		window.addEventListener('visibilitychange', this.handleVisibility.bind(this));
@@ -62,7 +70,8 @@ class App extends React.Component {
 	}
 
 	componentWillUnmount() {
-		base.removeBinding(this.firebaseSync);
+		base.removeBinding(this.columnsSync);
+		base.removeBinding(this.settingsSync);
 
 		window.removeEventListener('online', this.handleConnectivity.bind(this));
 		window.removeEventListener('offline', this.handleConnectivity.bind(this));
@@ -132,6 +141,22 @@ class App extends React.Component {
 	toggleAddInitialContent() {
 		this.setState({
 			isAddInitialContent: !this.state.isAddInitialContent
+		});
+	}
+
+	/* ======================================================================
+	   Settings
+	   ====================================================================== */
+
+	toggleSettingsModal() {
+		this.setState({
+			isSettingsModalOpen: !this.state.isSettingsModalOpen
+		});
+	}
+
+	setSettings(settings) {
+		this.setState({
+			settings: settings
 		});
 	}
 
@@ -259,14 +284,25 @@ class App extends React.Component {
 		});
 	}
 
+	/* ======================================================================
+	   Render
+	   ====================================================================== */
+
 	render() {
+		var appClassName = "app";
+
+		if (this.state.settings) {
+			appClassName = `app ${this.state.settings.columnSize} ${this.state.settings.fontSize}`;
+		}
+
 		return (
-			<div className="app">
+			<div className={appClassName}>
 				<Banner isOnline={this.state.isOnline} />
-				<Nav logout={this.props.logout} toggleAddModal={this.toggleAddModal.bind(this)} />
+				<Nav logout={this.props.logout} toggleAddModal={this.toggleAddModal.bind(this)} toggleSettingsModal={this.toggleSettingsModal.bind(this)} />
 				<Columns columns={this.state.columns} columnsErrors={this.state.columnsErrors} columnsEvents={this.state.columnsEvents} isOnline={this.state.isOnline} isVisible={this.state.isVisible} fetchColumn={this.fetchColumn.bind(this)} removeColumn={this.removeColumn.bind(this)} toggleAddModal={this.toggleAddModal.bind(this)} toggleFilterModal={this.toggleFilterModal.bind(this)} isFilterModalOpen={this.state.isFilterModalOpen} />
 				<Add addColumn={this.addColumn.bind(this)} toggleAddModal={this.toggleAddModal.bind(this)} isAddModalOpen={this.state.isAddModalOpen} toggleAddInitialContent={this.toggleAddInitialContent.bind(this)} isAddInitialContent={this.state.isAddInitialContent} github={this.props.auth.github} />
 				<Filter activeColumn={this.state.activeColumn} columns={this.state.columns} isFilterModalOpen={this.state.isFilterModalOpen} toggleFilterModal={this.toggleFilterModal.bind(this)} setFilter={this.setFilter.bind(this)} />
+				<Settings settings={this.state.settings} setSettings={this.setSettings.bind(this)} isSettingsModalOpen={this.state.isSettingsModalOpen} toggleSettingsModal={this.toggleSettingsModal.bind(this)} />
 			</div>
 		)
 	}

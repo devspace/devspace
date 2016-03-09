@@ -16,6 +16,11 @@ class Nav extends React.Component {
 		this.props.toggleAddModal();
 	}
 
+	handleSettingsLink(event) {
+		this.trackLink(event);
+		this.props.toggleSettingsModal();
+	}
+
 	handleLogoutLink(event) {
 		this.trackLink(event);
 		this.props.logout();
@@ -39,6 +44,11 @@ class Nav extends React.Component {
 							<li className="nav-item">
 								<a className="nav-link tooltipped tooltipped-e" onClick={this.trackLink.bind(this)} href="https://github.com/devspace/devspace/issues/new" target="_blank" aria-label="Report a bug">
 									<span className="nav-icon octicon octicon-bug"></span>
+								</a>
+							</li>
+							<li className="nav-item">
+								<a className="nav-link tooltipped tooltipped-e" onClick={this.handleSettingsLink.bind(this)} aria-label="Settings">
+									<span className="nav-icon octicon octicon-gear"></span>
 								</a>
 							</li>
 							<li className="nav-item">

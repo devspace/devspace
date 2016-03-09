@@ -2,8 +2,6 @@ import React from 'react';
 
 import { Modal, ModalBody, ModalHeader, ModalFooter, FormRow, FormField, FormInput, FormNote, Button  } from 'elemental/lib/Elemental';
 
-
-
 class Filter extends React.Component {
 	shouldComponentUpdate(nextProps) {
 		return nextProps.isFilterModalOpen !== this.props.isFilterModalOpen,
