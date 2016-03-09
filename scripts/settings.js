@@ -18,12 +18,20 @@ class Settings extends React.Component {
 			columnSize: event.target.id,
 			fontSize: this.props.settings.fontSize
 		});
+
+		mixpanel.track('Changed Column Width', {
+			title: event.target.id
+		});
 	}
 
 	handleFontsRadio(event) {
 		this.props.setSettings({
 			columnSize: this.props.settings.columnSize,
 			fontSize: event.target.id
+		});
+
+		mixpanel.track('Changed Font Size', {
+			title: event.target.id
 		});
 	}
 
