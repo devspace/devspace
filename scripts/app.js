@@ -93,7 +93,12 @@ class App extends React.Component {
 					'type': 'User',
 					'payload': this.props.auth.github.username
 				}
-			]
+			],
+			settings: {
+				columnSize: 'column-medium',
+				fontSize: 'font-medium',
+				theme: 'dark'
+			}
 		});
 	}
 
