@@ -13,8 +13,21 @@ class Settings extends React.Component {
 		this.props.toggleSettingsModal();
 	}
 
+	handleThemesRadio(event) {
+		this.props.setSettings({
+			theme: event.target.id,
+			columnSize: this.props.settings.columnSize,
+			fontSize: this.props.settings.fontSize
+		});
+
+		mixpanel.track('Changed Theme', {
+			title: event.target.id
+		});
+	}
+
 	handleColumnsRadio(event) {
 		this.props.setSettings({
+			theme: this.props.settings.theme,
 			columnSize: event.target.id,
 			fontSize: this.props.settings.fontSize
 		});
@@ -26,6 +39,7 @@ class Settings extends React.Component {
 
 	handleFontsRadio(event) {
 		this.props.setSettings({
+			theme: this.props.settings.theme,
 			columnSize: this.props.settings.columnSize,
 			fontSize: event.target.id
 		});
@@ -47,12 +61,16 @@ class Settings extends React.Component {
 					</ModalHeader>
 					<ModalBody>
 						<FormRow>
-							<FormField width="one-half" label="Columns">
+							<FormField width="one-third" label="Themes">
+								<Radio id="dark"  name="themes" label="Dark"  onChange={this.handleThemesRadio.bind(this)} defaultChecked={this.props.settings && this.props.settings.theme === 'dark'  ? true : false } />
+								<Radio id="light" name="themes" label="Light" onChange={this.handleThemesRadio.bind(this)} defaultChecked={this.props.settings && this.props.settings.theme === 'light' ? true : false } />
+							</FormField>
+							<FormField width="one-third" label="Columns">
 								<Radio id="column-narrow" name="columns" label="Narrow"  onChange={this.handleColumnsRadio.bind(this)} defaultChecked={this.props.settings && this.props.settings.columnSize === 'column-narrow' ? true : false } />
 								<Radio id="column-medium" name="columns" label="Regular" onChange={this.handleColumnsRadio.bind(this)} defaultChecked={this.props.settings && this.props.settings.columnSize === 'column-medium' ? true : false } />
 								<Radio id="column-wide"   name="columns" label="Wide"    onChange={this.handleColumnsRadio.bind(this)} defaultChecked={this.props.settings && this.props.settings.columnSize === 'column-wide'   ? true : false } />
 							</FormField>
-							<FormField width="one-half" label="Fonts">
+							<FormField width="one-third" label="Fonts">
 								<Radio id="font-small"  name="fonts" label="Small"  onChange={this.handleFontsRadio.bind(this)} defaultChecked={this.props.settings && this.props.settings.fontSize === 'font-small'  ? true : false } />
 								<Radio id="font-medium" name="fonts" label="Medium" onChange={this.handleFontsRadio.bind(this)} defaultChecked={this.props.settings && this.props.settings.fontSize === 'font-medium' ? true : false } />
 								<Radio id="font-large"  name="fonts" label="Large"  onChange={this.handleFontsRadio.bind(this)} defaultChecked={this.props.settings && this.props.settings.fontSize === 'font-large'  ? true : false } />
