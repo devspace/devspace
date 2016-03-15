@@ -5,6 +5,7 @@ var browserify = require('browserify');
 var babelify = require('babelify');
 var watchify = require('watchify');
 var notify = require('gulp-notify');
+var shell = require('gulp-shell');
 
 var less = require('gulp-less');
 var autoprefixer = require('gulp-autoprefixer');
@@ -71,4 +72,13 @@ gulp.task('scripts', function() {
 gulp.task('default', ['styles', 'scripts'], function() {
   gulp.watch('styles/**/*', ['styles']);
   return buildScript('main.js', true);
+});
+
+gulp.task('prod', function() {
+  process.env.NODE_ENV = 'production';
+});
+
+gulp.task('deploy', ['prod', 'styles', 'scripts'], function() {
+  return gulp.src('index.html', { read: false })
+    .pipe(shell(['firebase deploy']));
 });
