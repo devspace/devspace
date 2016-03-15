@@ -1,5 +1,6 @@
 {
   "name": "DevSpace",
+  "short_name": "DevSpace",
   "icons": [
     {
       "src": "images/launcher-icon-2x.png",
@@ -18,5 +19,7 @@
     }
   ],
   "start_url": "index.html",
+  "background_color": "#36354F",
+  "theme_color": "#AFB4FF",
   "display": "standalone"
 }
