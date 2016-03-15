@@ -1,31 +1,56 @@
-var source = require('vinyl-source-stream');
-var gulp = require('gulp');
-var gutil = require('gulp-util');
-var browserify = require('browserify');
-var babelify = require('babelify');
-var watchify = require('watchify');
-var notify = require('gulp-notify');
-var shell = require('gulp-shell');
-
-var less = require('gulp-less');
 var autoprefixer = require('gulp-autoprefixer');
-var uglify = require('gulp-uglify');
-var rename = require('gulp-rename');
-var buffer = require('vinyl-buffer');
+var babelify     = require('babelify');
+var browserify   = require('browserify');
+var buffer       = require('vinyl-buffer');
+var gulp         = require('gulp');
+var gutil        = require('gulp-util');
+var less         = require('gulp-less');
+var notify       = require('gulp-notify');
+var rename       = require('gulp-rename');
+var shell        = require('gulp-shell');
+var source       = require('vinyl-source-stream');
+var uglify       = require('gulp-uglify');
+var watchify     = require('watchify');
 
-gulp.task('styles',function() {
+/* Tasks
+   ========================================================================== */
+
+gulp.task('fonts',function() {
   gulp.src([
     'node_modules/octicons/octicons/octicons.eot',
     'node_modules/octicons/octicons/octicons.ttf',
     'node_modules/octicons/octicons/octicons.woff'
   ])
   .pipe(gulp.dest('build/styles/'))
+});
 
+gulp.task('styles',function() {
   gulp.src('styles/main.less')
     .pipe(less())
     .pipe(autoprefixer())
     .pipe(gulp.dest('build/styles/'))
 });
+
+gulp.task('scripts', function() {
+  return buildScript('main.js', false);
+});
+
+gulp.task('prod', function() {
+  process.env.NODE_ENV = 'production';
+});
+
+gulp.task('deploy', ['prod', 'fonts', 'styles', 'scripts'], function() {
+  return gulp.src('index.html', { read: false })
+    .pipe(shell(['firebase deploy']));
+});
+
+gulp.task('default', ['fonts', 'styles', 'scripts'], function() {
+  gulp.watch('styles/**/*', ['styles']);
+  return buildScript('main.js', true);
+});
+
+/* Util
+   ========================================================================== */
 
 function handleErrors() {
   var args = Array.prototype.slice.call(arguments);
@@ -64,21 +89,3 @@ function buildScript(file, watch) {
 
   return rebundle();
 }
-
-gulp.task('scripts', function() {
-  return buildScript('main.js', false);
-});
-
-gulp.task('default', ['styles', 'scripts'], function() {
-  gulp.watch('styles/**/*', ['styles']);
-  return buildScript('main.js', true);
-});
-
-gulp.task('prod', function() {
-  process.env.NODE_ENV = 'production';
-});
-
-gulp.task('deploy', ['prod', 'styles', 'scripts'], function() {
-  return gulp.src('index.html', { read: false })
-    .pipe(shell(['firebase deploy']));
-});
