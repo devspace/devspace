@@ -9,7 +9,7 @@ class Home extends React.Component {
 		return (
 			<div className="home">
 				<main className="home-container">
-					<img className="home-logo" src="./images/icon.png" height="148" width="148" alt="DevSpace Logo" />
+					<img className="home-logo" src="https://devspace.io/build/images/logo.png" height="148" width="148" alt="DevSpace Logo" />
 					<h1 className="home-title">DevSpace</h1>
 					<h2 className="home-subtitle">Stay up to date with what's happening now on GitHub</h2>
 					<div className="home-btn-container">
