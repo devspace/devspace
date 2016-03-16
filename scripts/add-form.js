@@ -38,6 +38,12 @@ class AddForm extends React.Component {
 								checkingOrgMembership: false
 							});
 
+							// If user logged with public access
+							if (response.headers['x-oauth-scopes'].indexOf('public') !== -1) {
+								resolve('Organization');
+							}
+
+							// If user belongs to that organization
 							if (response.status === 204 || response.status === 302) {
 								resolve('Organization (Private)');
 							} else {
