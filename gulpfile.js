@@ -1,16 +1,10 @@
-var autoprefixer = require('gulp-autoprefixer');
-var babelify     = require('babelify');
-var browserify   = require('browserify');
-var buffer       = require('vinyl-buffer');
-var gulp         = require('gulp');
-var gutil        = require('gulp-util');
-var less         = require('gulp-less');
-var notify       = require('gulp-notify');
-var rename       = require('gulp-rename');
-var shell        = require('gulp-shell');
-var source       = require('vinyl-source-stream');
-var uglify       = require('gulp-uglify');
-var watchify     = require('watchify');
+var $          = require('gulp-load-plugins')();
+var babelify   = require('babelify');
+var browserify = require('browserify');
+var buffer     = require('vinyl-buffer');
+var gulp       = require('gulp');
+var source     = require('vinyl-source-stream');
+var watchify   = require('watchify');
 
 /* Tasks
    ========================================================================== */
@@ -26,8 +20,8 @@ gulp.task('fonts',function() {
 
 gulp.task('styles',function() {
   gulp.src('styles/main.less')
-    .pipe(less())
-    .pipe(autoprefixer())
+    .pipe($.less())
+    .pipe($.autoprefixer())
     .pipe(gulp.dest('build/styles/'))
 });
 
@@ -41,7 +35,7 @@ gulp.task('prod', function() {
 
 gulp.task('deploy', ['prod', 'fonts', 'styles', 'scripts'], function() {
   return gulp.src('index.html', { read: false })
-    .pipe(shell(['firebase deploy']));
+    .pipe($.shell(['firebase deploy']));
 });
 
 gulp.task('default', ['fonts', 'styles', 'scripts'], function() {
@@ -54,7 +48,7 @@ gulp.task('default', ['fonts', 'styles', 'scripts'], function() {
 
 function handleErrors() {
   var args = Array.prototype.slice.call(arguments);
-  notify.onError({
+  $.notify.onError({
     title: 'Compile Error',
     message: '<%= error.message %>'
   }).apply(this, args);
@@ -77,14 +71,14 @@ function buildScript(file, watch) {
       .pipe(source(file))
       .pipe(gulp.dest('./build/'))
       .pipe(buffer())
-      .pipe(uglify())
-      .pipe(rename('main.min.js'))
+      .pipe($.uglify())
+      .pipe($.rename('main.min.js'))
       .pipe(gulp.dest('./build'))
   }
 
   bundler.on('update', function() {
     rebundle();
-    gutil.log('Rebundle...');
+    $.util.log('Rebundle...');
   });
 
   return rebundle();
