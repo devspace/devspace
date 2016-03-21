@@ -2,6 +2,7 @@ var $          = require('gulp-load-plugins')();
 var babelify   = require('babelify');
 var browserify = require('browserify');
 var buffer     = require('vinyl-buffer');
+var critical   = require('critical').stream;
 var gulp       = require('gulp');
 var source     = require('vinyl-source-stream');
 var watchify   = require('watchify');
@@ -23,6 +24,17 @@ gulp.task('styles',function() {
     .pipe($.less())
     .pipe($.autoprefixer())
     .pipe(gulp.dest('build/styles/'))
+});
+
+gulp.task('critical', function () {
+  return gulp.src('index.html')
+    .pipe(critical({
+      css: ['build/styles/main.css'],
+      height: 700,
+      inline: true,
+      minify: true
+    }))
+    .pipe(gulp.dest('build'));
 });
 
 gulp.task('scripts', function() {
