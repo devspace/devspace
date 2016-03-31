@@ -1,0 +1,43 @@
+@import "../../node_modules/elemental/less/base";
+@import "../../node_modules/elemental/less/components";
+@import "../../node_modules/elemental/less/mixins";
+@import "../../node_modules/elemental/less/utils";
+@import "../../node_modules/elemental/less/variables";
+
+@purple: #7C84FF;
+@app-primary: @purple;
+
+html {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    height: 100%;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+button:focus {
+    outline: 0;
+}
+
+.centered {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+@import "./add";
+@import "./app";
+@import "./auth";
+@import "./banner";
+@import "./column";
+@import "./columns";
+@import "./event";
+@import "./home";
+@import "./nav";
+@import "./settings";
+@import "./tooltip";
+@import "./theme";

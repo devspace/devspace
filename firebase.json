@@ -1,6 +1,6 @@
 {
   "firebase": "devspace-app",
-  "public": ".",
+  "public": "dist",
   "ignore": [
     "firebase.json",
     "**/.*",

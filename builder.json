@@ -1,8 +1,8 @@
 {
   "osx" : {
     "title": "DevSpace",
-    "background": "assets/osx/bg.png",
-    "icon": "assets/osx/icon.icns",
+    "background": "src/images/osx/bg.png",
+    "icon": "src/images/osx/icon.icns",
     "icon-size": 80,
     "contents": [
       { "x": 335, "y": 100, "type": "link", "path": "/Applications" },
@@ -11,6 +11,6 @@
   },
   "win" : {
     "title" : "DevSpace",
-    "icon" : "assets/win/icon.ico"
+    "icon" : "src/images/win/icon.ico"
   }
 }
