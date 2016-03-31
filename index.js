@@ -23,6 +23,7 @@ app.on('ready', function() {
   var screenSize = screen.getPrimaryDisplay().workAreaSize;
 
   var mainWindow = new BrowserWindow({
+    title: 'DevSpace',
     width: screenSize.width,
     height: screenSize.height,
     webPreferences: {
