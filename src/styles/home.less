@@ -57,9 +57,10 @@
     display: inline-block;
     font-family: 'Roboto', sans-serif;
     font-size: 22px;
+    height: 67px;
     font-weight: 400;
     margin: 0 auto 12px;
-    padding: .75em 1.15em;
+    padding: 2px 6px;
     text-align: center;
     text-decoration: none;
     white-space: nowrap;
@@ -69,11 +70,22 @@
 
 .home-btn .octicon {
     color: #fff;
-    font-size: 32px;
-    margin-right: 5px;
-    position: relative;
-    top: 1px;
+    display: inline-block;
+    font-size: 28px;
     transition: all 0.3s ease-in-out;
+}
+
+.home-btn .octicon,
+.home-btn .Spinner {
+    margin-right: 10px;
+    width: 32px;
+}
+
+.home-btn .Spinner {
+    font-size: 5px;
+    height: 5px;
+    position: relative;
+    top: -2px;
 }
 
 .home-btn:hover,
@@ -91,7 +103,7 @@
     color: white;
     font-family: 'Roboto', sans-serif;
     font-size: 22px;
-    height: 68px;
+    height: 67px;
     margin: 0 12px;
 }
 

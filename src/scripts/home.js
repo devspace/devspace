@@ -1,11 +1,44 @@
 import React from 'react';
 
+import { Spinner } from 'elemental/lib/Elemental';
+
 class Home extends React.Component {
-	shouldComponentUpdate() {
-		return false;
+	constructor() {
+		super();
+
+		this.state = {
+			clickedPublicLoginBtn: false,
+			clickedPrivateLoginBtn: false
+		};
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		return nextState.clickedPublicLoginBtn !== this.state.clickedPublicLoginBtn ||
+			nextState.clickedPrivateLoginBtn !== this.state.clickedPrivateLoginBtn;
+	}
+
+	onClickPublicLogin() {
+		this.setState({ clickedPublicLoginBtn: true });
+		this.props.publicLogin();
+	}
+
+	onClickPrivateLogin() {
+		this.setState({ clickedPrivateLoginBtn: true });
+		this.props.privateLogin();
 	}
 
 	render() {
+		var publicLoginIcon = <span className="octicon octicon-globe"></span>;
+		var privateLoginIcon = <span className="octicon octicon-lock"></span>;
+
+		if (this.state.clickedPublicLoginBtn) {
+			publicLoginIcon = <Spinner type="primary" />;
+		}
+
+		if (this.state.clickedPrivateLoginBtn) {
+			privateLoginIcon = <Spinner type="primary" />;
+		}
+
 		return (
 			<div className="home">
 				<main className="home-container">
@@ -14,12 +47,14 @@ class Home extends React.Component {
 					<h2 className="home-subtitle">Stay up to date with what's happening now on GitHub</h2>
 					<div className="home-btn-container">
 						<p className="home-subbtn">Login with GitHub</p>
-						<button className="home-btn" onClick={this.props.publicLogin}>
-							<span className="octicon octicon-globe"></span> Public Access
+						<button className="home-btn" onClick={this.onClickPublicLogin.bind(this)}>
+							<span>{publicLoginIcon}</span>
+							<span>Public Access</span>
 						</button>
 						<span className="home-btn-divider">or</span>
-						<button className="home-btn" onClick={this.props.privateLogin}>
-							<span className="octicon octicon-lock"></span> Private Access
+						<button className="home-btn" onClick={this.onClickPrivateLogin.bind(this)}>
+							<span>{privateLoginIcon}</span>
+							<span>Private Access</span>
 						</button>
 						<p className="home-subbtn">Why all these permissions?</p>
 						<p className="home-subbtn">
