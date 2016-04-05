@@ -10,7 +10,7 @@ import { getIcon } from '../data/column';
 
 class Column extends React.Component {
 	componentDidMount() {
-		this.fetch = this.props.fetchColumn(this.props.index);
+		this.props.fetchColumn(this.props.index);
 		this.startInterval();
 	}
 
@@ -31,7 +31,7 @@ class Column extends React.Component {
 
 		// Connectivity changes
 		if (nextProps.isOnline === true) {
-			this.fetch = this.props.fetchColumn(this.props.index);
+			this.props.fetchColumn(this.props.index);
 			this.startInterval();
 		}
 		else if (nextProps.isOnline === false) {
@@ -40,12 +40,11 @@ class Column extends React.Component {
 
 		// Visibility changes
 		if (nextProps.isVisible === true) {
-			this.fetch = this.props.fetchColumn(this.props.index);
+			this.props.fetchColumn(this.props.index);
 		}
 	}
 
 	componentWillUnmount() {
-		this.fetch.abort();
 		this.clearInterval(this.interval);
 	}
 
@@ -55,7 +54,7 @@ class Column extends React.Component {
 
 	startInterval() {
 		this.interval = this.setInterval(() => {
-			this.fetch = this.props.fetchColumn(this.props.index);
+			this.props.fetchColumn(this.props.index);
 		}, 60 * 1000);
 	}
 

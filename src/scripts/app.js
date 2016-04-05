@@ -62,7 +62,7 @@ class App extends React.Component {
 		});
 
 		this.throttle = new Throttle({
-			rate: 60,
+			rate: 15,
 			concurrent: 15
 		});
 
@@ -215,7 +215,7 @@ class App extends React.Component {
 	}
 
 	setEvents(response, key) {
-		if (response.length > 0) {
+		if (response && response.length > 0) {
 			let newState = update(this.state, {
 				columnsEvents: {
 					[key]: { $set: response }
