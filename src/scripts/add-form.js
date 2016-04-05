@@ -59,7 +59,7 @@ class AddForm extends React.Component {
 	handleSubmit(event) {
 		event.preventDefault();
 
-		if (this.props.columns.length < 15) {
+		if (this.props.columns.length < 10) {
 			this.checkOrgMembership(this.refs.payload.value).then((type) => {
 				this.props.addColumn({
 					type: type,
@@ -97,9 +97,9 @@ class AddForm extends React.Component {
 	renderBody() {
 		let columnsLimitError, isInvalid = '';
 
-		if (this.props.columns.length >= 15) {
+		if (this.props.columns.length >= 10) {
 			isInvalid = 'is-invalid';
-			columnsLimitError = 'Sorry, but you can\'t have more than 15 columns.';
+			columnsLimitError = 'Sorry, but you can\'t have more than 10 columns.';
 		}
 
 		return (
