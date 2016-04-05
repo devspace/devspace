@@ -1,7 +1,7 @@
 import React from 'react';
 
 import request from 'superagent';
-import { ModalBody, ModalFooter, ModalHeader, FormField, FormInput, FormIconField, Button, Spinner } from 'elemental/lib/Elemental';
+import { ModalBody, ModalFooter, ModalHeader, FormField, FormInput, FormNote, FormIconField, Button, Spinner } from 'elemental/lib/Elemental';
 
 import { getIcon } from '../data/column';
 
@@ -15,7 +15,8 @@ class AddForm extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		return nextState.checkingOrgMembership !== this.state.checkingOrgMembership;
+		return nextProps.columns !== this.props.columns ||
+			nextState.checkingOrgMembership !== this.state.checkingOrgMembership;
 	}
 
 	checkOrgMembership(payload) {
@@ -58,14 +59,16 @@ class AddForm extends React.Component {
 	handleSubmit(event) {
 		event.preventDefault();
 
-		this.checkOrgMembership(this.refs.payload.value).then((type) => {
-			this.props.addColumn({
-				type: type,
-				payload: this.refs.payload.value
-			});
+		if (this.props.columns.length < 15) {
+			this.checkOrgMembership(this.refs.payload.value).then((type) => {
+				this.props.addColumn({
+					type: type,
+					payload: this.refs.payload.value
+				});
 
-			this.props.toggleAddModal();
-		});
+				this.props.toggleAddModal();
+			});
+		}
 	}
 
 	getRandomPlaceholder() {
@@ -91,6 +94,22 @@ class AddForm extends React.Component {
 		}
 	}
 
+	renderBody() {
+		let columnsLimitError, isInvalid = '';
+
+		if (this.props.columns.length >= 15) {
+			isInvalid = 'is-invalid';
+			columnsLimitError = 'Sorry, but you can\'t have more than 15 columns.';
+		}
+
+		return (
+			<FormField label={`Type a ${this.props.selectedOption.form.label}`} htmlFor="input-repo" className={isInvalid}>
+				<input pattern={this.props.selectedOption.form.pattern} className="FormInput" ref="payload" type="text" placeholder={this.getRandomPlaceholder()} name="input-repo" autoFocus required />
+				<FormNote className="form-validation">{columnsLimitError}</FormNote>
+			</FormField>
+		);
+	}
+
 	render() {
 		return (
 			<form id="addForm" onSubmit={this.handleSubmit.bind(this)}>
@@ -102,9 +121,7 @@ class AddForm extends React.Component {
 					</h4>
 				</ModalHeader>
 				<ModalBody>
-					<FormField label={`Type a ${this.props.selectedOption.form.label}`} htmlFor="input-repo">
-						<input pattern={this.props.selectedOption.form.pattern} className="FormInput" ref="payload" type="text" placeholder={this.getRandomPlaceholder()} name="input-repo" autoFocus required />
-					</FormField>
+					{this.renderBody()}
 				</ModalBody>
 				<ModalFooter className="add-footer">
 					{this.renderButton()}

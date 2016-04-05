@@ -30,7 +30,7 @@ class Add extends React.Component {
 			return <AddOptions setSelectedOption={this.setSelectedOption.bind(this)} toggleAddModal={this.props.toggleAddModal} toggleAddInitialContent={this.props.toggleAddInitialContent} />
 		}
 		else {
-			return <AddForm addColumn={this.props.addColumn} selectedOption={this.state.selectedOption} toggleAddModal={this.props.toggleAddModal} toggleAddInitialContent={this.props.toggleAddInitialContent} github={this.props.github} />
+			return <AddForm columns={this.props.columns} addColumn={this.props.addColumn} selectedOption={this.state.selectedOption} toggleAddModal={this.props.toggleAddModal} toggleAddInitialContent={this.props.toggleAddInitialContent} github={this.props.github} />
 		}
 	}
 
