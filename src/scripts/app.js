@@ -12,6 +12,7 @@ import Settings from './settings';
 
 import update from 'react-addons-update';
 import request from 'superagent';
+import Throttle from 'superagent-throttle';
 import parse from 'parse-link-header';
 import { getURL } from '../data/column';
 
@@ -58,6 +59,11 @@ class App extends React.Component {
 		this.settingsSync = base.syncState(`${this.props.auth.uid}/settings`, {
 			context: this,
 			state: 'settings'
+		});
+
+		this.throttle = new Throttle({
+			rate: 60,
+			concurrent: 15
 		});
 
 		window.addEventListener('online', this.handleConnectivity.bind(this));
@@ -184,6 +190,7 @@ class App extends React.Component {
 
 		return request
 			.get(getURL(column.type, column.payload, this.props.auth.github.username))
+			.use(this.throttle.plugin)
 			.set('Authorization', 'token ' + this.props.auth.github.accessToken)
 			.set('If-Modified-Since', lastModified)
 			.end(this.handleResponse.bind(this, key));
