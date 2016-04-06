@@ -2,9 +2,6 @@ import React from 'react';
 
 import { Spinner } from 'elemental/lib/Elemental';
 
-import ReactMixin from 'react-mixin';
-import TimerMixin from 'react-timer-mixin';
-
 import Event from './event';
 import { getIcon } from '../data/column';
 
@@ -26,7 +23,7 @@ class Column extends React.Component {
 	componentWillUpdate(nextProps) {
 		// Error changes
 		if (nextProps.error) {
-			this.clearInterval(this.interval);
+			window.clearInterval(this.interval);
 		}
 
 		// Connectivity changes
@@ -35,17 +32,21 @@ class Column extends React.Component {
 			this.startInterval();
 		}
 		else if (nextProps.isOnline === false) {
-			this.clearInterval(this.interval);
+			window.clearInterval(this.interval);
 		}
 
 		// Visibility changes
 		if (nextProps.isVisible === true) {
 			this.props.fetchColumn(this.props.index);
+			this.startInterval();
+		}
+		else if (nextProps.isVisible === false) {
+			window.clearInterval(this.interval);
 		}
 	}
 
 	componentWillUnmount() {
-		this.clearInterval(this.interval);
+		window.clearInterval(this.interval);
 	}
 
 	/* ======================================================================
@@ -53,7 +54,7 @@ class Column extends React.Component {
 	   ====================================================================== */
 
 	startInterval() {
-		this.interval = this.setInterval(() => {
+		this.interval = window.setInterval(() => {
 			this.props.fetchColumn(this.props.index);
 		}, 60 * 1000);
 	}
@@ -110,9 +111,5 @@ class Column extends React.Component {
 		)
 	}
 }
-
-
-
-ReactMixin.onClass(Column, TimerMixin);
 
 export default Column;
