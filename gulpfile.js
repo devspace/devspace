@@ -5,8 +5,10 @@ var buffer      = require('vinyl-buffer');
 var critical    = require('critical').stream;
 var del         = require('del');
 var gulp        = require('gulp');
+var path        = require('path');
 var runSequence = require('run-sequence');
 var source      = require('vinyl-source-stream');
+var swPrecache  = require('sw-precache');
 var watchify    = require('watchify');
 
 /* Tasks
@@ -19,6 +21,11 @@ gulp.task('clean', function() {
 gulp.task('assets', function() {
   return gulp.src(['src/browserconfig.xml', 'src/manifest.json'])
     .pipe(gulp.dest('dist'))
+});
+
+gulp.task('assets:js', function() {
+  return gulp.src(['src/scripts/service-worker-registration.js'])
+    .pipe(gulp.dest('dist/scripts/'))
 });
 
 gulp.task('images', function() {
@@ -60,6 +67,15 @@ gulp.task('scripts', function() {
   return buildScript('main.js', false);
 });
 
+gulp.task('service-worker', function(callback) {
+  var rootDir = 'dist';
+
+  swPrecache.write(path.join(rootDir, 'service-worker.js'), {
+    staticFileGlobs: [rootDir + '/**/*.{js,json,html,css,png,jpg,gif,eot,ttf,woff}'],
+    stripPrefix: rootDir
+  }, callback);
+});
+
 gulp.task('prod', function() {
   process.env.NODE_ENV = 'production';
 });
@@ -72,7 +88,8 @@ gulp.task('connect', function() {
 });
 
 gulp.task('build', ['clean'], function(callback) {
-  runSequence('assets', 'images', 'styles', 'critical', ['fonts', 'scripts'], callback);
+  runSequence('assets', 'assets:js', 'images', 'styles', 'critical',
+    ['fonts', 'scripts', 'service-worker'], callback);
 });
 
 gulp.task('deploy', ['prod', 'build'], function() {
