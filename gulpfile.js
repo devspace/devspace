@@ -5,6 +5,7 @@ var buffer      = require('vinyl-buffer');
 var critical    = require('critical').stream;
 var del         = require('del');
 var gulp        = require('gulp');
+var packageJson = require('./package.json');
 var path        = require('path');
 var runSequence = require('run-sequence');
 var source      = require('vinyl-source-stream');
@@ -71,6 +72,7 @@ gulp.task('service-worker', function(callback) {
   var rootDir = 'dist';
 
   swPrecache.write(path.join(rootDir, 'service-worker.js'), {
+    cacheId: packageJson.name,
     staticFileGlobs: [rootDir + '/**/*.{js,json,html,css,png,jpg,gif,eot,ttf,woff}'],
     stripPrefix: rootDir
   }, callback);
@@ -89,7 +91,7 @@ gulp.task('connect', function() {
 
 gulp.task('build', ['clean'], function(callback) {
   runSequence('assets', 'assets:js', 'images', 'styles', 'critical',
-    ['fonts', 'scripts', 'service-worker'], callback);
+    ['fonts', 'scripts'], 'service-worker', callback);
 });
 
 gulp.task('deploy', ['prod', 'build'], function() {
