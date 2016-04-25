@@ -40,30 +40,38 @@ class Auth extends React.Component {
 						auth: authData
 					});
 
-					let user = authData.github.cachedUserProfile;
-
-					mixpanel.identify(user.id);
-					mixpanel.people.set({
-						'$created': new Date(),
-						'$email': authData.github.email,
-						'$name': user.name,
-						'Avatar': user.avatar_url,
-						'Company': user.company,
-						'Followers': user.followers,
-						'Following': user.following,
-						'GitHub Created': user.created_at,
-						'ID': user.id,
-						'Location': user.location,
-						'Login': user.login,
-						'Repos': user.public_repos,
-						'Site': user.blog
-					});
+					self.saveUserData(authData);
 				});
 			} else {
 				self.setState({
 					auth: null
 				});
 			}
+		});
+	}
+
+	saveUserData(authData) {
+		let user = authData.github.cachedUserProfile;
+
+		mixpanel.identify(user.id);
+		mixpanel.people.set({
+			'$created': new Date(),
+			'$email': authData.github.email,
+			'$name': user.name,
+			'Avatar': user.avatar_url,
+			'Company': user.company,
+			'Followers': user.followers,
+			'Following': user.following,
+			'GitHub Created': user.created_at,
+			'ID': user.id,
+			'Location': user.location,
+			'Login': user.login,
+			'Repos': user.public_repos,
+			'Site': user.blog
+		});
+
+		firebase.child(authData.uid).update({
+			user: user
 		});
 	}
 
