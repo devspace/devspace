@@ -97,9 +97,9 @@ class AddForm extends React.Component {
 	renderBody() {
 		let columnsLimitError, isInvalid = '';
 
-		if (this.props.columns.length >= 10) {
+		if (this.props.columns.length >= 20) {
 			isInvalid = 'is-invalid';
-			columnsLimitError = 'Sorry, but you can\'t have more than 10 columns.';
+			columnsLimitError = 'Sorry, but you can\'t have more than 20 columns.';
 		}
 
 		return (
