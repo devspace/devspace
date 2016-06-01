@@ -11,11 +11,6 @@ class Nav extends React.Component {
 		});
 	}
 
-	handleAddLink(event) {
-		this.trackLink(event);
-		this.props.toggleAddModal();
-	}
-
 	handleSettingsLink(event) {
 		this.trackLink(event);
 		this.props.toggleSettingsModal();
@@ -31,13 +26,7 @@ class Nav extends React.Component {
 			<div className="nav-container">
 				<nav className="nav">
 					<header className="nav-top">
-						<ul className="nav-list">
-							<li className="nav-item">
-								<a className="nav-link tooltipped tooltipped-e" onClick={this.handleAddLink.bind(this)} aria-label="Add column">
-									<span className="nav-icon octicon octicon-plus"></span>
-								</a>
-							</li>
-						</ul>
+						<ul className="nav-list"></ul>
 					</header>
 					<footer className="nav-footer">
 						<ul className="nav-list">

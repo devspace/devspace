@@ -1,11 +1,11 @@
 .app {
-    font-family: Helvetica, Arial, Verdana, sans-serif;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    overflow: hidden;
+	font-family: Helvetica, Arial, Verdana, sans-serif;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	overflow: hidden;
 }
 
 .dark.app {
@@ -14,6 +14,35 @@
 
 .light.app {
 	background: #ddd;
+}
+
+/* Floating Action Button
+   ========================================================================== */
+
+.fab {
+	background: #6d74e2;
+	border-radius: 50%;
+	display: block;
+	position: fixed !important;
+	bottom: 24px;
+	right: 24px;
+	line-height: 60px;
+	text-align: center;
+	height: 56px;
+	width: 56px;
+}
+
+.fab.tooltipped-w:after {
+	margin-right: 10px;
+}
+
+.fab.tooltipped-w:before {
+	left: -10px
+}
+
+.fab-icon {
+	color: white;
+	font-size: 24px;
 }
 
 /* Scrollbar
