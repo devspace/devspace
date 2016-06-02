@@ -1,14 +1,19 @@
 import React from 'react';
 
 class Nav extends React.Component {
-	shouldComponentUpdate() {
-		return false;
+	shouldComponentUpdate(nextProps) {
+		return nextProps.screen !== this.props.screen;
 	}
 
 	trackLink(event) {
 		mixpanel.track('Clicked Sidebar', {
 			title: event.currentTarget.getAttribute('aria-label')
 		});
+	}
+
+	handleScreenToggle(event) {
+		this.trackLink(event);
+		this.props.toggleScreen(event);
 	}
 
 	handleSettingsLink(event) {
@@ -22,11 +27,25 @@ class Nav extends React.Component {
 	}
 
 	render() {
+		let isActivities = this.props.screen === 'Activities' ? 'active' : '';
+		let isNotifications = this.props.screen === 'Notifications' ? 'active' : '';
+
 		return (
 			<div className="nav-container">
 				<nav className="nav">
 					<header className="nav-top">
-						<ul className="nav-list"></ul>
+						<ul className="nav-list">
+							<li className="nav-item">
+								<a className={"nav-link tooltipped tooltipped-e " + isActivities} onClick={this.handleScreenToggle.bind(this)} aria-label="Activities">
+									<span className="nav-icon octicon octicon-home"></span>
+								</a>
+							</li>
+							<li className="nav-item">
+								<a className={"nav-link tooltipped tooltipped-e " + isNotifications} onClick={this.handleScreenToggle.bind(this)} aria-label="Notifications">
+									<span className="nav-icon octicon octicon-bell"></span>
+								</a>
+							</li>
+						</ul>
 					</header>
 					<footer className="nav-footer">
 						<ul className="nav-list">

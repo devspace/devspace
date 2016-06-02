@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Firebase from 'firebase';
 
 import App from './app';
