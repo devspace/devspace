@@ -44,6 +44,7 @@
 
 .nav-link {
     display: block;
+    position: relative;
     height: 44px;
     width: 100%;
 }
@@ -57,4 +58,20 @@
     position: relative;
     top: 10px;
     transition: color 0.3s ease-in-out;
+}
+
+.nav-link .nav-counter {
+    position: absolute;
+    top: 26px;
+    right: 7px;
+    height: 16px;
+    min-width: 16px;
+    padding: 0 3px;
+    overflow: hidden;
+    background: #6d74e2;
+    color: #FFF;
+    text-align: center;
+    border-radius: 7px;
+    font-size: 9px;
+    z-index: 1;
 }

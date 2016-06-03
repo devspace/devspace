@@ -1,19 +1,45 @@
 import React from 'react';
 
+import request from 'superagent';
+import Throttle from 'superagent-throttle';
+
 class Nav extends React.Component {
-	shouldComponentUpdate(nextProps) {
-		return nextProps.screen !== this.props.screen;
+	constructor() {
+		super();
+
+		this.state = {
+			prCounter: undefined,
+			issueCounter: undefined
+		};
 	}
+
+	/* ======================================================================
+	   Lifecycle
+	   ====================================================================== */
+
+	componentDidMount() {
+		this.throttle = new Throttle({
+			rate: 15,
+			concurrent: 15
+		});
+
+		this.fetchCounter('pr');
+		this.fetchCounter('issue');
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		return nextState.prCounter !== this.state.prCounter ||
+			nextState.issueCounter !== this.state.issueCounter;
+	}
+
+	/* ======================================================================
+	   Trackers
+	   ====================================================================== */
 
 	trackLink(event) {
 		mixpanel.track('Clicked Sidebar', {
 			title: event.currentTarget.getAttribute('aria-label')
 		});
-	}
-
-	handleScreenToggle(event) {
-		this.trackLink(event);
-		this.props.toggleScreen(event);
 	}
 
 	handleSettingsLink(event) {
@@ -26,23 +52,82 @@ class Nav extends React.Component {
 		this.props.logout();
 	}
 
-	render() {
-		let isActivities = this.props.screen === 'Activities' ? 'active' : '';
-		let isNotifications = this.props.screen === 'Notifications' ? 'active' : '';
+	/* ======================================================================
+	   Fetch
+	   ====================================================================== */
 
+	fetchCounter(type) {
+		return request
+			.get(`https://api.github.com/search/issues?q=state:open+is:${type}+user:${this.props.github.username}`)
+			.use(this.throttle.plugin)
+			.set('Authorization', 'token ' + this.props.github.accessToken)
+			.end(this.handleCounterResponse.bind(this, type));
+	}
+
+	handleCounterResponse(type, error, response) {
+		if (response && response.status === 200) {
+			if (response.body.total_count > 99) {
+				if (type === 'pr') {
+					this.setState({
+						prCounter: '99+'
+					});
+				} else if (type === 'issue') {
+					this.setState({
+						issueCounter: '99+'
+					});
+				}
+			} else if (response.body.total_count !== 0) {
+				if (type === 'pr') {
+					this.setState({
+						prCounter: response.body.total_count
+					});
+				} else if (type === 'issue') {
+					this.setState({
+						issueCounter: response.body.total_count
+					});
+				}
+			}
+		}
+	}
+
+	/* ======================================================================
+	   Render
+	   ====================================================================== */
+
+	renderCounter(type) {
+		if (type === 'pr') {
+			if (this.state.prCounter) {
+				return (
+					<span className="nav-counter">{this.state.prCounter}</span>
+				)
+			}
+		} else if (type === 'issue') {
+			if (this.state.issueCounter) {
+				return (
+					<span className="nav-counter">{this.state.issueCounter}</span>
+				)
+			}
+		}
+
+		return;
+	}
+
+	render() {
 		return (
 			<div className="nav-container">
 				<nav className="nav">
 					<header className="nav-top">
 						<ul className="nav-list">
 							<li className="nav-item">
-								<a className={"nav-link tooltipped tooltipped-e " + isActivities} onClick={this.handleScreenToggle.bind(this)} aria-label="Activities">
-									<span className="nav-icon octicon octicon-home"></span>
+								<a className="nav-link tooltipped tooltipped-e" onClick={this.trackLink.bind(this)} href={"https://github.com/pulls?q=is:open+type:pr+user:%22" + this.props.github.username + "%22"} target="_blank" aria-label="Pull Requests">
+									<span className="nav-icon octicon octicon-git-pull-request"></span>
+									{this.renderCounter('pr')}
 								</a>
 							</li>
 							<li className="nav-item">
-								<a className={"nav-link tooltipped tooltipped-e " + isNotifications} onClick={this.handleScreenToggle.bind(this)} aria-label="Notifications">
-									<span className="nav-icon octicon octicon-bell"></span>
+								<a className="nav-link tooltipped tooltipped-e" onClick={this.trackLink.bind(this)} href={"https://github.com/issues?q=is:open+type:issue+user:%22" + this.props.github.username + "%22"} target="_blank" aria-label="Issues">
+									<span className="nav-icon octicon octicon-issue-opened"></span>
+									{this.renderCounter('issue')}
 								</a>
 							</li>
 						</ul>

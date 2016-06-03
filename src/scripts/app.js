@@ -8,8 +8,6 @@ import Filter from './filter';
 import Nav from './nav';
 import Settings from './settings';
 
-import Notifications from './notifications';
-
 import update from 'react-addons-update';
 import request from 'superagent';
 import Throttle from 'superagent-throttle';
@@ -34,8 +32,7 @@ class App extends React.Component {
 			isSettingsModalOpen: false,
 			isOnline: undefined,
 			isVisible: undefined,
-			settings: undefined,
-			screen: 'Activities'
+			settings: undefined
 		};
 	}
 
@@ -309,30 +306,6 @@ class App extends React.Component {
 	   Render
 	   ====================================================================== */
 
-	toggleScreen(event) {
-		this.setState({
-			screen: event.currentTarget.getAttribute('aria-label')
-		});
-	}
-
-	renderScreen() {
-		if (this.state.screen === 'Activities') {
-			return (
-				<div>
-					<Columns columns={this.state.columns} columnsErrors={this.state.columnsErrors} columnsEvents={this.state.columnsEvents} isOnline={this.state.isOnline} isVisible={this.state.isVisible} fetchColumn={this.fetchColumn.bind(this)} removeColumn={this.removeColumn.bind(this)} toggleAddModal={this.toggleAddModal.bind(this)} toggleFilterModal={this.toggleFilterModal.bind(this)} isFilterModalOpen={this.state.isFilterModalOpen} />
-					<Add columns={this.state.columns} settings={this.state.settings} addColumn={this.addColumn.bind(this)} toggleAddModal={this.toggleAddModal.bind(this)} isAddModalOpen={this.state.isAddModalOpen} toggleAddInitialContent={this.toggleAddInitialContent.bind(this)} isAddInitialContent={this.state.isAddInitialContent} github={this.props.auth.github} />
-					<Filter activeColumn={this.state.activeColumn} columns={this.state.columns} isFilterModalOpen={this.state.isFilterModalOpen} toggleFilterModal={this.toggleFilterModal.bind(this)} setFilter={this.setFilter.bind(this)} />
-					<a className="fab tooltipped tooltipped-w" onClick={this.handleAddLink.bind(this)} aria-label="Add column">
-						<span className="fab-icon octicon octicon-plus"></span>
-					</a>
-				</div>
-			);
-		}
-		else if (this.state.screen === 'Notifications') {
-			return <Notifications />;
-		}
-	}
-
 	render() {
 		var appClassName = "app dark";
 
@@ -343,9 +316,14 @@ class App extends React.Component {
 		return (
 			<div className={appClassName}>
 				<Banner isOnline={this.state.isOnline} />
-				<Nav screen={this.state.screen} toggleScreen={this.toggleScreen.bind(this)} logout={this.props.logout} toggleSettingsModal={this.toggleSettingsModal.bind(this)} />
+				<Nav logout={this.props.logout} toggleSettingsModal={this.toggleSettingsModal.bind(this)} github={this.props.auth.github} />
 				<Settings settings={this.state.settings} setSettings={this.setSettings.bind(this)} isSettingsModalOpen={this.state.isSettingsModalOpen} toggleSettingsModal={this.toggleSettingsModal.bind(this)} />
-				{this.renderScreen()}
+				<Columns columns={this.state.columns} columnsErrors={this.state.columnsErrors} columnsEvents={this.state.columnsEvents} isOnline={this.state.isOnline} isVisible={this.state.isVisible} fetchColumn={this.fetchColumn.bind(this)} removeColumn={this.removeColumn.bind(this)} toggleAddModal={this.toggleAddModal.bind(this)} toggleFilterModal={this.toggleFilterModal.bind(this)} isFilterModalOpen={this.state.isFilterModalOpen} />
+				<Add columns={this.state.columns} settings={this.state.settings} addColumn={this.addColumn.bind(this)} toggleAddModal={this.toggleAddModal.bind(this)} isAddModalOpen={this.state.isAddModalOpen} toggleAddInitialContent={this.toggleAddInitialContent.bind(this)} isAddInitialContent={this.state.isAddInitialContent} github={this.props.auth.github} />
+				<Filter activeColumn={this.state.activeColumn} columns={this.state.columns} isFilterModalOpen={this.state.isFilterModalOpen} toggleFilterModal={this.toggleFilterModal.bind(this)} setFilter={this.setFilter.bind(this)} />
+				<a className="fab tooltipped tooltipped-w" onClick={this.handleAddLink.bind(this)} aria-label="Add column">
+					<span className="fab-icon octicon octicon-plus"></span>
+				</a>
 			</div>
 		)
 	}
