@@ -17,47 +17,61 @@ class Nav extends React.Component {
 	   Lifecycle
 	   ====================================================================== */
 
+	shouldComponentUpdate(nextProps, nextState) {
+		return nextProps.isOnline !== this.props.isOnline ||
+			nextProps.isVisible !== this.props.isVisible ||
+			nextState.prCounter !== this.state.prCounter ||
+			nextState.issueCounter !== this.state.issueCounter;
+	}
+
 	componentDidMount() {
 		this.throttle = new Throttle({
 			rate: 15,
 			concurrent: 15
 		});
 
+		this.initCounters();
+	}
+
+	componentWillUpdate(nextProps) {
+		if (nextProps.isOnline === true) {
+			this.initCounters();
+		}
+		else if (nextProps.isOnline === false) {
+			this.clearCounters();
+		}
+
+		if (nextProps.isVisible === true) {
+			this.initCounters();
+		}
+		else if (nextProps.isVisible === false) {
+			this.clearCounters();
+		}
+	}
+
+	componentWillUnmount() {
+		this.clearCounters();
+	}
+
+	/* ======================================================================
+	   Counters
+	   ====================================================================== */
+
+	initCounters() {
 		this.fetchCounter('pr');
 		this.fetchCounter('issue');
+
+		this.prInterval = window.setInterval(() => {
+			this.fetchCounter('pr');
+		}, 60 * 1000);
+
+		this.issueInterval = window.setInterval(() => {
+			this.fetchCounter('issue');
+		}, 60 * 1000);
 	}
-
-	shouldComponentUpdate(nextProps, nextState) {
-		return nextState.prCounter !== this.state.prCounter ||
-			nextState.issueCounter !== this.state.issueCounter;
-	}
-
-	/* ======================================================================
-	   Trackers
-	   ====================================================================== */
-
-	trackLink(event) {
-		mixpanel.track('Clicked Sidebar', {
-			title: event.currentTarget.getAttribute('aria-label')
-		});
-	}
-
-	handleSettingsLink(event) {
-		this.trackLink(event);
-		this.props.toggleSettingsModal();
-	}
-
-	handleLogoutLink(event) {
-		this.trackLink(event);
-		this.props.logout();
-	}
-
-	/* ======================================================================
-	   Fetch
-	   ====================================================================== */
 
 	fetchCounter(type) {
-		return request
+		request
 			.get(`https://api.github.com/search/issues?q=state:open+is:${type}+user:${this.props.github.username}`)
 			.use(this.throttle.plugin)
 			.set('Authorization', 'token ' + this.props.github.accessToken)
@@ -88,6 +102,31 @@ class Nav extends React.Component {
 				}
 			}
 		}
+	}
+
+	clearCounters() {
+		window.clearInterval(this.prInterval);
+		window.clearInterval(this.issueInterval);
+	}
+
+	/* ======================================================================
+	   Trackers
+	   ====================================================================== */
+
+	trackLink(event) {
+		mixpanel.track('Clicked Sidebar', {
+			title: event.currentTarget.getAttribute('aria-label')
+		});
+	}
+
+	handleSettingsLink(event) {
+		this.trackLink(event);
+		this.props.toggleSettingsModal();
+	}
+
+	handleLogoutLink(event) {
+		this.trackLink(event);
+		this.props.logout();
 	}
 
 	/* ======================================================================

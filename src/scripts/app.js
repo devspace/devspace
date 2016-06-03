@@ -316,7 +316,7 @@ class App extends React.Component {
 		return (
 			<div className={appClassName}>
 				<Banner isOnline={this.state.isOnline} />
-				<Nav logout={this.props.logout} toggleSettingsModal={this.toggleSettingsModal.bind(this)} github={this.props.auth.github} />
+				<Nav logout={this.props.logout} toggleSettingsModal={this.toggleSettingsModal.bind(this)} isOnline={this.state.isOnline} isVisible={this.state.isVisible} github={this.props.auth.github} />
 				<Settings settings={this.state.settings} setSettings={this.setSettings.bind(this)} isSettingsModalOpen={this.state.isSettingsModalOpen} toggleSettingsModal={this.toggleSettingsModal.bind(this)} />
 				<Columns columns={this.state.columns} columnsErrors={this.state.columnsErrors} columnsEvents={this.state.columnsEvents} isOnline={this.state.isOnline} isVisible={this.state.isVisible} fetchColumn={this.fetchColumn.bind(this)} removeColumn={this.removeColumn.bind(this)} toggleAddModal={this.toggleAddModal.bind(this)} toggleFilterModal={this.toggleFilterModal.bind(this)} isFilterModalOpen={this.state.isFilterModalOpen} />
 				<Add columns={this.state.columns} settings={this.state.settings} addColumn={this.addColumn.bind(this)} toggleAddModal={this.toggleAddModal.bind(this)} isAddModalOpen={this.state.isAddModalOpen} toggleAddInitialContent={this.toggleAddInitialContent.bind(this)} isAddInitialContent={this.state.isAddInitialContent} github={this.props.auth.github} />
