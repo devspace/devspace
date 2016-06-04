@@ -137,13 +137,17 @@ class Nav extends React.Component {
 		if (type === 'pr') {
 			if (this.state.prCounter) {
 				return (
-					<span className="nav-counter">{this.state.prCounter}</span>
+					<div className="nav-counter">
+						<div>{this.state.prCounter}</div>
+					</div>
 				)
 			}
 		} else if (type === 'issue') {
 			if (this.state.issueCounter) {
 				return (
-					<span className="nav-counter">{this.state.issueCounter}</span>
+					<div className="nav-counter">
+						<div>{this.state.issueCounter}</div>
+					</div>
 				)
 			}
 		}
