@@ -64,9 +64,9 @@ class App extends React.Component {
 			concurrent: 15
 		});
 
-		window.addEventListener('online', this.handleConnectivity.bind(this));
-		window.addEventListener('offline', this.handleConnectivity.bind(this));
-		window.addEventListener('visibilitychange', this.handleVisibility.bind(this));
+		document.addEventListener('online', this.handleConnectivity.bind(this));
+		document.addEventListener('offline', this.handleConnectivity.bind(this));
+		document.addEventListener('visibilitychange', this.handleVisibility.bind(this));
 
 		if (this.props.isFirstLogin) {
 			this.handleFirstLogin();
@@ -77,9 +77,9 @@ class App extends React.Component {
 		base.removeBinding(this.columnsSync);
 		base.removeBinding(this.settingsSync);
 
-		window.removeEventListener('online', this.handleConnectivity.bind(this));
-		window.removeEventListener('offline', this.handleConnectivity.bind(this));
-		window.removeEventListener('visibilitychange', this.handleVisibility.bind(this));
+		document.removeEventListener('online', this.handleConnectivity.bind(this));
+		document.removeEventListener('offline', this.handleConnectivity.bind(this));
+		document.removeEventListener('visibilitychange', this.handleVisibility.bind(this));
 	}
 
 	/* ======================================================================
