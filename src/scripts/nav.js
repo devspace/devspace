@@ -2,6 +2,7 @@ import React from 'react';
 
 import request from 'superagent';
 import Throttle from 'superagent-throttle';
+import parseLinkHeader from 'parse-link-header';
 
 class Nav extends React.Component {
 	constructor() {
@@ -9,7 +10,8 @@ class Nav extends React.Component {
 
 		this.state = {
 			prCounter: undefined,
-			issueCounter: undefined
+			issueCounter: undefined,
+			notificationCounter: undefined
 		};
 	}
 
@@ -21,7 +23,8 @@ class Nav extends React.Component {
 		return nextProps.isOnline !== this.props.isOnline ||
 			nextProps.isVisible !== this.props.isVisible ||
 			nextState.prCounter !== this.state.prCounter ||
-			nextState.issueCounter !== this.state.issueCounter;
+			nextState.issueCounter !== this.state.issueCounter ||
+			nextState.notificationCounter !== this.state.notificationCounter;
 	}
 
 	componentDidMount() {
@@ -31,26 +34,32 @@ class Nav extends React.Component {
 		});
 
 		this.initCounters();
+		this.initNotification();
 	}
 
 	componentWillUpdate(nextProps) {
 		if (nextProps.isOnline === true) {
 			this.initCounters();
+			this.initNotification();
 		}
 		else if (nextProps.isOnline === false) {
 			this.clearCounters();
+			this.clearNotification();
 		}
 
 		if (nextProps.isVisible === true) {
 			this.initCounters();
+			this.initNotification();
 		}
 		else if (nextProps.isVisible === false) {
 			this.clearCounters();
+			this.clearNotification();
 		}
 	}
 
 	componentWillUnmount() {
 		this.clearCounters();
+		this.clearNotification();
 	}
 
 	/* ======================================================================
@@ -110,6 +119,54 @@ class Nav extends React.Component {
 	}
 
 	/* ======================================================================
+	   Notifications
+	   ====================================================================== */
+
+	initNotification() {
+		this.fetchNotification();
+
+		this.notificationInterval = window.setInterval(() => {
+			this.fetchNotification();
+		}, 60 * 1000);
+	}
+
+	fetchNotification() {
+		request
+			.get('https://api.github.com/notifications?per_page=1')
+			.use(this.throttle.plugin)
+			.set('Authorization', 'token ' + this.props.github.accessToken)
+			.end(this.handleNotificationResponse.bind(this));
+	}
+
+	handleNotificationResponse(error, response) {
+		if (response && response.status === 200) {
+			if (response.headers.link) {
+				let total = parseLinkHeader(response.headers.link).last.page;
+
+				if (parseInt(total, 10) > 99) {
+					total = '+99';
+				}
+
+				this.setState({
+					notificationCounter: total
+				});
+			} else if (Object.keys(response.body).length === 1) {
+				this.setState({
+					notificationCounter: 1
+				});
+			} else {
+				this.setState({
+					notificationCounter: undefined
+				});
+			}
+		}
+	}
+
+	clearNotification() {
+		window.clearInterval(this.notificationInterval);
+	}
+
+	/* ======================================================================
 	   Trackers
 	   ====================================================================== */
 
@@ -155,12 +212,30 @@ class Nav extends React.Component {
 		return;
 	}
 
+	renderNotification() {
+		if (this.state.notificationCounter) {
+			return (
+				<div className="nav-counter">
+					<div>{this.state.notificationCounter}</div>
+				</div>
+			)
+		}
+
+		return;
+	}
+
 	render() {
 		return (
 			<div className="nav-container">
 				<nav className="nav">
 					<header className="nav-top">
 						<ul className="nav-list">
+							<li className="nav-item">
+								<a className="nav-link tooltipped tooltipped-e" onClick={this.trackLink.bind(this)} href={"https://github.com/notifications"} target="_blank" aria-label="Notifications">
+									<span className="nav-icon octicon octicon-bell"></span>
+									{this.renderNotification()}
+								</a>
+							</li>
 							<li className="nav-item">
 								<a className="nav-link tooltipped tooltipped-e" onClick={this.trackLink.bind(this)} href={"https://github.com/pulls?q=is:open+type:pr+user:%22" + this.props.github.username + "%22"} target="_blank" aria-label="Pull Requests">
 									<span className="nav-icon octicon octicon-git-pull-request"></span>
