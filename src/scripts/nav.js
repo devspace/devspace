@@ -132,7 +132,9 @@ class Nav extends React.Component {
 
 	fetchNotification() {
 		request
-			.get('https://api.github.com/notifications?per_page=1')
+			.get('https://api.github.com/notifications')
+			.query({ per_page: 1 })
+			.query({ preventCache: new Date().getTime() })
 			.use(this.throttle.plugin)
 			.set('Authorization', 'token ' + this.props.github.accessToken)
 			.end(this.handleNotificationResponse.bind(this));
