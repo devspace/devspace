@@ -73,7 +73,7 @@ class Column extends React.Component {
 
 	maybeFetchColumn() {
 		if (this.refs.wrap.scrollTop > 10) {
-			if (!this.props.hasUpdates) {
+			if (this.props.hasUpdates !== 'appear') {
 				this.props.checkUpdates(this.props.index);
 			}
 		} else {
@@ -82,9 +82,9 @@ class Column extends React.Component {
 	}
 
 	handleNewUpdatesButton() {
+		this.props.setHasUpdates('disappear', this.props.index);
 		this.props.fetchColumn(this.props.index, 1);
 		this.refs.wrap.scrollTop = 0;
-		this.props.setHasUpdates(false, this.props.index);
 
 		mixpanel.track('Clicked New Updates');
 	}
@@ -92,9 +92,9 @@ class Column extends React.Component {
 	handleScroll() {
 		let scroll = this.refs.wrap.scrollTop;
 
-		if (scroll <= 10 && this.props.hasUpdates) {
+		if (scroll <= 10 && this.props.hasUpdates === 'appear') {
+			this.props.setHasUpdates('disappear', this.props.index);
 			this.props.fetchColumn(this.props.index, 1);
-			this.props.setHasUpdates(false, this.props.index);
 		}
 	}
 
@@ -127,11 +127,11 @@ class Column extends React.Component {
 	}
 
 	renderNewUpdatesButton() {
-		let pillState;
+		let pillState = 'hidden';
 
-		if (this.props.hasUpdates === true) {
+		if (this.props.hasUpdates === 'appear') {
 			pillState = 'zoomIn';
-		} else {
+		} else if (this.props.hasUpdates === 'disappear') {
 			pillState = 'zoomOut';
 		}
 

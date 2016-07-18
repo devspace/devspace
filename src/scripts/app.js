@@ -289,9 +289,9 @@ class App extends React.Component {
 			.set('If-Modified-Since', lastModified)
 			.end((error, response) => {
 				if (response && response.status === 200) {
-					this.setHasUpdates(true, key);
+					this.setHasUpdates('appear', key);
 				} else {
-					this.setHasUpdates(false, key);
+					this.setHasUpdates(undefined, key);
 				}
 			});
 	}
