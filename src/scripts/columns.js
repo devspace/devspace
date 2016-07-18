@@ -9,6 +9,7 @@ class Columns extends React.Component {
 		return nextProps.columns === this.props.columns ||
 			nextProps.columnsErrors !== this.props.columnsErrors ||
 			nextProps.columnsEvents !== this.props.columnsEvents ||
+			nextProps.columnsHasUpdates !== this.props.columnsHasUpdates ||
 			nextProps.isFilterModalOpen !== this.props.isFilterModalOpen ||
 			nextProps.isOnline !== this.props.isOnline ||
 			nextProps.isVisible !== this.props.isVisible;
@@ -31,8 +32,9 @@ class Columns extends React.Component {
 	renderColumn(column, key) {
 		let error = this.props.columnsErrors && this.props.columnsErrors[key] ? this.props.columnsErrors[key] : undefined;
 		let events = this.props.columnsEvents && this.props.columnsEvents[key] ? this.props.columnsEvents[key] : undefined;
+		let hasUpdates = this.props.columnsHasUpdates && this.props.columnsHasUpdates[key] ? this.props.columnsHasUpdates[key] : undefined;
 
-		return <Column key={key} index={key} isOnline={this.props.isOnline} isVisible={this.props.isVisible} error={error} events={events} fetchColumn={this.props.fetchColumn.bind(this)} removeColumn={this.props.removeColumn.bind(this, key)} details={column} toggleFilterModal={this.props.toggleFilterModal} isFilterModalOpen={this.props.isFilterModalOpen} />;
+		return <Column key={key} index={key} isOnline={this.props.isOnline} isVisible={this.props.isVisible} error={error} events={events} hasUpdates={hasUpdates} fetchColumn={this.props.fetchColumn.bind(this)} removeColumn={this.props.removeColumn.bind(this, key)} details={column} toggleFilterModal={this.props.toggleFilterModal} isFilterModalOpen={this.props.isFilterModalOpen} checkUpdates={this.props.checkUpdates.bind(this)} setHasUpdates={this.props.setHasUpdates.bind(this)} />;
 	}
 
 	renderContent() {

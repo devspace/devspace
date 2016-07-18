@@ -1,13 +1,20 @@
 import React from 'react';
 
+import debounce from 'lodash.debounce';
 import { Spinner } from 'elemental/lib/Elemental';
 
 import Event from './event';
 import { getIcon } from '../data/column';
 
 class Column extends React.Component {
+	constructor() {
+		super();
+
+		this.handleScroll = debounce(this.handleScroll.bind(this), 100);
+	}
+
 	componentDidMount() {
-		this.props.fetchColumn(this.props.index);
+		this.props.fetchColumn(this.props.index, 1);
 		this.startInterval();
 	}
 
@@ -15,6 +22,7 @@ class Column extends React.Component {
 		return nextProps.columns !== this.props.columns ||
 			nextProps.error !== this.props.error ||
 			nextProps.events !== this.props.events ||
+			nextProps.hasUpdates !== this.props.hasUpdates ||
 			nextProps.isFilterModalOpen !== this.props.isFilterModalOpen ||
 			nextProps.isOnline !== this.props.isOnline ||
 			nextProps.isVisible !== this.props.isVisible;
@@ -28,7 +36,7 @@ class Column extends React.Component {
 
 		// Connectivity changes
 		if (nextProps.isOnline === true) {
-			this.props.fetchColumn(this.props.index);
+			this.maybeFetchColumn();
 			this.startInterval();
 		}
 		else if (nextProps.isOnline === false) {
@@ -37,7 +45,7 @@ class Column extends React.Component {
 
 		// Visibility changes
 		if (nextProps.isVisible === true) {
-			this.props.fetchColumn(this.props.index);
+			this.maybeFetchColumn();
 			this.startInterval();
 		}
 		else if (nextProps.isVisible === false) {
@@ -55,8 +63,39 @@ class Column extends React.Component {
 
 	startInterval() {
 		this.interval = window.setInterval(() => {
-			this.props.fetchColumn(this.props.index);
+			this.maybeFetchColumn();
 		}, 60 * 1000);
+	}
+
+	/* ======================================================================
+	   New Updates
+	   ====================================================================== */
+
+	maybeFetchColumn() {
+		if (this.refs.wrap.scrollTop > 10) {
+			if (!this.props.hasUpdates) {
+				this.props.checkUpdates(this.props.index);
+			}
+		} else {
+			this.props.fetchColumn(this.props.index, 1);
+		}
+	}
+
+	handleNewUpdatesButton() {
+		this.props.fetchColumn(this.props.index, 1);
+		this.refs.wrap.scrollTop = 0;
+		this.props.setHasUpdates(false, this.props.index);
+
+		mixpanel.track('Clicked New Updates');
+	}
+
+	handleScroll() {
+		let scroll = this.refs.wrap.scrollTop;
+
+		if (scroll <= 10 && this.props.hasUpdates) {
+			this.props.fetchColumn(this.props.index, 1);
+			this.props.setHasUpdates(false, this.props.index);
+		}
 	}
 
 	/* ======================================================================
@@ -87,6 +126,24 @@ class Column extends React.Component {
 		}
 	}
 
+	renderNewUpdatesButton() {
+		let pillState;
+
+		if (this.props.hasUpdates === true) {
+			pillState = 'zoomIn';
+		} else {
+			pillState = 'zoomOut';
+		}
+
+		return (
+			<div className={"Pill Pill--primary-inverted " + pillState}>
+				<button onClick={this.handleNewUpdatesButton.bind(this)} className="Pill__label" type="button">
+					<span className="octicon octicon-arrow-up"></span> New Updates
+				</button>
+			</div>
+		)
+	}
+
 	render() {
 		return (
 			<section className="column">
@@ -102,8 +159,9 @@ class Column extends React.Component {
 						<a className="column-header-icon column-header-icon-second tooltipped tooltipped-s" onClick={this.props.removeColumn.bind(this, this.props.index)} aria-label="Remove">
 							<span className="octicon octicon-x"></span>
 						</a>
+						{this.renderNewUpdatesButton()}
 					</header>
-					<div ref="content" className="column-content">
+					<div ref="wrap" className="column-content" onScroll={this.handleScroll.bind(this)}>
 						{this.renderContent()}
 					</div>
 				</div>

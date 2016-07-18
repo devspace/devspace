@@ -21,6 +21,7 @@
 
 .fab {
 	background: #6d74e2;
+	box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 10px, rgba(0, 0, 0, 0.25) 0px 3px 10px;
 	border-radius: 50%;
 	display: block;
 	position: fixed !important;
@@ -30,6 +31,12 @@
 	text-align: center;
 	height: 56px;
 	width: 56px;
+	transition: all .3s ease-in-out;
+}
+
+.fab:hover,
+.fab:focus {
+	background: #969cff;
 }
 
 .fab.tooltipped-w:after {

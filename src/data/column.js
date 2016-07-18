@@ -22,7 +22,7 @@ exports.getIcon = function(type) {
 	return icon;
 };
 
-exports.getURL = function(type, payload, username) {
+exports.getURL = function(type, payload, username, page) {
 	let endpoint;
 
 	switch (type) {
@@ -43,5 +43,5 @@ exports.getURL = function(type, payload, username) {
 			break;
 	}
 
-	return `https://api.github.com/${endpoint}`;
+	return `https://api.github.com/${endpoint}?page=${page}`;
 };

@@ -26,6 +26,7 @@ class App extends React.Component {
 			columnsErrors: undefined,
 			columnsEvents: undefined,
 			columnsModified: undefined,
+			columnsHasUpdates: undefined,
 			isAddInitialContent: true,
 			isAddModalOpen: false,
 			isFilterModalOpen: false,
@@ -49,7 +50,8 @@ class App extends React.Component {
 				this.setState({
 					columnsErrors: [],
 					columnsEvents: [],
-					columnsModified: []
+					columnsModified: [],
+					columnsHasUpdates: []
 				});
 			}
 		});
@@ -190,28 +192,21 @@ class App extends React.Component {
 		this.setState({ columns: this.state.columns.concat([newColumn]) });
 	}
 
-	fetchColumn(key) {
+	fetchColumn(key, page, forceUpdate) {
 		let column = this.state.columns[key];
 		let lastModified = this.state.columnsModified ? this.state.columnsModified[key] : 0;
 
 		return request
-			.get(getURL(column.type, column.payload, this.props.auth.github.username))
+			.get(getURL(column.type, column.payload, this.props.auth.github.username, page))
 			.use(this.throttle.plugin)
 			.set('Authorization', 'token ' + this.props.auth.github.accessToken)
-			.set('If-Modified-Since', lastModified)
+			.set('If-Modified-Since', forceUpdate || lastModified)
 			.end(this.handleResponse.bind(this, key));
 	}
 
 	handleResponse(key, error, response) {
 		if (response && response.status === 200) {
-			let newState = update(this.state, {
-				columnsModified: {
-					[key]: { $set: response.headers['last-modified'] }
-				}
-			});
-
-			this.setState(newState);
-
+			this.setLastModified(response.headers['last-modified'], key);
 			this.setEvents(response.body, key);
 		} else if (response && response.status > 400) {
 			this.setError(response.statusText, key);
@@ -219,6 +214,17 @@ class App extends React.Component {
 			this.setEvents(this.state.columnsEvents[key], key);
 		}
 	}
+
+	setLastModified(lastModifiedHeader, key) {
+		let newState = update(this.state, {
+			columnsModified: {
+				[key]: { $set: lastModifiedHeader }
+			}
+		});
+
+		this.setState(newState);
+	}
+
 
 	setEvents(response, key) {
 		if (response && response.length > 0) {
@@ -256,13 +262,48 @@ class App extends React.Component {
 		this.state.columnsEvents.splice(key, 1);
 		this.state.columnsErrors.splice(key, 1);
 		this.state.columnsModified.splice(key, 1);
+		this.state.columnsHasUpdates.splice(key, 1);
 
 		this.setState({
 			columns: this.state.columns,
 			columnsErrors: this.state.columnsErrors,
 			columnsEvents: this.state.columnsEvents,
-			columnsModified: this.state.columnsModified
+			columnsModified: this.state.columnsModified,
+			columnsHasUpdates: this.state.columnsHasUpdates
 		});
+	}
+
+
+	/* ======================================================================
+	   New Updates
+	   ====================================================================== */
+
+	checkUpdates(key) {
+		let column = this.state.columns[key];
+		let lastModified = this.state.columnsModified ? this.state.columnsModified[key] : 0;
+
+		return request
+			.head(getURL(column.type, column.payload, this.props.auth.github.username, 1))
+			.use(this.throttle.plugin)
+			.set('Authorization', 'token ' + this.props.auth.github.accessToken)
+			.set('If-Modified-Since', lastModified)
+			.end((error, response) => {
+				if (response && response.status === 200) {
+					this.setHasUpdates(true, key);
+				} else {
+					this.setHasUpdates(false, key);
+				}
+			});
+	}
+
+	setHasUpdates(value, key) {
+		let newState = update(this.state, {
+			columnsHasUpdates: {
+				[key]: { $set: value }
+			}
+		});
+
+		this.setState(newState);
 	}
 
 	/* ======================================================================
@@ -318,7 +359,7 @@ class App extends React.Component {
 				<Banner isOnline={this.state.isOnline} />
 				<Nav logout={this.props.logout} toggleSettingsModal={this.toggleSettingsModal.bind(this)} isOnline={this.state.isOnline} isVisible={this.state.isVisible} github={this.props.auth.github} />
 				<Settings settings={this.state.settings} setSettings={this.setSettings.bind(this)} isSettingsModalOpen={this.state.isSettingsModalOpen} toggleSettingsModal={this.toggleSettingsModal.bind(this)} />
-				<Columns columns={this.state.columns} columnsErrors={this.state.columnsErrors} columnsEvents={this.state.columnsEvents} isOnline={this.state.isOnline} isVisible={this.state.isVisible} fetchColumn={this.fetchColumn.bind(this)} removeColumn={this.removeColumn.bind(this)} toggleAddModal={this.toggleAddModal.bind(this)} toggleFilterModal={this.toggleFilterModal.bind(this)} isFilterModalOpen={this.state.isFilterModalOpen} />
+				<Columns columns={this.state.columns} columnsErrors={this.state.columnsErrors} columnsEvents={this.state.columnsEvents} columnsHasUpdates={this.state.columnsHasUpdates} isOnline={this.state.isOnline} isVisible={this.state.isVisible} fetchColumn={this.fetchColumn.bind(this)} removeColumn={this.removeColumn.bind(this)} toggleAddModal={this.toggleAddModal.bind(this)} toggleFilterModal={this.toggleFilterModal.bind(this)} isFilterModalOpen={this.state.isFilterModalOpen} checkUpdates={this.checkUpdates.bind(this)} setHasUpdates={this.setHasUpdates.bind(this)} />
 				<Add columns={this.state.columns} settings={this.state.settings} addColumn={this.addColumn.bind(this)} toggleAddModal={this.toggleAddModal.bind(this)} isAddModalOpen={this.state.isAddModalOpen} toggleAddInitialContent={this.toggleAddInitialContent.bind(this)} isAddInitialContent={this.state.isAddInitialContent} github={this.props.auth.github} />
 				<Filter activeColumn={this.state.activeColumn} columns={this.state.columns} isFilterModalOpen={this.state.isFilterModalOpen} toggleFilterModal={this.toggleFilterModal.bind(this)} setFilter={this.setFilter.bind(this)} />
 				<a className="fab tooltipped tooltipped-w" onClick={this.handleAddLink.bind(this)} aria-label="Add column">
