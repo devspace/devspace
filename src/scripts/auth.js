@@ -19,42 +19,42 @@ class Auth extends React.Component {
 	}
 
 	componentWillMount() {
-		var self = this;
-
 		firebase.onAuth((authData) => {
 			if (authData) {
-				firebase.once('value', function(data) {
-					if (data.hasChild(authData.uid)) {
-						self.setState({
-							isFirstLogin: false
-						});
-					}
-					else {
-						self.setState({
-							isFirstLogin: true
-						});
-					}
-
-					self.setState({
-						auth: authData
-					});
-
-					self.saveUserData(authData);
+				this.setState({
+					auth: authData
 				});
+
+				this.isFirstLogin(authData);
 			} else {
-				self.setState({
+				this.setState({
 					auth: null
 				});
 			}
 		});
 	}
 
+	isFirstLogin(authData) {
+		firebase.once('value', (data) => {
+			let isFirstLogin;
+
+			if (data.hasChild(authData.uid)) {
+				isFirstLogin = false;
+			} else {
+				isFirstLogin = true;
+			}
+
+			this.setState({
+				isFirstLogin: isFirstLogin
+			}, this.saveUserData.bind(this, authData));
+		});
+	}
+
 	saveUserData(authData) {
 		let user = authData.github.cachedUserProfile;
+		user.last_seen_at = new Date().toISOString();
 
-		mixpanel.identify(user.id);
-		mixpanel.people.set({
-			'$created': new Date(),
+		let mixpanelData = {
 			'$email': authData.github.email,
 			'$name': user.name,
 			'Avatar': user.avatar_url,
@@ -67,7 +67,14 @@ class Auth extends React.Component {
 			'Login': user.login,
 			'Repos': user.public_repos,
 			'Site': user.blog
-		});
+		};
+
+		if (this.state.isFirstLogin) {
+			mixpanelData['$created'] = new Date();
+		}
+
+		mixpanel.identify(user.id);
+		mixpanel.people.set(mixpanelData);
 
 		firebase.child(authData.uid).update({
 			user: user
