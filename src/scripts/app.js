@@ -3,6 +3,7 @@ import Rebase from 're-base';
 
 import Add from './add';
 import Banner from './banner';
+import BannerRefresh from './banner-refresh';
 import Columns from './columns';
 import Filter from './filter';
 import Nav from './nav';
@@ -356,6 +357,7 @@ class App extends React.Component {
 
 		return (
 			<div className={appClassName}>
+				<BannerRefresh />
 				<Banner isOnline={this.state.isOnline} />
 				<Nav logout={this.props.logout} toggleSettingsModal={this.toggleSettingsModal.bind(this)} isOnline={this.state.isOnline} isVisible={this.state.isVisible} github={this.props.auth.github} />
 				<Settings settings={this.state.settings} setSettings={this.setSettings.bind(this)} isSettingsModalOpen={this.state.isSettingsModalOpen} toggleSettingsModal={this.toggleSettingsModal.bind(this)} />

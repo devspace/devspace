@@ -24,11 +24,6 @@ gulp.task('assets', function() {
     .pipe(gulp.dest('dist'))
 });
 
-gulp.task('assets:js', function() {
-  return gulp.src(['src/scripts/service-worker-registration.js'])
-    .pipe(gulp.dest('dist/scripts/'))
-});
-
 gulp.task('images', function() {
   return gulp.src('src/images/**/*')
     .pipe(gulp.dest('dist/images/'))
@@ -89,8 +84,8 @@ gulp.task('connect', function() {
   });
 });
 
-gulp.task('build', ['clean'], function(callback) {
-  runSequence('assets', 'assets:js', 'images', 'styles', 'critical',
+gulp.task('build', function(callback) {
+  runSequence('assets', 'images', 'styles', 'critical',
     ['fonts', 'scripts'], 'service-worker', callback);
 });
 

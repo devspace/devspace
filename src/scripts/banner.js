@@ -5,7 +5,7 @@ class Banner extends React.Component {
 		return nextProps.isOnline !== this.props.isOnline;
 	}
 
-	renderContent() {
+	render() {
 		if (this.props.isOnline === false) {
 			return (
 				<div className="banner banner-danger">
@@ -19,11 +19,9 @@ class Banner extends React.Component {
 					<strong><span className="octicon octicon-thumbsup"></span></strong> You've connected to the internet again.
 				</div>
 			)
+		} else {
+			return false;
 		}
-	}
-
-	render() {
-		return <div>{this.renderContent()}</div>
 	}
 }
 

@@ -21,10 +21,6 @@ class Auth extends React.Component {
 	componentWillMount() {
 		firebase.onAuth((authData) => {
 			if (authData) {
-				this.setState({
-					auth: authData
-				});
-
 				this.isFirstLogin(authData);
 			} else {
 				this.setState({
@@ -36,23 +32,15 @@ class Auth extends React.Component {
 
 	isFirstLogin(authData) {
 		firebase.once('value', (data) => {
-			let isFirstLogin;
-
-			if (data.hasChild(authData.uid)) {
-				isFirstLogin = false;
-			} else {
-				isFirstLogin = true;
-			}
-
 			this.setState({
-				isFirstLogin: isFirstLogin
+				auth: authData,
+				isFirstLogin: data.hasChild(authData.uid) ? false : true
 			}, this.saveUserData.bind(this, authData));
 		});
 	}
 
 	saveUserData(authData) {
 		let user = authData.github.cachedUserProfile;
-		user.last_seen_at = new Date().toISOString();
 
 		let mixpanelData = {
 			'$email': authData.github.email,
@@ -127,7 +115,7 @@ class Auth extends React.Component {
 
 	render() {
 		if (this.state.auth) {
-			return (<App isFirstLogin={this.state.isFirstLogin} auth={this.state.auth} logout={this.logout.bind(this)} />);
+			return (<App auth={this.state.auth} isFirstLogin={this.state.isFirstLogin} logout={this.logout.bind(this)} />);
 		}
 		else if (this.state.auth === null) {
 			return (<Home publicLogin={this.publicLogin.bind(this)} privateLogin={this.privateLogin.bind(this)}/>);
