@@ -62,7 +62,7 @@ class Filter extends React.Component {
 							<FormInput defaultValue={pattern} placeholder="/(starred)/g" name="pattern" type="text" />
 						</FormField>
 						<FormNote>
-							<span className="octicon octicon-alert"></span> A pattern regex overrides matching and excluding fields
+							A pattern regex overrides matching and excluding fields
 						</FormNote>
 					</ModalBody>
 					<ModalFooter>
