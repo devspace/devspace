@@ -1,4 +1,5 @@
 import React from 'react';
+import Icon from './icon';
 
 class BannerRefresh extends React.Component {
   constructor() {
@@ -52,7 +53,7 @@ class BannerRefresh extends React.Component {
     if (this.state.hasUpdates) {
       return (
         <div className="banner banner-refresh Alert--info">
-          <span className="octicon octicon-heart"></span> <strong>New version is available.</strong> Would you like to update now?
+          <Icon name="heart" /> <strong>New version is available.</strong> Would you like to update now?
           <div className="banner-buttons">
             <button className="Button Button--sm Button--primary" onClick={this.handleRefresh.bind(this)}>Get the New Version</button>
           </div>

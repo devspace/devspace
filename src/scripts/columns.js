@@ -3,6 +3,7 @@ import React from 'react';
 import { Button, Spinner } from 'elemental/lib/Elemental';
 
 import Column from './column';
+import Icon from './icon';
 
 class Columns extends React.Component {
 	shouldComponentUpdate(nextProps) {
@@ -22,7 +23,7 @@ class Columns extends React.Component {
 	renderBlank() {
 		return (
 			<div className="columns-blank centered">
-				<span className="columns-blank-icon octicon octicon-squirrel"></span>
+				<Icon name="squirrel" className="columns-blank-icon" />
 				<p className="columns-blank-title">You don't have any columns</p>
 				<Button className="columns-blank-btn" size="lg" onClick={this.props.toggleAddModal}>Add a column</Button>
 			</div>

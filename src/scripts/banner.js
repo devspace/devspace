@@ -1,4 +1,5 @@
 import React from 'react';
+import Icon from './icon';
 
 class Banner extends React.Component {
 	shouldComponentUpdate(nextProps, nextState) {
@@ -9,14 +10,14 @@ class Banner extends React.Component {
 		if (this.props.isOnline === false) {
 			return (
 				<div className="banner banner-danger">
-					<strong><span className="octicon octicon-thumbsdown"></span></strong> It seems like you lost internet connection.
+					<strong><Icon name="thumbsdown" /></strong> It seems like you lost internet connection.
 				</div>
 			)
 		}
 		else if (this.props.isOnline === true) {
 			return (
 				<div className="banner banner-success">
-					<strong><span className="octicon octicon-thumbsup"></span></strong> You've connected to the internet again.
+					<strong><Icon name="thumbsup" /></strong> You've connected to the internet again.
 				</div>
 			)
 		} else {

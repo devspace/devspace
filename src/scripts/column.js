@@ -4,6 +4,7 @@ import debounce from 'lodash.debounce';
 import { Spinner } from 'elemental/lib/Elemental';
 
 import Event from './event';
+import Icon from './icon';
 import { getIcon } from '../data/column';
 
 class Column extends React.Component {
@@ -136,9 +137,9 @@ class Column extends React.Component {
 		}
 
 		return (
-			<div className={"Pill Pill--primary-inverted " + pillState}>
+			<div className={"update-pill Pill Pill--primary-inverted " + pillState}>
 				<button onClick={this.handleNewUpdatesButton.bind(this)} className="Pill__label" type="button">
-					<span className="octicon octicon-arrow-up"></span> New Updates
+					<Icon name="arrow-up" className="update-pill-icon" /> New Updates
 				</button>
 			</div>
 		)
@@ -150,14 +151,14 @@ class Column extends React.Component {
 				<div className="column-container">
 					<header className="column-header">
 						<h1 className="column-header-title one-line">
-							<span className={"octicon octicon-" + getIcon(this.props.details.type)}></span>
+							<Icon name={getIcon(this.props.details.type)} />
 							{this.props.details.payload}
 						</h1>
 						<a className="column-header-icon column-header-icon-first tooltipped tooltipped-s" onClick={this.props.toggleFilterModal.bind(this, this.props.index)} aria-label="Filter">
-							<span className="octicon octicon-settings"></span>
+							<Icon name="settings" />
 						</a>
 						<a className="column-header-icon column-header-icon-second tooltipped tooltipped-s" onClick={this.props.removeColumn.bind(this, this.props.index)} aria-label="Remove">
-							<span className="octicon octicon-x"></span>
+							<Icon name="x" />
 						</a>
 						{this.renderNewUpdatesButton()}
 					</header>

@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Modal, ModalBody, ModalHeader, ModalFooter, FormRow, FormField, Radio, Button } from 'elemental/lib/Elemental';
 
+import Icon from './icon';
+
 class Settings extends React.Component {
 	shouldComponentUpdate(nextProps) {
 		return nextProps.settings !== this.props.settings ||
@@ -56,7 +58,7 @@ class Settings extends React.Component {
 					<ModalHeader>
 						<button className="Modal__header__close" onClick={this.props.toggleSettingsModal} type="button"></button>
 						<h4 className="Modal__header__text">
-							<span className="octicon octicon-gear"></span> Settings
+							<Icon name="gear" /> Settings
 						</h4>
 					</ModalHeader>
 					<ModalBody>

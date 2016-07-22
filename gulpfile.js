@@ -29,15 +29,6 @@ gulp.task('images', function() {
     .pipe(gulp.dest('dist/images/'))
 });
 
-gulp.task('fonts',function() {
-  gulp.src([
-    'node_modules/octicons/octicons/octicons.eot',
-    'node_modules/octicons/octicons/octicons.ttf',
-    'node_modules/octicons/octicons/octicons.woff'
-  ])
-  .pipe(gulp.dest('dist/styles/'))
-});
-
 gulp.task('styles',function() {
   gulp.src('src/styles/main.less')
     .pipe($.less())
@@ -86,7 +77,7 @@ gulp.task('connect', function() {
 
 gulp.task('build', function(callback) {
   runSequence('assets', 'images', 'styles', 'critical',
-    ['fonts', 'scripts'], 'service-worker', callback);
+    ['scripts'], 'service-worker', callback);
 });
 
 gulp.task('deploy', ['prod', 'build'], function() {

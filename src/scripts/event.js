@@ -4,6 +4,8 @@ import TimeAgo from 'react-timeago';
 import _words from 'lodash.words';
 import _indexOf from 'lodash.indexof';
 
+import Icon from './icon';
+
 class Event extends React.Component {
 	trackLink(event) {
 		mixpanel.track('Clicked Event', {
@@ -230,7 +232,7 @@ class Event extends React.Component {
 					<footer className="event-footer">
 						<TimeAgo date={event.timestamp} />
 					</footer>
-					<span className={`event-icon octicon octicon-${event.icon}`}></span>
+					<Icon name={event.icon} className="event-icon" />
 				</div>
 			</div>
 		)

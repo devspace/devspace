@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Modal, ModalBody, ModalHeader, ModalFooter, FormRow, FormField, FormInput, FormNote, Button  } from 'elemental/lib/Elemental';
 
+import Icon from './icon';
+
 class Filter extends React.Component {
 	shouldComponentUpdate(nextProps) {
 		return nextProps.isFilterModalOpen !== this.props.isFilterModalOpen,
@@ -46,7 +48,7 @@ class Filter extends React.Component {
 					<ModalHeader>
 						<button className="Modal__header__close" onClick={this.props.toggleFilterModal} type="button"></button>
 						<h4 className="Modal__header__text">
-							<span className="octicon octicon-settings"></span> Filter events
+							<Icon name="settings" /> Filter events
 						</h4>
 					</ModalHeader>
 					<ModalBody>

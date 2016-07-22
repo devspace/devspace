@@ -3,6 +3,7 @@ import React from 'react';
 import { ModalBody, ModalFooter, ModalHeader, Row, Col, Card } from 'elemental/lib/Elemental';
 
 import { getIcon } from '../data/column';
+import Icon from './icon';
 
 class AddOptions extends React.Component {
 	constructor() {
@@ -37,7 +38,7 @@ class AddOptions extends React.Component {
 			<Col key={colKey} sm="1/2">
 				<button type="button" className="add-button" onClick={this.handleOption.bind(this, col)}>
 					<Card className="add-card">
-						<span className={"add-icon octicon octicon-" + getIcon(col.type)}></span>
+						<Icon name={getIcon(col.type)} className="add-icon" />
 						<h1 className="add-title">{col.type}</h1>
 					</Card>
 				</button>

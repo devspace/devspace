@@ -4,6 +4,7 @@ import request from 'superagent';
 import { ModalBody, ModalFooter, ModalHeader, FormField, FormInput, FormNote, FormIconField, Button, Spinner } from 'elemental/lib/Elemental';
 
 import { getIcon } from '../data/column';
+import Icon from './icon';
 
 class AddForm extends React.Component {
 	constructor() {
@@ -116,7 +117,7 @@ class AddForm extends React.Component {
 				<ModalHeader>
 					<button className="Modal__header__close" onClick={this.props.toggleAddModal} type="button"></button>
 					<h4 className="Modal__header__text">
-						<span className={"octicon octicon-" + getIcon(this.props.selectedOption.type)}></span>
+						<Icon name={getIcon(this.props.selectedOption.type)} />
 						{this.props.selectedOption.type}
 					</h4>
 				</ModalHeader>
@@ -126,7 +127,7 @@ class AddForm extends React.Component {
 				<ModalFooter className="add-footer">
 					{this.renderButton()}
 					<Button className="add-btn-secondary" type="link-text" onClick={this.props.toggleAddInitialContent}>
-						<span className="octicon octicon-chevron-left"></span>Back
+						<Icon name="chevron-left" /> Back
 					</Button>
 				</ModalFooter>
 			</form>

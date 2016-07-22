@@ -8,6 +8,7 @@ import Columns from './columns';
 import Filter from './filter';
 import Nav from './nav';
 import Settings from './settings';
+import Icon from './icon';
 
 import update from 'react-addons-update';
 import request from 'superagent';
@@ -365,7 +366,7 @@ class App extends React.Component {
 				<Add columns={this.state.columns} settings={this.state.settings} addColumn={this.addColumn.bind(this)} toggleAddModal={this.toggleAddModal.bind(this)} isAddModalOpen={this.state.isAddModalOpen} toggleAddInitialContent={this.toggleAddInitialContent.bind(this)} isAddInitialContent={this.state.isAddInitialContent} github={this.props.auth.github} />
 				<Filter activeColumn={this.state.activeColumn} columns={this.state.columns} isFilterModalOpen={this.state.isFilterModalOpen} toggleFilterModal={this.toggleFilterModal.bind(this)} setFilter={this.setFilter.bind(this)} />
 				<a className="fab tooltipped tooltipped-w" onClick={this.handleAddLink.bind(this)} aria-label="Add column">
-					<span className="fab-icon octicon octicon-plus"></span>
+					<Icon name="plus" className="fab-icon" />
 				</a>
 			</div>
 		)

@@ -1,4 +1,13 @@
-@import "../../node_modules/elemental/less/base";
+@import "../../node_modules/elemental/less/base/animation";
+@import "../../node_modules/elemental/less/base/disclosure-arrow";
+@import "../../node_modules/elemental/less/base/forms";
+@import "../../node_modules/elemental/less/base/grid";
+@import "../../node_modules/elemental/less/base/images";
+@import "../../node_modules/elemental/less/base/normalize";
+@import "../../node_modules/elemental/less/base/responsive-utilities";
+@import "../../node_modules/elemental/less/base/scaffolding";
+@import "../../node_modules/elemental/less/base/tables";
+@import "../../node_modules/elemental/less/base/type";
 @import "../../node_modules/elemental/less/components";
 @import "../../node_modules/elemental/less/mixins";
 @import "../../node_modules/elemental/less/utils";
@@ -27,6 +36,12 @@ button:focus {
     align-items: center;
     justify-content: center;
     height: 100%;
+}
+
+.octicon {
+    display: inline-block;
+    fill: currentColor;
+    vertical-align: text-top;
 }
 
 @import "./add";

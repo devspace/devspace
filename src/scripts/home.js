@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Spinner } from 'elemental/lib/Elemental';
 
+import Icon from './icon';
+
 class Home extends React.Component {
 	constructor() {
 		super();
@@ -28,8 +30,8 @@ class Home extends React.Component {
 	}
 
 	render() {
-		var publicLoginIcon = <span className="octicon octicon-globe"></span>;
-		var privateLoginIcon = <span className="octicon octicon-lock"></span>;
+		var publicLoginIcon = <Icon name="globe" />;
+		var privateLoginIcon = <Icon name="lock" />;
 
 		if (this.state.clickedPublicLoginBtn) {
 			publicLoginIcon = <Spinner type="primary" />;

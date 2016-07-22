@@ -4,6 +4,8 @@ import request from 'superagent';
 import Throttle from 'superagent-throttle';
 import parseLinkHeader from 'parse-link-header';
 
+import Icon from './icon';
+
 class Nav extends React.Component {
 	constructor() {
 		super();
@@ -234,19 +236,19 @@ class Nav extends React.Component {
 						<ul className="nav-list">
 							<li className="nav-item">
 								<a className="nav-link tooltipped tooltipped-e" onClick={this.trackLink.bind(this)} href={"https://github.com/notifications"} target="_blank" aria-label="Notifications">
-									<span className="nav-icon octicon octicon-bell"></span>
+									<Icon name="bell" className="nav-icon" />
 									{this.renderNotification()}
 								</a>
 							</li>
 							<li className="nav-item">
 								<a className="nav-link tooltipped tooltipped-e" onClick={this.trackLink.bind(this)} href={"https://github.com/pulls?q=is:open+type:pr+user:%22" + this.props.github.username + "%22"} target="_blank" aria-label="Pull Requests">
-									<span className="nav-icon octicon octicon-git-pull-request"></span>
+									<Icon name="git-pull-request" className="nav-icon" />
 									{this.renderCounter('pr')}
 								</a>
 							</li>
 							<li className="nav-item">
 								<a className="nav-link tooltipped tooltipped-e" onClick={this.trackLink.bind(this)} href={"https://github.com/issues?q=is:open+type:issue+user:%22" + this.props.github.username + "%22"} target="_blank" aria-label="Issues">
-									<span className="nav-icon octicon octicon-issue-opened"></span>
+									<Icon name="issue-opened" className="nav-icon" />
 									{this.renderCounter('issue')}
 								</a>
 							</li>
@@ -256,17 +258,17 @@ class Nav extends React.Component {
 						<ul className="nav-list">
 							<li className="nav-item">
 								<a className="nav-link tooltipped tooltipped-e" onClick={this.trackLink.bind(this)} href="https://github.com/devspace/devspace/issues/new" target="_blank" aria-label="Report a bug">
-									<span className="nav-icon octicon octicon-bug"></span>
+									<Icon name="bug" className="nav-icon" />
 								</a>
 							</li>
 							<li className="nav-item">
 								<a className="nav-link tooltipped tooltipped-e" onClick={this.handleSettingsLink.bind(this)} aria-label="Settings">
-									<span className="nav-icon octicon octicon-gear"></span>
+									<Icon name="gear" className="nav-icon" />
 								</a>
 							</li>
 							<li className="nav-item">
 								<a className="nav-link tooltipped tooltipped-e" onClick={this.handleLogoutLink.bind(this)} aria-label="Logout">
-									<span className="nav-icon octicon octicon-sign-out"></span>
+									<Icon name="sign-out" className="nav-icon" />
 								</a>
 							</li>
 						</ul>
