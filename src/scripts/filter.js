@@ -10,7 +10,7 @@ class Filter extends React.Component {
 			nextProps.activeColumn !== this.props.activeColumn;
 	}
 
-	handleFilterSubmit(event) {
+	handleFilterSubmit = event => {
 		event.preventDefault();
 
 		let matching = event.currentTarget.matching.value;
@@ -44,7 +44,7 @@ class Filter extends React.Component {
 
 		return (
    			<Modal isOpen={this.props.isFilterModalOpen} onCancel={this.props.toggleFilterModal} backdropClosesModal>
-				<form onSubmit={this.handleFilterSubmit.bind(this)}>
+				<form onSubmit={this.handleFilterSubmit}>
 					<ModalHeader>
 						<button className="Modal__header__close" onClick={this.props.toggleFilterModal} type="button"></button>
 						<h4 className="Modal__header__text">
