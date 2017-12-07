@@ -68,9 +68,9 @@ class App extends React.Component {
 			concurrent: 15
 		});
 
-		window.addEventListener('online', this.handleConnectivity.bind(this));
-		window.addEventListener('offline', this.handleConnectivity.bind(this));
-		window.addEventListener('visibilitychange', this.handleVisibility.bind(this));
+		window.addEventListener('online', this.handleConnectivity());
+		window.addEventListener('offline', this.handleConnectivity());
+		window.addEventListener('visibilitychange', this.handleVisibility());
 
 		if (this.props.isFirstLogin) {
 			this.handleFirstLogin();
@@ -81,16 +81,16 @@ class App extends React.Component {
 		base.removeBinding(this.columnsSync);
 		base.removeBinding(this.settingsSync);
 
-		window.removeEventListener('online', this.handleConnectivity.bind(this));
-		window.removeEventListener('offline', this.handleConnectivity.bind(this));
-		window.removeEventListener('visibilitychange', this.handleVisibility.bind(this));
+		window.removeEventListener('online', this.handleConnectivity());
+		window.removeEventListener('offline', this.handleConnectivity());
+		window.removeEventListener('visibilitychange', this.handleVisibility());
 	}
 
 	/* ======================================================================
 	   First Login
 	   ====================================================================== */
 
-	handleFirstLogin() {
+	handleFirstLogin = () => {
 		this.setState({
 			columns: [
 				{
@@ -114,7 +114,7 @@ class App extends React.Component {
 	   Status Handlers
 	   ====================================================================== */
 
-	handleConnectivity() {
+	handleConnectivity = () => {
 		this.setState({ isOnline: navigator.onLine });
 
 		if (navigator.onLine) {
@@ -124,7 +124,7 @@ class App extends React.Component {
 		}
 	}
 
-	handleVisibility() {
+	handleVisibility = () => {
 		if (this.state.isOnline !== false) {
 			if (document.visibilityState === 'visible') {
 				this.setState({ isVisible: true });
@@ -144,7 +144,7 @@ class App extends React.Component {
 	   Add Modal
 	   ====================================================================== */
 
-	handleAddLink(event) {
+	handleAddLink = event => {
 		mixpanel.track('Clicked Floating Action Button', {
 			title: event.currentTarget.getAttribute('aria-label')
 		});
@@ -152,14 +152,14 @@ class App extends React.Component {
 		this.toggleAddModal();
 	}
 
-	toggleAddModal() {
+	toggleAddModal = () => {
 		this.setState({
 			isAddModalOpen: !this.state.isAddModalOpen,
 			isAddInitialContent: true
 		});
 	}
 
-	toggleAddInitialContent() {
+	toggleAddInitialContent = () => {
 		this.setState({
 			isAddInitialContent: !this.state.isAddInitialContent
 		});
@@ -169,13 +169,13 @@ class App extends React.Component {
 	   Settings
 	   ====================================================================== */
 
-	toggleSettingsModal() {
+	toggleSettingsModal = () => {
 		this.setState({
 			isSettingsModalOpen: !this.state.isSettingsModalOpen
 		});
 	}
 
-	setSettings(settings) {
+	setSettings = settings => {
 		this.setState({
 			settings: settings
 		});
@@ -185,7 +185,7 @@ class App extends React.Component {
 	   Column
 	   ====================================================================== */
 
-	addColumn(newColumn) {
+	addColumn = newColumn => {
 		mixpanel.track('Added Column', {
 			type: newColumn.type,
 			payload: newColumn.payload
@@ -194,7 +194,7 @@ class App extends React.Component {
 		this.setState({ columns: this.state.columns.concat([newColumn]) });
 	}
 
-	fetchColumn(key, page, forceUpdate) {
+	fetchColumn = (key, page, forceUpdate) => {
 		let column = this.state.columns[key];
 		let lastModified = this.state.columnsModified ? this.state.columnsModified[key] : 0;
 
@@ -206,7 +206,7 @@ class App extends React.Component {
 			.end(this.handleResponse.bind(this, key));
 	}
 
-	handleResponse(key, error, response) {
+	handleResponse = (key, error, response) => {
 		if (response && response.status === 200) {
 			this.setLastModified(response.headers['last-modified'], key);
 			this.setEvents(response.body, key);
@@ -217,7 +217,7 @@ class App extends React.Component {
 		}
 	}
 
-	setLastModified(lastModifiedHeader, key) {
+	setLastModified = (lastModifiedHeader, key) => {
 		let newState = update(this.state, {
 			columnsModified: {
 				[key]: { $set: lastModifiedHeader }
@@ -228,7 +228,7 @@ class App extends React.Component {
 	}
 
 
-	setEvents(response, key) {
+	setEvents = (response, key) => {
 		if (response && response.length > 0) {
 			let newState = update(this.state, {
 				columnsEvents: {
@@ -242,7 +242,7 @@ class App extends React.Component {
 		}
 	}
 
-	setError(message, key) {
+	setError = (message, key) => {
 		let newState = update(this.state, {
 			columnsErrors: {
 				[key]: { $set: message }
@@ -252,7 +252,7 @@ class App extends React.Component {
 		this.setState(newState);
 	}
 
-	removeColumn(key) {
+	removeColumn = key => {
 		let column = this.state.columns[key];
 
 		mixpanel.track('Removed Column', {
@@ -280,7 +280,7 @@ class App extends React.Component {
 	   New Updates
 	   ====================================================================== */
 
-	checkUpdates(key) {
+	checkUpdates = key => {
 		let column = this.state.columns[key];
 		let lastModified = this.state.columnsModified ? this.state.columnsModified[key] : 0;
 
@@ -298,7 +298,7 @@ class App extends React.Component {
 			});
 	}
 
-	setHasUpdates(value, key) {
+	setHasUpdates = (value, key) => {
 		let newState = update(this.state, {
 			columnsHasUpdates: {
 				[key]: { $set: value }
@@ -312,7 +312,7 @@ class App extends React.Component {
 	   Filter
 	   ====================================================================== */
 
-	setFilter(matching, excluding, pattern) {
+	setFilter = (matching, excluding, pattern) => {
 		mixpanel.track('Saved Filter', {
 			matching: matching,
 			excluding: excluding,
@@ -338,7 +338,7 @@ class App extends React.Component {
 		this.setState(newState);
 	}
 
-	toggleFilterModal(index) {
+	toggleFilterModal = index => {
 		this.setState({
 			activeColumn: index,
 			isFilterModalOpen: !this.state.isFilterModalOpen
@@ -360,12 +360,12 @@ class App extends React.Component {
 			<div className={appClassName}>
 				<BannerRefresh />
 				<Banner isOnline={this.state.isOnline} />
-				<Nav logout={this.props.logout} toggleSettingsModal={this.toggleSettingsModal.bind(this)} isOnline={this.state.isOnline} isVisible={this.state.isVisible} github={this.props.auth.github} />
-				<Settings settings={this.state.settings} setSettings={this.setSettings.bind(this)} isSettingsModalOpen={this.state.isSettingsModalOpen} toggleSettingsModal={this.toggleSettingsModal.bind(this)} />
-				<Columns columns={this.state.columns} columnsErrors={this.state.columnsErrors} columnsEvents={this.state.columnsEvents} columnsHasUpdates={this.state.columnsHasUpdates} isOnline={this.state.isOnline} isVisible={this.state.isVisible} fetchColumn={this.fetchColumn.bind(this)} removeColumn={this.removeColumn.bind(this)} toggleAddModal={this.toggleAddModal.bind(this)} toggleFilterModal={this.toggleFilterModal.bind(this)} isFilterModalOpen={this.state.isFilterModalOpen} checkUpdates={this.checkUpdates.bind(this)} setHasUpdates={this.setHasUpdates.bind(this)} />
-				<Add columns={this.state.columns} settings={this.state.settings} addColumn={this.addColumn.bind(this)} toggleAddModal={this.toggleAddModal.bind(this)} isAddModalOpen={this.state.isAddModalOpen} toggleAddInitialContent={this.toggleAddInitialContent.bind(this)} isAddInitialContent={this.state.isAddInitialContent} github={this.props.auth.github} />
-				<Filter activeColumn={this.state.activeColumn} columns={this.state.columns} isFilterModalOpen={this.state.isFilterModalOpen} toggleFilterModal={this.toggleFilterModal.bind(this)} setFilter={this.setFilter.bind(this)} />
-				<a className="fab tooltipped tooltipped-w" onClick={this.handleAddLink.bind(this)} aria-label="Add column">
+				<Nav logout={this.props.logout} toggleSettingsModal={this.toggleSettingsModal} isOnline={this.state.isOnline} isVisible={this.state.isVisible} github={this.props.auth.github} />
+				<Settings settings={this.state.settings} setSettings={this.setSettings} isSettingsModalOpen={this.state.isSettingsModalOpen} toggleSettingsModal={this.toggleSettingsModal} />
+				<Columns columns={this.state.columns} columnsErrors={this.state.columnsErrors} columnsEvents={this.state.columnsEvents} columnsHasUpdates={this.state.columnsHasUpdates} isOnline={this.state.isOnline} isVisible={this.state.isVisible} fetchColumn={this.fetchColumn} removeColumn={this.removeColumn} toggleAddModal={this.toggleAddModal} toggleFilterModal={this.toggleFilterModal} isFilterModalOpen={this.state.isFilterModalOpen} checkUpdates={this.checkUpdates} setHasUpdates={this.setHasUpdates} />
+				<Add columns={this.state.columns} settings={this.state.settings} addColumn={this.addColumn} toggleAddModal={this.toggleAddModal} isAddModalOpen={this.state.isAddModalOpen} toggleAddInitialContent={this.toggleAddInitialContent} isAddInitialContent={this.state.isAddInitialContent} github={this.props.auth.github} />
+				<Filter activeColumn={this.state.activeColumn} columns={this.state.columns} isFilterModalOpen={this.state.isFilterModalOpen} toggleFilterModal={this.toggleFilterModal} setFilter={this.setFilter} />
+				<a className="fab tooltipped tooltipped-w" onClick={this.handleAddLink} aria-label="Add column">
 					<Icon name="plus" className="fab-icon" />
 				</a>
 			</div>

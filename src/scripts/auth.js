@@ -30,16 +30,16 @@ class Auth extends React.Component {
 		});
 	}
 
-	isFirstLogin(authData) {
+	isFirstLogin = authData => {
 		firebase.once('value', (data) => {
 			this.setState({
 				auth: authData,
 				isFirstLogin: data.hasChild(authData.uid) ? false : true
-			}, this.saveUserData.bind(this, authData));
+			}, this.saveUserData(authData));
 		});
 	}
 
-	saveUserData(authData) {
+	saveUserData = authData => {
 		let user = authData.github.cachedUserProfile;
 
 		let mixpanelData = {
@@ -69,7 +69,7 @@ class Auth extends React.Component {
 		});
 	}
 
-	publicLogin() {
+	publicLogin = () => {
 		mixpanel.track('Logged With Public Access');
 
 		firebase.authWithOAuthRedirect('github', (err) => {
@@ -80,7 +80,7 @@ class Auth extends React.Component {
 		}, { scope: 'user,public_repo' });
 	}
 
-	privateLogin() {
+	privateLogin = () => {
 		mixpanel.track('Logged With Private Access');
 
 		firebase.authWithOAuthRedirect('github', (err) => {
@@ -93,7 +93,7 @@ class Auth extends React.Component {
 		});
 	}
 
-	logout() {
+	logout = () => {
 		mixpanel.track('Logged Out');
 
 		this.setState({
@@ -103,7 +103,7 @@ class Auth extends React.Component {
 		firebase.unauth();
 	}
 
-	renderLoading() {
+	renderLoading = () => {
 		return (
 			<div className="auth">
 				<div className="centered">
@@ -115,10 +115,10 @@ class Auth extends React.Component {
 
 	render() {
 		if (this.state.auth) {
-			return (<App auth={this.state.auth} isFirstLogin={this.state.isFirstLogin} logout={this.logout.bind(this)} />);
+			return (<App auth={this.state.auth} isFirstLogin={this.state.isFirstLogin} logout={this.logout} />);
 		}
 		else if (this.state.auth === null) {
-			return (<Home publicLogin={this.publicLogin.bind(this)} privateLogin={this.privateLogin.bind(this)}/>);
+			return (<Home publicLogin={this.publicLogin} privateLogin={this.privateLogin}/>);
 		}
 		else {
 			return this.renderLoading();

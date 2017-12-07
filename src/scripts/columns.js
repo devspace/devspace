@@ -16,11 +16,11 @@ class Columns extends React.Component {
 			nextProps.isVisible !== this.props.isVisible;
 	}
 
-	renderLoader() {
+	renderLoader = () => {
 		return <div className="centered"><Spinner size="md" /></div>
 	}
 
-	renderBlank() {
+	renderBlank = () => {
 		return (
 			<div className="columns-blank centered">
 				<Icon name="squirrel" className="columns-blank-icon" />
@@ -30,15 +30,15 @@ class Columns extends React.Component {
 		)
 	}
 
-	renderColumn(column, key) {
+	renderColumn = (column, key) => {
 		let error = this.props.columnsErrors && this.props.columnsErrors[key] ? this.props.columnsErrors[key] : undefined;
 		let events = this.props.columnsEvents && this.props.columnsEvents[key] ? this.props.columnsEvents[key] : undefined;
 		let hasUpdates = this.props.columnsHasUpdates && this.props.columnsHasUpdates[key] ? this.props.columnsHasUpdates[key] : undefined;
 
-		return <Column key={key} index={key} isOnline={this.props.isOnline} isVisible={this.props.isVisible} error={error} events={events} hasUpdates={hasUpdates} fetchColumn={this.props.fetchColumn.bind(this)} removeColumn={this.props.removeColumn.bind(this, key)} details={column} toggleFilterModal={this.props.toggleFilterModal} isFilterModalOpen={this.props.isFilterModalOpen} checkUpdates={this.props.checkUpdates.bind(this)} setHasUpdates={this.props.setHasUpdates.bind(this)} />;
+		return <Column key={key} index={key} isOnline={this.props.isOnline} isVisible={this.props.isVisible} error={error} events={events} hasUpdates={hasUpdates} fetchColumn={this.props.fetchColumn} removeColumn={this.props.removeColumn.bind(this, key)} details={column} toggleFilterModal={this.props.toggleFilterModal} isFilterModalOpen={this.props.isFilterModalOpen} checkUpdates={this.props.checkUpdates} setHasUpdates={this.props.setHasUpdates} />;
 	}
 
-	renderContent() {
+	renderContent = () => {
 		if (!this.props.columns) {
 			return this.renderLoader();
 		}
@@ -46,7 +46,7 @@ class Columns extends React.Component {
 			return this.renderBlank();
 		}
 		else if (this.props.columns.length > 0) {
-			return this.props.columns.map(this.renderColumn.bind(this));
+			return this.props.columns.map(this.renderColumn());
 		}
 	}
 
