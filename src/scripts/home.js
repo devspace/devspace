@@ -46,7 +46,7 @@ class Home extends React.Component {
 				<main className="home-container">
 					<img className="home-logo" src="/images/app/logo.png" srcSet="/images/app/logo@2x.png 2x" alt="DevSpace Logo" width="148" height="148" />
 					<h1 className="home-title">DevSpace</h1>
-					<h2 className="home-subtitle">Stay up to date with what is happening now on GitHub</h2>
+					<h2 className="home-subtitle">Stay up to date with what&apos;s happening now on GitHub</h2>
 					<div className="home-btn-container">
 						<p className="home-subbtn">Login with GitHub</p>
 						<button className="home-btn" onClick={this.onClickPublicLogin.bind(this)}>
