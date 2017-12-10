@@ -24,7 +24,7 @@ class Columns extends React.Component {
 		return (
 			<div className="columns-blank centered">
 				<Icon name="squirrel" className="columns-blank-icon" />
-				<p className="columns-blank-title">You don't have any columns</p>
+				<p className="columns-blank-title">You do not have any columns</p>
 				<Button className="columns-blank-btn" size="lg" onClick={this.props.toggleAddModal}>Add a column</Button>
 			</div>
 		)
