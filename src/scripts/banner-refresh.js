@@ -45,7 +45,7 @@ class BannerRefresh extends React.Component {
     }
   }
 
-  handleRefresh() {
+  handleRefresh = () => {
     window.location.reload();
   }
 
@@ -55,7 +55,7 @@ class BannerRefresh extends React.Component {
         <div className="banner banner-refresh Alert--info">
           <Icon name="heart" /> <strong>New version is available.</strong> Would you like to update now?
           <div className="banner-buttons">
-            <button className="Button Button--sm Button--primary" onClick={this.handleRefresh.bind(this)}>Get the New Version</button>
+            <button className="Button Button--sm Button--primary" onClick={this.handleRefresh}>Get the New Version</button>
           </div>
         </div>
       );

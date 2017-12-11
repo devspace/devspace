@@ -19,7 +19,7 @@ class Add extends React.Component {
 			nextProps.isAddInitialContent !== this.props.isAddInitialContent;
 	}
 
-	setSelectedOption(option) {
+	setSelectedOption = option => {
 		this.setState({
 			selectedOption: option
 		});
@@ -27,7 +27,7 @@ class Add extends React.Component {
 
 	renderContent() {
 		if (this.props.isAddInitialContent) {
-			return <AddOptions setSelectedOption={this.setSelectedOption.bind(this)} toggleAddModal={this.props.toggleAddModal} toggleAddInitialContent={this.props.toggleAddInitialContent} />
+			return <AddOptions setSelectedOption={this.setSelectedOption} toggleAddModal={this.props.toggleAddModal} toggleAddInitialContent={this.props.toggleAddInitialContent} />
 		}
 		else {
 			return <AddForm columns={this.props.columns} addColumn={this.props.addColumn} selectedOption={this.state.selectedOption} toggleAddModal={this.props.toggleAddModal} toggleAddInitialContent={this.props.toggleAddInitialContent} github={this.props.github} />

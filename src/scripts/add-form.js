@@ -57,7 +57,7 @@ class AddForm extends React.Component {
 		});
 	}
 
-	handleSubmit(event) {
+	handleSubmit = event => {
 		event.preventDefault();
 
 		if (this.props.columns.length < 10) {
@@ -113,7 +113,7 @@ class AddForm extends React.Component {
 
 	render() {
 		return (
-			<form id="addForm" onSubmit={this.handleSubmit.bind(this)}>
+			<form id="addForm" onSubmit={this.handleSubmit}>
 				<ModalHeader>
 					<button className="Modal__header__close" onClick={this.props.toggleAddModal} type="button"></button>
 					<h4 className="Modal__header__text">

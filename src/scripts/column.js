@@ -11,7 +11,7 @@ class Column extends React.Component {
 	constructor() {
 		super();
 
-		this.handleScroll = debounce(this.handleScroll.bind(this), 100);
+		this.handleScroll = debounce(this.handleScroll, 100);
 	}
 
 	componentDidMount() {
@@ -62,7 +62,7 @@ class Column extends React.Component {
 	   Interval
 	   ====================================================================== */
 
-	startInterval() {
+	startInterval = () => {
 		this.interval = window.setInterval(() => {
 			this.maybeFetchColumn();
 		}, 60 * 1000);
@@ -72,7 +72,7 @@ class Column extends React.Component {
 	   New Updates
 	   ====================================================================== */
 
-	maybeFetchColumn() {
+	maybeFetchColumn = () => {
 		if (this.refs.wrap.scrollTop > 10) {
 			if (this.props.hasUpdates !== 'appear') {
 				this.props.checkUpdates(this.props.index);
@@ -82,7 +82,7 @@ class Column extends React.Component {
 		}
 	}
 
-	handleNewUpdatesButton() {
+	handleNewUpdatesButton = () => {
 		this.props.setHasUpdates('disappear', this.props.index);
 		this.props.fetchColumn(this.props.index, 1);
 		this.refs.wrap.scrollTop = 0;
@@ -90,7 +90,7 @@ class Column extends React.Component {
 		mixpanel.track('Clicked New Updates');
 	}
 
-	handleScroll() {
+	handleScroll = () => {
 		let scroll = this.refs.wrap.scrollTop;
 
 		if (scroll <= 10 && this.props.hasUpdates === 'appear') {
@@ -103,21 +103,21 @@ class Column extends React.Component {
 	   Rendering
 	   ====================================================================== */
 
-	renderEvent(event, key) {
+	renderEvent = (event, key) => {
 		return <Event key={key} details={event} filters={this.props.details.filters} />;
 	}
 
-	renderLoading() {
+	renderLoading = () => {
 		return <div className="centered"><Spinner size="md" /></div>;
 	}
 
-	renderError() {
+	renderError = () => {
 		return <div className="column-placeholder centered">{this.props.error}</div>;
 	}
 
-	renderContent() {
+	renderContent = () => {
 		if (this.props.events) {
-			return this.props.events.map(this.renderEvent.bind(this));
+			return this.props.events.map(this.renderEvent);
 		}
 		else if (this.props.error) {
 			return this.renderError();
@@ -127,7 +127,7 @@ class Column extends React.Component {
 		}
 	}
 
-	renderNewUpdatesButton() {
+	renderNewUpdatesButton = () => {
 		let pillState = 'hidden';
 
 		if (this.props.hasUpdates === 'appear') {
@@ -138,7 +138,7 @@ class Column extends React.Component {
 
 		return (
 			<div className={"update-pill Pill Pill--primary-inverted " + pillState}>
-				<button onClick={this.handleNewUpdatesButton.bind(this)} className="Pill__label" type="button">
+				<button onClick={this.handleNewUpdatesButton} className="Pill__label" type="button">
 					<Icon name="arrow-up" className="update-pill-icon" /> New Updates
 				</button>
 			</div>
@@ -162,7 +162,7 @@ class Column extends React.Component {
 						</a>
 						{this.renderNewUpdatesButton()}
 					</header>
-					<div ref="wrap" className="column-content" onScroll={this.handleScroll.bind(this)}>
+					<div ref="wrap" className="column-content" onScroll={this.handleScroll}>
 						{this.renderContent()}
 					</div>
 				</div>

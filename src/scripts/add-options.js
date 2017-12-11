@@ -16,27 +16,27 @@ class AddOptions extends React.Component {
 		return false;
 	}
 
-	handleOption(option) {
+	handleOption = option =>{
 		this.props.setSelectedOption(option);
 		this.props.toggleAddInitialContent();
 	}
 
-	renderRow(rowKey) {
+	renderRow = rowKey => {
 		let row = this.rows[rowKey];
 
 		return (
 			<Row key={rowKey}>
-				{Object.keys(row).map(this.renderCol.bind(this, rowKey))}
+				{Object.keys(row).map(this.renderCol(rowKey))}
 			</Row>
 		)
 	}
 
-	renderCol(rowKey, colKey) {
+	renderCol = (rowKey, colKey) => {
 		let col = this.rows[rowKey][colKey];
 
 		return (
 			<Col key={colKey} sm="1/2">
-				<button type="button" className="add-button" onClick={this.handleOption.bind(this, col)}>
+				<button type="button" className="add-button" onClick={this.handleOption(col)}>
 					<Card className="add-card">
 						<Icon name={getIcon(col.type)} className="add-icon" />
 						<h1 className="add-title">{col.type}</h1>
@@ -54,7 +54,7 @@ class AddOptions extends React.Component {
 					<h4 className="Modal__header__text">Add column</h4>
 				</ModalHeader>
 				<ModalBody>
-					{Object.keys(this.rows).map(this.renderRow.bind(this))}
+					{Object.keys(this.rows).map(this.renderRow)}
 				</ModalBody>
 			</div>
 		)
