@@ -76,7 +76,7 @@ gulp.task('connect', function() {
 });
 
 gulp.task('build', function(callback) {
-  runSequence('assets', 'images', 'styles', 'critical',
+  runSequence('assets', 'images', 'styles',
     ['scripts'], 'service-worker', callback);
 });
 
