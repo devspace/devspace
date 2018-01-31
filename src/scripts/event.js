@@ -78,7 +78,7 @@ class Event extends React.Component {
 				icon = 'book';
 				messageString = `${login} ${payload.pages[0].action} a wiki page at ${repo}`;
 				messageHtml = (
-					<span> {payload.pages[0].action} a <a className="event-link" href={`https://github.com${payload.pages[0].html_url}`} onClick={this.trackLink.bind(this)} target="_blank">wiki page</a> at <a className="event-link" href={`https://github.com/${repo}`} onClick={this.trackLink.bind(this)} target="_blank">{repo}</a></span>
+					<span> {payload.pages[0].action} a <a className="event-link" href={`${payload.pages[0].html_url}`} onClick={this.trackLink.bind(this)} target="_blank">wiki page</a> at <a className="event-link" href={`https://github.com/${repo}`} onClick={this.trackLink.bind(this)} target="_blank">{repo}</a></span>
 				);
 				break;
 			case 'IssueCommentEvent':
