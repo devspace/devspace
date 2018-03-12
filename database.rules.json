@@ -14,11 +14,9 @@
     },
     "v1": {
       "users": {
-        ".write": "auth !== null && auth.provider === 'github'",
         ".read": "auth !== null && auth.provider === 'github'",
         "$uid": {
-          ".read": "auth != null && auth.uid == $uid",
-          ".write": "auth != null && auth.uid == $uid"
+          ".write": "auth != null && auth.provider === 'github' && auth.uid == $uid"
         }
       },
       "signups": {
